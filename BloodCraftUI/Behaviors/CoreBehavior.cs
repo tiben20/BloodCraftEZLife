@@ -1,5 +1,4 @@
-﻿using BloodCraftUI.NEW;
-using BloodCraftUI.Services;
+﻿using BloodCraftUI.Services;
 using Il2CppInterop.Runtime.Injection;
 using UnityEngine;
 
@@ -20,9 +19,9 @@ namespace BloodCraftUI.Behaviors
 
         internal void Update()
         {
-            if (InputManager.GetKeyDown(KeyCode.F7) && !UICustomManager.Initializing)
+            /*if (InputManager.GetKeyDown(KeyCode.F7) && !UICustomManager.Initializing)
                 UICustomManager.ShowMenu = !UICustomManager.ShowMenu;
-
+            */ //TODO
             MessageService.ProcessAllMessages();
         }
     }

@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using BloodCraftUI.Config;
-using BloodCraftUI.NEW;
-using BloodCraftUI.NEW.Panels;
 using BloodCraftUI.Services;
 using BloodCraftUI.Utils;
 using HarmonyLib;
@@ -20,17 +18,11 @@ namespace BloodCraftUI.Patches
     internal static class ClientChatPatch
     {
         private static string _currentBox;
-        private static bool _shouldShowUI;
 
         [HarmonyPatch(typeof(ClientChatSystem), nameof(ClientChatSystem._OnInputEndEdit))]
         [HarmonyPostfix]
         static void _OnInputEndEditPostfix(ClientChatSystem __instance)
         {
-            if (_shouldShowUI)
-            {
-                _shouldShowUI = false;
-                UICustomManager.ShowMenu = true;
-            }
             LogUtils.LogInfo($"_OnInputEndEditPostfix");
         }
 
@@ -38,10 +30,6 @@ namespace BloodCraftUI.Patches
         [HarmonyPostfix]
         static void _OnInputSelectPostfix(string arg0)
         {
-            if (UICustomManager.ShowMenu)
-                _shouldShowUI = true;
-            UICustomManager.ShowMenu = false;
-
             LogUtils.LogInfo($"_OnInputSelectPostfix: {arg0}");
         }
 
@@ -100,14 +88,14 @@ namespace BloodCraftUI.Patches
                         case { } x when message.StartsWith("Familiar Boxes"):
                             ClearFlags();
                             _flags[InterceptFlag.ListBoxes] = 1;
-                            UICustomManager.GetPanel<BoxListModal>(PanelType.BoxList).ClearList();
+                            //TODO UICustomManager.GetPanel<BoxListModal>(PanelType.BoxList).ClearList();
                             break;
                         case { } x when message.StartsWith("<color=yellow>1</color>|"):
                             ClearFlags();
                             _flags[InterceptFlag.ListBoxContent] = 1;
                             if (_currentBox != null)
                             {
-                                UICustomManager.GetPanel<BoxContentPanel>(_currentBox).ClearList();
+                               //TODO UICustomManager.GetPanel<BoxContentPanel>(_currentBox).ClearList();
                                 ProcessBoxContentEntry(message);
                             }
 
@@ -145,8 +133,8 @@ namespace BloodCraftUI.Patches
                                 var text = Regex.Matches(message, _color_pattern).FirstOrDefault()?.Groups[1].Value;
                                 if (!string.IsNullOrEmpty(text))
                                 {
-                                    var x = UICustomManager.GetPanel<BoxListModal>(PanelType.BoxList);
-                                    x.AddList(text);
+                                    /*var x = UICustomManager.GetPanel<BoxListModal>(PanelType.BoxList);
+                                    x.AddList(text);*/ //TODO
                                 }
 
                                 DestroyMessage(entity);
@@ -173,7 +161,7 @@ namespace BloodCraftUI.Patches
                 var colorName = GetColorName(colorText);
                 var text2 = $"{text.Substring(2).Trim()}{(colorName.Name == "Normal" ? null : $" - {colorName.Name}")}";
                 var number = Convert.ToInt32(text.Substring(0, 1));
-                UICustomManager.GetPanel<BoxContentPanel>(_currentBox).AddList(number, text2, colorName);
+                //TODO UICustomManager.GetPanel<BoxContentPanel>(_currentBox).AddList(number, text2, colorName);
             }
             catch
             {

@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Timers;
 using BloodCraftUI.Config;
+using BloodCraftUI.NewUI.UICore.UniverseLib.UI;
+using BloodCraftUI.NewUI.UICore.UniverseLib.UI.Models;
+using BloodCraftUI.NewUI.UICore.UniverseLib.UI.Widgets.ScrollView;
 using BloodCraftUI.Services;
-using BloodCraftUI.UI;
 using UnityEngine;
 
 namespace BloodCraftUI.NEW.Panels
 {
-    internal class BoxListModal : UEPanel
+    /*internal class BoxListModal : UEPanel
     {
         public override string Name => "Box List";
         public override PanelType PanelType => PanelType.BoxList;
@@ -113,5 +115,5 @@ namespace BloodCraftUI.NEW.Panels
             public string Name { get; set; }
         }
         #endregion
-    }
+    }*/
 }

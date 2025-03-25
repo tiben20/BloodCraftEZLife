@@ -1,11 +1,10 @@
 using System;
-using BloodCraftUI.NEW;
+using BloodCraftUI.NewUI;
 using BloodCraftUI.Services;
 using BloodCraftUI.Utils;
 using HarmonyLib;
 using ProjectM;
 using ProjectM.Network;
-using ProjectM.UI;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -14,7 +13,7 @@ namespace BloodCraftUI.Patches
     [HarmonyPatch]
     public static class InitializationPatch
     {
-        [HarmonyPatch]
+        /*[HarmonyPatch]
         internal class CharacterHUDEntry_Patch
         {
             [HarmonyPostfix]
@@ -25,7 +24,7 @@ namespace BloodCraftUI.Patches
                 LogUtils.LogInfo("Creating UI...");
                 UICustomManager.InitUI();
             }
-        }
+        }*/
 
         [HarmonyPatch(typeof(GameDataManager), nameof(GameDataManager.OnUpdate))]
         [HarmonyPostfix]
@@ -47,7 +46,7 @@ namespace BloodCraftUI.Patches
         [HarmonyPostfix]
         static void OnUpdatePostfix(CommonClientDataSystem __instance)
         {
-            if (UICustomManager.Initializing) return;
+            if (!BCUIManager.IsInitialised) return;
 
             var entities = __instance.__query_1840110765_0.ToEntityArray(Allocator.Temp);
 

@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace BloodCraftUI.UI
+namespace BloodCraftUI.NEW
 {
-    public class BCPanelManager : PanelManager
+    /*public class BCPanelManager : PanelManager
     {
         public BCPanelManager(UIBase owner) : base(owner) { }
 
@@ -21,5 +21,5 @@ namespace BloodCraftUI.UI
         {
             base.SortDraggerHeirarchy();
         }
-    }
+    }*/
 }

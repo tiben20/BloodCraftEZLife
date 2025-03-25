@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using BloodCraftUI.NEW.Panels;
 using BloodCraftUI.Services;
-using BloodCraftUI.UI;
 using BloodCraftUI.Utils;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace BloodCraftUI.NEW
 {
-    internal class UICustomManager
+    /*internal class UICustomManager
     {
         public enum VerticalAnchor
         {
@@ -199,4 +198,5 @@ namespace BloodCraftUI.NEW
         BoxList,
         BoxContent
     }
+    */
 }

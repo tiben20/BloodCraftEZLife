@@ -19,7 +19,7 @@ namespace BloodCraftUI.Config
 
         private static List<ConfigEntryBase> _configEntries = new();
 
-        public void InitConfig()
+        public Settings InitConfig()
         {
             if (!Directory.Exists(CONFIG_PATH))
             {
@@ -27,6 +27,7 @@ namespace BloodCraftUI.Config
             }
 
             _configEntries.Add(InitConfigEntry("GeneralOptions", "ClearServerMessages", false, "Enable/Disable"));
+            return this;
         }
 
         private static ConfigEntry<T> InitConfigEntry<T>(string section, string key, T defaultValue, string description)

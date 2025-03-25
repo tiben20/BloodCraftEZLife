@@ -4,15 +4,15 @@ using ProjectM;
 
 namespace BloodCraftUI.Patches
 {
-    [HarmonyPatch]
+    /*[HarmonyPatch]
     internal static class DestructionPatch
     {
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ClientBootstrapSystem), nameof(ClientBootstrapSystem.OnDestroy))]
         private static void OnDestroyPrefix(ClientBootstrapSystem __instance)
         {
-            UICustomManager.Destroy();
+            //UICustomManager.Destroy();
            // Plugin.Reset();
         }
-    }
+    }*/
 }

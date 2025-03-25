@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace BloodCraftUI.UI
+namespace BloodCraftUI.NEW
 {
-    internal class BloodCraftUIBase : UIBase
+    /*internal class BloodCraftUIBase : UIBase
     {
         public BloodCraftUIBase(string id, Action updateMethod)
             : base(id, updateMethod) { }
@@ -11,5 +11,5 @@ namespace BloodCraftUI.UI
         {
             return new BCPanelManager(this);
         }
-    }
+    }*/
 }

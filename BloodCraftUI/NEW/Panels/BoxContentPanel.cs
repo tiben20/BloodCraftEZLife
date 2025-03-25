@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Timers;
 using BloodCraftUI.Config;
+using BloodCraftUI.NewUI.UICore.UniverseLib.UI;
+using BloodCraftUI.NewUI.UICore.UniverseLib.UI.Models;
+using BloodCraftUI.NewUI.UICore.UniverseLib.UI.Widgets.ScrollView;
 using BloodCraftUI.Services;
-using BloodCraftUI.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using static BloodCraftUI.Patches.ClientChatPatch;
 
 namespace BloodCraftUI.NEW.Panels
 {
-    internal class BoxContentPanel : UEPanel
+   /* internal class BoxContentPanel : UEPanel
     {
         public override string Name { get; }
         public override PanelType PanelType => PanelType.BoxContent;
@@ -163,5 +165,5 @@ namespace BloodCraftUI.NEW.Panels
             public ColorNameData Data { get; set; }
         }
         #endregion
-    }
+    }*/
 }
