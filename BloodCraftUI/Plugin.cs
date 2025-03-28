@@ -5,8 +5,6 @@ using BepInEx.Unity.IL2CPP;
 using BloodCraftUI.Behaviors;
 using BloodCraftUI.Config;
 using BloodCraftUI.NewUI;
-using BloodCraftUI.NewUI.Patches;
-using BloodCraftUI.NewUI.UICore.UI;
 using BloodCraftUI.Patches;
 using BloodCraftUI.Utils;
 using Bloodstone;
@@ -14,7 +12,6 @@ using Bloodstone.API;
 using HarmonyLib;
 using ProjectM;
 using Unity.Entities;
-using UnityEngine;
 
 namespace BloodCraftUI
 {
@@ -24,20 +21,11 @@ namespace BloodCraftUI
         public static Plugin Instance { get; private set; }
         public static ManualLogSource LogInstance => Instance.Log;
         public static Settings Settings { get; private set; }
-        static World _client;
+        private static World _client;
         public static EntityManager EntityManager => _client.EntityManager;
         public static bool IsInitialized { get; private set; }
 
         public static bool IsClientNull() => _client == null;
-
-        // This is the method that is called when the game is started.
-        // It is an automatic method that is called by BepInEx
-
-        public static void InitializeProperties(GameDataManager gameDataManager)
-        {
-            _client = gameDataManager.World;
-        }
-
 
         public static void Reset()
         {
@@ -54,8 +42,8 @@ namespace BloodCraftUI
         private static Harmony _harmonyInitPatch;
         private static Harmony _harmonyCanvasPatch;
         private static Harmony _harmonyMenuPatch;
-        internal static Harmony _harmonyVersionStringPatch;
-        private static FrameTimer _uiInitialisedTimer;
+        internal static Harmony HarmonyVersionStringPatch;
+        private static FrameTimer _uiInitializedTimer;
 
         public override void Load()
         {
@@ -78,7 +66,7 @@ namespace BloodCraftUI
             _harmonyBootPatch = Harmony.CreateAndPatchAll(typeof(GameManagerPatch));
             _harmonyMenuPatch = Harmony.CreateAndPatchAll(typeof(EscapeMenuPatch));
             _harmonyCanvasPatch = Harmony.CreateAndPatchAll(typeof(UICanvasSystemPatch));
-            _harmonyVersionStringPatch = Harmony.CreateAndPatchAll(typeof(VersionStringPatch));
+            HarmonyVersionStringPatch = Harmony.CreateAndPatchAll(typeof(VersionStringPatch));
             _harmonyChatPatch = Harmony.CreateAndPatchAll(typeof(ClientChatPatch));
             _harmonyInitPatch = Harmony.CreateAndPatchAll(typeof(InitializationPatch));
 
@@ -92,7 +80,7 @@ namespace BloodCraftUI
             _harmonyBootPatch.UnpatchSelf();
             _harmonyCanvasPatch.UnpatchSelf();
             _harmonyMenuPatch.UnpatchSelf();
-            _harmonyVersionStringPatch.UnpatchSelf();
+            HarmonyVersionStringPatch.UnpatchSelf();
             _harmonyChatPatch.UnpatchSelf();
             _harmonyInitPatch.UnpatchSelf();
             return true;
@@ -100,26 +88,33 @@ namespace BloodCraftUI
 
         private void AddTestUI()
         {
-            BCUIManager.OnInitialized();
+            BCUIManager.SetupAndShowUI();
+            BCUIManager.ContentPanel.TEST_BOX_LIST();
         }
 
+        //run on game start
         public static void GameDataOnInitialize(World world)
         {
             if (VWorld.IsClient)
             {
+                _client = world;
                 // We only want to run this once, so unpatch the hook that initiates this callback.
                 _harmonyBootPatch.UnpatchSelf();
-                _uiInitialisedTimer = new FrameTimer();
+                _uiInitializedTimer = new FrameTimer();
 
-                _uiInitialisedTimer.Initialise(() =>
+                _uiInitializedTimer.Initialise(() =>
                     {
-                        BCUIManager.OnInitialized();
-                        _uiInitialisedTimer.Stop();
-                        LogUtils.LogInfo($"UI Manager initialized");
+                        _uiInitializedTimer.Stop();
                     },
                     TimeSpan.FromSeconds(5),
                     true).Start();
             }
+        }
+
+        public static void UIOnInitialize()
+        {
+            BCUIManager.SetupAndShowUI();
+            LogUtils.LogInfo($"UI Manager initialized");
         }
     }
 

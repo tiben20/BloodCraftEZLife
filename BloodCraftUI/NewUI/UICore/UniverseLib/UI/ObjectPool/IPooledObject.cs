@@ -7,7 +7,7 @@ namespace BloodCraftUI.NewUI.UICore.UniverseLib.UI.ObjectPool
     /// </summary>
     public interface IPooledObject
     {
-        GameObject UIRoot { get; set; }
+        GameObject UIRoot { get; }
         float DefaultHeight { get; }
 
         GameObject CreateContent(GameObject parent);

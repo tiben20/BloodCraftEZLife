@@ -10,45 +10,53 @@ public static class BCUIManager
     public enum Panels
     {
         Base,
-        Progress,
-        Actions,
+        BoxList,
+        BoxContent
     }
-    
-    public static bool IsInitialised { get; private set; }
+
+    public static UIBase UiBase { get; private set; }
+    public static GameObject UIRoot => UiBase?.RootObject;
+    public static ContentPanel ContentPanel { get; private set; }
+    public static bool IsInitialized { get; private set; }
     
     internal static void Initialize()
     {
         UniversalUI.Init();
     }
 
-    public static UIBase UiBase { get; private set; }
-    public static GameObject UIRoot => UiBase?.RootObject;
-    public static ContentPanel ContentPanel { get; private set; }
-
-    public static void OnInitialized()
+    public static void SetupAndShowUI()
     {
-        if (IsInitialised) return;
+        if (IsInitialized) return;
         
         UiBase = UniversalUI.RegisterUI(PluginInfo.PLUGIN_GUID, UiUpdate);
         ContentPanel = new ContentPanel(UiBase);
         SetActive(true);
+        IsInitialized = true;
     }
 
     public static void SetActive(bool active)
     {
         if (ContentPanel == null) return;
         ContentPanel.SetActive(active);
-        SetActive(active);
-        IsInitialised = true;
     }
 
     public static void Reset()
     {
+        IsInitialized = false;
+
         ContentPanel.Reset();
+        ContentPanel.Destroy();
+        Object.Destroy(UIRoot);
     }
 
     private static void UiUpdate()
     {
         // Called once per frame when your UI is being displayed.
+    }
+
+    public static T GetPanel<T>()
+        where T : class
+    {
+        return ContentPanel.GetPanel<T>();
     }
 }

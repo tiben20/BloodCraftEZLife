@@ -20,10 +20,6 @@
     <PackageReference Include="VRising.Unhollowed.Client" Version="1.0.5.802790001" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="_TRASH\" />
-  </ItemGroup>
-
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugType>Full</DebugType>
   </PropertyGroup>

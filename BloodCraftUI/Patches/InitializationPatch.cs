@@ -5,6 +5,7 @@ using BloodCraftUI.Utils;
 using HarmonyLib;
 using ProjectM;
 using ProjectM.Network;
+using ProjectM.UI;
 using Unity.Collections;
 using Unity.Entities;
 
@@ -13,40 +14,27 @@ namespace BloodCraftUI.Patches
     [HarmonyPatch]
     public static class InitializationPatch
     {
-        /*[HarmonyPatch]
-        internal class CharacterHUDEntry_Patch
-        {
-            [HarmonyPostfix]
-            [HarmonyPatch(typeof(CharacterHUDEntry), nameof(CharacterHUDEntry.Awake))]
-            private static void AwakePostfix()
-            {
-                if (!UICustomManager.Initializing) return;
-                LogUtils.LogInfo("Creating UI...");
-                UICustomManager.InitUI();
-            }
-        }*/
-
-        [HarmonyPatch(typeof(GameDataManager), nameof(GameDataManager.OnUpdate))]
         [HarmonyPostfix]
-        static void OnUpdatePostfix(GameDataManager __instance)
+        [HarmonyPatch(typeof(CharacterHUDEntry), nameof(CharacterHUDEntry.Awake))]
+        private static void AwakePostfix()
         {
             try
             {
-                if (!Plugin.IsInitialized) return;
-
-                Plugin.InitializeProperties(__instance);
+                if (BCUIManager.IsInitialized) return;
+                LogUtils.LogInfo("Creating UI...");
+                Plugin.UIOnInitialize();
             }
             catch (Exception ex)
             {
-                LogUtils.LogError($"{ex}");
+                LogUtils.LogError(ex.ToString());
             }
         }
-
+        
         [HarmonyPatch(typeof(CommonClientDataSystem), nameof(CommonClientDataSystem.OnUpdate))]
         [HarmonyPostfix]
         static void OnUpdatePostfix(CommonClientDataSystem __instance)
         {
-            if (!BCUIManager.IsInitialised) return;
+            if (!BCUIManager.IsInitialized) return;
 
             var entities = __instance.__query_1840110765_0.ToEntityArray(Allocator.Temp);
 

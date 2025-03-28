@@ -10,7 +10,8 @@ namespace BloodCraftUI.Services
     internal static class MessageService
     {
         static EntityManager EntityManager => Plugin.EntityManager;
-        static readonly ComponentType[] _networkEventComponents =
+
+        private static readonly ComponentType[] NetworkEventComponents =
         [
             ComponentType.ReadOnly(Il2CppType.Of<FromCharacter>()),
             ComponentType.ReadOnly(Il2CppType.Of<NetworkEventType>()),
@@ -23,7 +24,7 @@ namespace BloodCraftUI.Services
         private static Entity _localUser = Entity.Null;
         private static bool _isInitialized;
 
-        static readonly NetworkEventType _networkEventType = new()
+        private static readonly NetworkEventType NetworkEventType = new()
         {
             IsAdminEvent = false,
             EventId = NetworkEvents.EventId_ChatMessageEvent,
@@ -35,7 +36,7 @@ namespace BloodCraftUI.Services
             OutputMessages.Enqueue(text);
         }
 
-        public static string DequeueMessage()
+        private static string DequeueMessage()
         {
             return OutputMessages.Any() ? OutputMessages.Dequeue() : null;
         }
@@ -49,9 +50,9 @@ namespace BloodCraftUI.Services
                 ReceiverEntity = _localUser.Read<NetworkId>()
             };
 
-            var networkEntity = EntityManager.CreateEntity(_networkEventComponents);
+            var networkEntity = EntityManager.CreateEntity(NetworkEventComponents);
             networkEntity.Write(new FromCharacter { Character = _localCharacter, User = _localUser });
-            networkEntity.Write(_networkEventType);
+            networkEntity.Write(NetworkEventType);
             networkEntity.Write(chatMessageEvent);
         }
 

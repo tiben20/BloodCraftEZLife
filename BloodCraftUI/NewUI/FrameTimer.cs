@@ -1,5 +1,4 @@
 using System;
-using BepInEx.Logging;
 using BloodCraftUI.Utils;
 using Bloodstone.Hooks;
 

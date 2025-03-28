@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using BloodCraftUI.Config;
+using BloodCraftUI.NewUI;
+using BloodCraftUI.NewUI.UICore.UI.Panel;
 using BloodCraftUI.Services;
 using BloodCraftUI.Utils;
 using HarmonyLib;
@@ -47,7 +49,7 @@ namespace BloodCraftUI.Patches
         [HarmonyPrefix]
         static void OnUpdatePrefix(ClientChatSystem __instance)
         {
-            if(Plugin.IsClientNull())
+            if (Plugin.IsClientNull())
                 return;
 
             var entities = __instance._ReceiveChatMessagesQuery.ToEntityArray(Allocator.Temp);
@@ -88,14 +90,14 @@ namespace BloodCraftUI.Patches
                         case { } x when message.StartsWith("Familiar Boxes"):
                             ClearFlags();
                             _flags[InterceptFlag.ListBoxes] = 1;
-                            //TODO UICustomManager.GetPanel<BoxListModal>(PanelType.BoxList).ClearList();
+                            BCUIManager.GetPanel<BoxListPanel>().Reset();
                             break;
                         case { } x when message.StartsWith("<color=yellow>1</color>|"):
                             ClearFlags();
                             _flags[InterceptFlag.ListBoxContent] = 1;
                             if (_currentBox != null)
                             {
-                               //TODO UICustomManager.GetPanel<BoxContentPanel>(_currentBox).ClearList();
+                                //TODO UICustomManager.GetPanel<BoxContentPanel>(_currentBox).ClearList();
                                 ProcessBoxContentEntry(message);
                             }
 
@@ -107,39 +109,39 @@ namespace BloodCraftUI.Patches
                             break;
 
                         default:
-                        {
-                            //list box content
-                            if (_flags.HasKeyValue(InterceptFlag.ListBoxContent, 1))
                             {
-                                //stop
-                                if (message.Length >= 2 && !message.Contains("</color>|"))
+                                //list box content
+                                if (_flags.HasKeyValue(InterceptFlag.ListBoxContent, 1))
                                 {
-                                    _flags.SetValue(InterceptFlag.ListBoxContent, 0);
-                                    continue;
+                                    //stop
+                                    if (message.Length >= 2 && !message.Contains("</color>|"))
+                                    {
+                                        _flags.SetValue(InterceptFlag.ListBoxContent, 0);
+                                        continue;
+                                    }
+
+                                    ProcessBoxContentEntry(message);
                                 }
 
-                                ProcessBoxContentEntry(message);
+                                //list boxes
+                                if (_flags.HasKeyValue(InterceptFlag.ListBoxes, 1))
+                                {
+                                    //stop
+                                    if (message.Trim().Contains(" ") || !message.StartsWith("<color"))
+                                    {
+                                        _flags.SetValue(InterceptFlag.ListBoxes, 0);
+                                        continue;
+                                    }
+
+                                    var text = Regex.Matches(message, _color_pattern).FirstOrDefault()?.Groups[1].Value;
+                                    if (!string.IsNullOrEmpty(text))
+                                    {
+                                        BCUIManager.GetPanel<BoxListPanel>().AddList(text);
+                                    }
+
+                                    DestroyMessage(entity);
+                                }
                             }
-                            //list boxes
-                            if (_flags.HasKeyValue(InterceptFlag.ListBoxes, 1))
-                            {
-                                //stop
-                                if (message.Trim().Contains(" ") || !message.StartsWith("<color"))
-                                {
-                                    _flags.SetValue(InterceptFlag.ListBoxes, 0);
-                                    continue;
-                                }
-
-                                var text = Regex.Matches(message, _color_pattern).FirstOrDefault()?.Groups[1].Value;
-                                if (!string.IsNullOrEmpty(text))
-                                {
-                                    /*var x = UICustomManager.GetPanel<BoxListModal>(PanelType.BoxList);
-                                    x.AddList(text);*/ //TODO
-                                }
-
-                                DestroyMessage(entity);
-                            }
-                        }
                             break;
                     }
                 }

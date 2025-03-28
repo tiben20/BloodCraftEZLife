@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using BloodCraftUI.NewUI.UICore.UI;
+using BloodCraftUI.Utils;
 using UnityEngine;
 
 namespace BloodCraftUI.NewUI.UICore.UniverseLib.UI.Panels;
@@ -133,6 +134,7 @@ public class PanelDragger
 
     public virtual void OnBeginDrag()
     {
+        LogUtils.LogWarning("BEGIN DRAG");
         PanelManager.wasAnyDragging = true;
         WasDragging = true;
         _initialMousePos = UIPanel.Owner.Panels.MousePosition;
@@ -152,6 +154,7 @@ public class PanelDragger
 
     public virtual void OnEndDrag()
     {
+        LogUtils.LogWarning("END DRAG");
         WasDragging = false;
 
         OnFinishDrag?.Invoke();
