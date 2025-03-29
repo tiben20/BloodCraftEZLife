@@ -10,7 +10,6 @@ public abstract class ResizeablePanelBase : Panels_PanelBase
 {
     protected ResizeablePanelBase(UIBase owner) : base(owner) { }
 
-    protected abstract BCUIManager.Panels PanelType { get; }
     public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
 
     private bool ApplyingSaveData { get; set; } = true;

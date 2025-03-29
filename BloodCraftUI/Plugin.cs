@@ -27,15 +27,13 @@ namespace BloodCraftUI
 
         public static bool IsClientNull() => _client == null;
 
+        public const bool IS_TESTING = false;
+
         public static void Reset()
         {
             _client = null;
             IsInitialized = false;
         }
-
-
-        /// /////////////////// NEW
-
 
         private static Harmony _harmonyBootPatch;
         private static Harmony _harmonyChatPatch;
@@ -72,7 +70,8 @@ namespace BloodCraftUI
 
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} version {PluginInfo.PLUGIN_VERSION} is loaded!");
 
-            AddTestUI();
+            if(IS_TESTING)
+                AddTestUI();
         }
 
         public override bool Unload()
@@ -89,7 +88,6 @@ namespace BloodCraftUI
         private void AddTestUI()
         {
             BCUIManager.SetupAndShowUI();
-            BCUIManager.ContentPanel.TEST_BOX_LIST();
         }
 
         //run on game start

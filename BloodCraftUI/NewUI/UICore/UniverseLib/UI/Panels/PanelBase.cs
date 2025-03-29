@@ -12,6 +12,7 @@ namespace BloodCraftUI.NewUI.UICore.UniverseLib.UI.Panels;
 public abstract class PanelBase : Models_UIBehaviourModel
 {
     public UIBase Owner { get; }
+    public abstract BCUIManager.Panels PanelType { get; }
 
     public abstract string Name { get; }
 

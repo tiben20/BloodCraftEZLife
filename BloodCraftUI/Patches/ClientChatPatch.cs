@@ -97,7 +97,7 @@ namespace BloodCraftUI.Patches
                             _flags[InterceptFlag.ListBoxContent] = 1;
                             if (_currentBox != null)
                             {
-                                //TODO UICustomManager.GetPanel<BoxContentPanel>(_currentBox).ClearList();
+                                BCUIManager.GetBoxPanel(_currentBox).Reset();
                                 ProcessBoxContentEntry(message);
                             }
 
@@ -136,7 +136,7 @@ namespace BloodCraftUI.Patches
                                     var text = Regex.Matches(message, _color_pattern).FirstOrDefault()?.Groups[1].Value;
                                     if (!string.IsNullOrEmpty(text))
                                     {
-                                        BCUIManager.GetPanel<BoxListPanel>().AddList(text);
+                                        BCUIManager.GetPanel<BoxListPanel>().AddListEntry(text);
                                     }
 
                                     DestroyMessage(entity);
@@ -163,7 +163,7 @@ namespace BloodCraftUI.Patches
                 var colorName = GetColorName(colorText);
                 var text2 = $"{text.Substring(2).Trim()}{(colorName.Name == "Normal" ? null : $" - {colorName.Name}")}";
                 var number = Convert.ToInt32(text.Substring(0, 1));
-                //TODO UICustomManager.GetPanel<BoxContentPanel>(_currentBox).AddList(number, text2, colorName);
+                BCUIManager.GetBoxPanel(_currentBox).AddListEntry(number, text2, colorName);
             }
             catch
             {

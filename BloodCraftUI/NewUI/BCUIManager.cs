@@ -1,5 +1,10 @@
-﻿using BloodCraftUI.NewUI.UICore.UI.Panel;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using BloodCraftUI.NewUI.UICore.UI.Panel;
+using BloodCraftUI.NewUI.UICore.UniverseLib.UI.Panels;
 using UnityEngine;
+using Object = UnityEngine.Object;
 using UIBase = BloodCraftUI.NewUI.UICore.UniverseLib.UI.UIBase;
 using UniversalUI = BloodCraftUI.NewUI.UICore.UniverseLib.UI.UniversalUI;
 
@@ -18,7 +23,10 @@ public static class BCUIManager
     public static GameObject UIRoot => UiBase?.RootObject;
     public static ContentPanel ContentPanel { get; private set; }
     public static bool IsInitialized { get; private set; }
-    
+
+
+    private static List<PanelBase> UIPanels { get; set; } = new();
+
     internal static void Initialize()
     {
         UniversalUI.Init();
@@ -29,7 +37,7 @@ public static class BCUIManager
         if (IsInitialized) return;
         
         UiBase = UniversalUI.RegisterUI(PluginInfo.PLUGIN_GUID, UiUpdate);
-        ContentPanel = new ContentPanel(UiBase);
+        AddPanel(Panels.Base);
         SetActive(true);
         IsInitialized = true;
     }
@@ -43,8 +51,11 @@ public static class BCUIManager
     public static void Reset()
     {
         IsInitialized = false;
+        foreach (var value in UIPanels)
+            value.Destroy();
 
-        ContentPanel.Reset();
+        UIPanels.Clear();
+
         ContentPanel.Destroy();
         Object.Destroy(UIRoot);
     }
@@ -54,9 +65,65 @@ public static class BCUIManager
         // Called once per frame when your UI is being displayed.
     }
 
-    public static T GetPanel<T>()
+    public static void AddPanel(Panels type, string param = null)
+    {
+        switch (type)
+        {
+            case Panels.Base:
+                ContentPanel = new ContentPanel(UiBase);
+                break;
+            case Panels.BoxList:
+            {
+                var panel = GetPanel<BoxListPanel>();
+                if (panel == null)
+                {
+                    var item = new BoxListPanel(UiBase);
+                    UIPanels.Add(item);
+                    if (Plugin.IS_TESTING)
+                    {
+                        item.AddListEntry("Test 1 ");
+                        item.AddListEntry("My sweet box1");
+                        item.AddListEntry("My sweet box2");
+                        item.AddListEntry("My sweet box3");
+                        item.AddListEntry("My sweet box4");
+                        item.AddListEntry("My sweet box5");
+                        item.AddListEntry("My sweet box6");
+                    }
+                }
+                else
+                {
+                    panel.SetActive(true);
+                }
+
+                break;
+            }
+            case Panels.BoxContent:
+            {
+                var panel = GetBoxPanel(param);
+                if (panel == null)
+                    UIPanels.Add(new BoxContentPanel(UiBase, param));
+                else
+                {
+                    panel.SetActive(true);
+                }
+                break;
+            }
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+        }
+    }
+
+
+    internal static T GetPanel<T>()
         where T : class
     {
-        return ContentPanel.GetPanel<T>();
+        var t = typeof(T);
+        return UIPanels.FirstOrDefault(a => a.GetType() == t) as T;
+    }
+
+    internal static BoxContentPanel GetBoxPanel(string currentBox)
+    {
+        return UIPanels.FirstOrDefault(a => a.PanelType == Panels.BoxContent && a.Name.Equals(currentBox)) as
+            BoxContentPanel;
     }
 }

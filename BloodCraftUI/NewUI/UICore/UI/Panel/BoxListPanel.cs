@@ -23,7 +23,7 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         public override Vector2 DefaultPivot => new Vector2(0.5f, 1f);
         public override bool CanDrag => true;
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
-        protected override BCUIManager.Panels PanelType => BCUIManager.Panels.BoxList;
+        public override BCUIManager.Panels PanelType => BCUIManager.Panels.BoxList;
 
         private ButtonRef _updateButton;
 
@@ -31,7 +31,7 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         {
         }
 
-        public void AddList(string name)
+        public void AddListEntry(string name)
         {
             _dataList.Add(new FamBoxData { Name = name });
             _scrollDataHandler.RefreshData();
@@ -110,7 +110,7 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         private void OnCellClicked(int dataIndex)
         {
             var famBox = _dataList[dataIndex];
-            //TODO BCUIManager.AddBoxContentPanel(famBox.Name);
+            BCUIManager.AddPanel(BCUIManager.Panels.BoxContent, famBox.Name);
         }
 
         private bool ShouldDisplay(FamBoxData data, string filter) => true;
