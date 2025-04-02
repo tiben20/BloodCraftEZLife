@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using BloodCraftUI.NewUI.UICore.UI.Panel.Base;
 using BloodCraftUI.NewUI.UICore.UniverseLib.UI;
 using BloodCraftUI.NewUI.UICore.UniverseLib.UI.Panels;
@@ -10,7 +12,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using BloodCraftUI.NewUI.UICore.UI.Util;
-using Il2CppSystem.Collections.Generic;
 
 namespace BloodCraftUI.NewUI.UICore.UI.Panel
 {
@@ -41,15 +42,7 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         private GameObject _statsContainer;
         private ProgressBar _progressBar;
 
-        // Stat entry layout elements
-        private GameObject _healthRow;
-        private GameObject _ppRow;
-        private GameObject _spRow;
-        private TextMeshProUGUI _healthValue;
-        private TextMeshProUGUI _ppValue;
-        private TextMeshProUGUI _spValue;
-
-        private List<GameObject> _dynamicStatRows = new();
+        private readonly Dictionary<string, GameObject> _statRowPool = new();
 
         public FamStatsPanel(UIBase owner) : base(owner)
         {
@@ -59,31 +52,51 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         {
             if (_uiAnchor == null) return;
 
-            // Force layout rebuild
-            //!!!LayoutRebuilder.ForceRebuildLayoutImmediate(_uiAnchor.GetComponent<RectTransform>());
+            Canvas.ForceUpdateCanvases();
+
+            // Force a recursive layout update
+            foreach (var child in _uiAnchor.transform)
+            {
+                var childRect = child as RectTransform;
+                if (childRect != null)
+                {
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(childRect);
+                }
+            }
 
             // Get VerticalLayoutGroup to account for its spacing and padding
             var vlg = _uiAnchor.GetComponent<VerticalLayoutGroup>();
+            if (vlg == null) return;
 
-            // Calculate exact content height by measuring each child
+            // Count active children and calculate height
             float contentHeight = 0;
-            for (int i = 0; i < _uiAnchor.transform.childCount; i++)
+            int activeChildCount = 0;
+
+            foreach (Transform child in _uiAnchor.transform)
             {
-                RectTransform child = _uiAnchor.transform.GetChild(i).GetComponent<RectTransform>();
                 if (child.gameObject.activeSelf)
                 {
-                    contentHeight += LayoutUtility.GetPreferredHeight(child);
+                    RectTransform childRect = child as RectTransform;
+                    if (childRect != null)
+                    {
+                        contentHeight += LayoutUtility.GetPreferredHeight(childRect);
+                        activeChildCount++;
+                    }
                 }
             }
 
             // Add spacing between children
-            contentHeight += (vlg.transform.childCount - 1) * vlg.spacing;
+            if (activeChildCount > 1)
+                contentHeight += (activeChildCount - 1) * vlg.spacing;
 
             // Add padding
             contentHeight += vlg.padding.top + vlg.padding.bottom + 10f;
 
-            // Set exact height with no buffer
-            Rect.sizeDelta = new Vector2(Rect.sizeDelta.x, contentHeight);
+            // Set panel height
+            if (Rect != null)
+            {
+                Rect.sizeDelta = new Vector2(Rect.sizeDelta.x, contentHeight);
+            }
         }
 
         public void UpdateData(FamStats data)
@@ -106,24 +119,30 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
                 _levelLabel.text =
                     $"Level: {data.Level}{(data.PrestigeLevel == 0 ? null : $"   Prestige: {data.PrestigeLevel}")}";
 
-            // Update stat values
-            if (_healthValue != null)
-                _healthValue.text = data.MaxHealth.ToString();
+            // Track which rows we've used in this update
+            var usedKeys = new HashSet<string>();
 
-            if (_ppValue != null)
-                _ppValue.text = data.PhysicalPower.ToString();
+            // First, update the fixed stats
+            UpdateStatRow("Health", data.MaxHealth, usedKeys);
+            UpdateStatRow("Physical Power", data.PhysicalPower, usedKeys);
+            UpdateStatRow("Spell Power", data.SpellPower, usedKeys);
 
-            if (_spValue != null)
-                _spValue.text = data.SpellPower.ToString();
-
-            foreach (var row in _dynamicStatRows)
-                Object.Destroy(row);
-
-            foreach (var (key, value) in data.Stats)
+            // Then update dynamic stats
+            if (data.Stats != null)
             {
-                CreateStatRow(_statsContainer, key, out var row, out var textControl);
-                textControl.text = value;
-                _dynamicStatRows.Add(row);
+                foreach (var kvp in data.Stats)
+                {
+                    UpdateStatRow(kvp.Key, kvp.Value, usedKeys);
+                }
+            }
+
+            // Hide any rows that aren't being used in this update
+            foreach (var key in _statRowPool.Keys.ToList())
+            {
+                if (!usedKeys.Contains(key) && _statRowPool.TryGetValue(key, out GameObject row))
+                {
+                    row.SetActive(false);
+                }
             }
 
             // Update progress bar
@@ -140,9 +159,51 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
                 );
             }
 
-            // Force layout rebuild and recalculate height
-            //!!!LayoutRebuilder.ForceRebuildLayoutImmediate(_uiAnchor.GetComponent<RectTransform>());
-            RecalculateHeight();
+            // Schedule layout rebuild
+            CoroutineUtility.StartCoroutine(DelayedLayoutRebuild());
+        }
+
+        private IEnumerator DelayedLayoutRebuild()
+        {
+            // Wait for the end of the frame
+            yield return new WaitForEndOfFrame();
+
+            // Then force layout rebuild
+            if (_uiAnchor != null)
+            {
+                Canvas.ForceUpdateCanvases();
+                LayoutRebuilder.ForceRebuildLayoutImmediate(_uiAnchor.GetComponent<RectTransform>());
+                RecalculateHeight();
+            }
+        }
+
+        private void UpdateStatRow(string label, string value, HashSet<string> usedKeys)
+        {
+            if (string.IsNullOrEmpty(label)) return;
+            usedKeys.Add(label);
+
+            GameObject row;
+            TextMeshProUGUI valueText;
+
+            // Get or create the row
+            if (_statRowPool.TryGetValue(label, out row))
+            {
+                // Row exists, just activate it
+                row.SetActive(true);
+                valueText = row.transform.Find($"{label}Value")?.GetComponent<TextMeshProUGUI>();
+            }
+            else
+            {
+                // Create new row
+                CreateStatRow(_statsContainer, label, out row, out valueText);
+                _statRowPool[label] = row;
+            }
+
+            // Update the value
+            if (valueText != null)
+            {
+                valueText.text = value ?? "0";
+            }
         }
 
         protected override void ConstructPanelContent()
@@ -233,13 +294,7 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
             // Stats container with reduced height and tighter spacing
             _statsContainer = UIFactory.CreateVerticalGroup(_uiAnchor, "StatsContainer", true, false, true, true, 2,
                 new Vector4(4, 2, 4, 2), new Color(0.12f, 0.12f, 0.12f));
-            UIFactory.SetLayoutElement(_statsContainer, minHeight: 120, preferredHeight: 120, flexibleHeight: 0, flexibleWidth: 9999);
-
-            // Create stat rows with reduced height
-            CreateStatRow(_statsContainer, "Health", out _healthRow, out _healthValue);
-            CreateStatRow(_statsContainer, "Physical Power", out _ppRow, out _ppValue);
-            CreateStatRow(_statsContainer, "Spell Power", out _spRow, out _spValue);
-            //CreateStatRow(_statsContainer, "Damage Reduction", out _, out _drValue);
+            UIFactory.SetLayoutElement(_statsContainer, minHeight: 20, preferredHeight: 120, flexibleHeight: 0, flexibleWidth: 9999);
         }
 
         private void CreateStatRow(GameObject parent, string label, out GameObject rowObj, out TextMeshProUGUI valueText)
@@ -287,6 +342,18 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
 
             // Reset progress bar if needed
             _progressBar?.Reset();
+
+            // Clear the stat row pool on panel reset (when leaving the server, etc.)
+            if (_statRowPool != null)
+            {
+                foreach (var kvp in _statRowPool)
+                {
+                    if (kvp.Value != null)
+                    {
+                        kvp.Value.SetActive(false);
+                    }
+                }
+            }
         }
 
         public override void OnFinishResize()
@@ -314,6 +381,14 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
                     PhysicalPower = "450",
                     SpellPower = "575",
                     School = "Unholy",
+                    Stats = new System.Collections.Generic.Dictionary<string, string>()
+                    {
+                        {"Stat1", "Value1"},
+                        {"Stat2", "Value2"},
+                        {"Stat3", "Value3"},
+                        {"Stat4", "Value4"},
+                        {"Stat5", "Value5"},
+                    }
                 });
             }
 

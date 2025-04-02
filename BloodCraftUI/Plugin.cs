@@ -27,7 +27,7 @@ namespace BloodCraftUI
 
         public static bool IsClientNull() => _client == null;
 
-        public const bool IS_TESTING = false;
+        public const bool IS_TESTING = true;
 
         public static void Reset()
         {
