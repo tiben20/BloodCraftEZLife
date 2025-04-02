@@ -9,6 +9,7 @@ using BloodCraftUI.Config;
 using Unity.Entities;
 using BloodCraftUI.Utils;
 using static Il2CppSystem.Globalization.TimeSpanFormat;
+using Unity.Collections;
 
 namespace BloodCraftUI.Services
 {
@@ -211,17 +212,20 @@ namespace BloodCraftUI.Services
                             if (match.Success)
                             {
                                 string propName = match.Groups[1].Value.Trim();
-                                int value = int.Parse(match.Groups[2].Value);
+                                string value = match.Groups[2].Value;
                                 switch (propName)
                                 {
                                     case "MaxHealth":
-                                        _currentFamStats.MaxHealth = value;
+                                        _currentFamStats.MaxHealth = int.Parse(value);
                                         break;
                                     case "PhysicalPower":
-                                        _currentFamStats.PhysicalPower = value;
+                                        _currentFamStats.PhysicalPower = int.Parse(value);
                                         break;
                                     case "SpellPower":
-                                        _currentFamStats.SpellPower = value;
+                                        _currentFamStats.SpellPower = int.Parse(value);
+                                        break;
+                                    case "DamageReduction":
+                                        _currentFamStats.DamageReduction = value;
                                         break;
                                 }
                             }
@@ -291,5 +295,6 @@ namespace BloodCraftUI.Services
         public int SpellPower { get; set; }
         public string Name { get; set; }
         public string School { get; set; }
+        public string DamageReduction { get; set; }
     }
 }
