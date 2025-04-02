@@ -2,6 +2,7 @@
 using BloodCraftUI.NewUI;
 using ProjectM.Network;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -32,9 +33,10 @@ namespace BloodCraftUI.Services
 
         private static readonly Dictionary<InterceptFlag, int> Flags = new();
         const string COLOR_PATTERN = "<color=.*?>(.*?)</color>";
+        const string EXTRACT_BOX_NAME_PATTERN = "<color=[^>]+>(?<box>.*?)</color>";
         const string EXTRACT_COLOR_PATTERN = "(?<=<color=)[^>]+";
         const string EXTRACT_FAM_LVL_PATTERN = @"\[<color=[^>]+>(\d+)</color>\]\[<color=[^>]+>(\d+)</color>\].*?<color=yellow>(\d+)</color>.*?<color=white>(\d+)%</color>";
-        const string EXTRACT_FAM_STATS_PATTERN = @"<color=#00FFFF>([^<]+)</color>:\s*<color=white>(\d+)</color>";
+        const string EXTRACT_FAM_STATS_PATTERN = @"<color=[^>]+>([^<]+)</color>:\s*<color=[^>]+>([^<]+)</color>(?:,\s*)?";
         const string EXTRACT_FAM_NAME_PATTERN = @"<color=[^>]+>(?<name>[^<]+)</color>";
         const string EXTRACT_FAM_SCHOOL_PATTERN = @"-\s*<color=[^>]+>(?<school>[^<]+)</color>";
 
@@ -162,16 +164,21 @@ namespace BloodCraftUI.Services
                         if (Flags.HasKeyValue(InterceptFlag.ListBoxes, 1))
                         {
                             //stop
-                            if (message.Trim().Contains(" ") || !message.StartsWith("<color"))
+                            if (!message.StartsWith("<color"))
                             {
                                 Flags.SetValue(InterceptFlag.ListBoxes, 0);
                                 return;
                             }
+                            Regex regex = new Regex(EXTRACT_BOX_NAME_PATTERN);
+                            MatchCollection matches = regex.Matches(message);
 
-                            var text = Regex.Matches(message, COLOR_PATTERN).FirstOrDefault()?.Groups[1].Value;
-                            if (!string.IsNullOrEmpty(text))
+                            foreach (Match match in matches)
                             {
-                                BCUIManager.GetPanel<BoxListPanel>()?.AddListEntry(text);
+                                var text = match.Groups["box"].Value;
+                                if (!string.IsNullOrEmpty(text))
+                                {
+                                    BCUIManager.GetPanel<BoxListPanel>()?.AddListEntry(text);
+                                }
                             }
 
                             DestroyMessage(entity);
@@ -216,16 +223,16 @@ namespace BloodCraftUI.Services
                                 switch (propName)
                                 {
                                     case "MaxHealth":
-                                        _currentFamStats.MaxHealth = int.Parse(value);
+                                        _currentFamStats.MaxHealth = value;
                                         break;
                                     case "PhysicalPower":
-                                        _currentFamStats.PhysicalPower = int.Parse(value);
+                                        _currentFamStats.PhysicalPower = value;
                                         break;
                                     case "SpellPower":
-                                        _currentFamStats.SpellPower = int.Parse(value);
+                                        _currentFamStats.SpellPower = value;
                                         break;
-                                    case "DamageReduction":
-                                        _currentFamStats.DamageReduction = value;
+                                    default:
+                                        _currentFamStats.Stats.Add(propName, value);
                                         break;
                                 }
                             }
@@ -237,12 +244,12 @@ namespace BloodCraftUI.Services
                     break;
                 case 2: //name
                 {
-                    var nameMatch = Regex.Match(message, @"<color=[^>]+>(?<name>[^<]+)</color>");
+                    var nameMatch = Regex.Match(message, EXTRACT_FAM_NAME_PATTERN);
                     if (nameMatch.Success)
                     {
                         _currentFamStats.Name = nameMatch.Groups["name"].Value;
                     }
-                    var schoolMatch = Regex.Match(message, @"-\s*<color=[^>]+>(?<school>[^<]+)</color>");
+                    var schoolMatch = Regex.Match(message, EXTRACT_FAM_SCHOOL_PATTERN);
                     if (schoolMatch.Success)
                     {
                         _currentFamStats.School = schoolMatch.Groups["school"].Value;
@@ -263,7 +270,7 @@ namespace BloodCraftUI.Services
                 var spellSchool = GameHelper.GetSchoolFromColor(colorText);
                 var colorName = GameHelper.GetColorNameFromSchool(spellSchool);
                 var text2 = $"{text.Substring(2).Trim()}{(spellSchool == null ? null : $" - {colorName.Name}")}";
-                var number = Convert.ToInt32(text.Substring(0, 1));
+                var number = Convert.ToInt32(text.Substring(0, char.IsDigit(text[1]) ? 2 : 1));
                 BCUIManager.GetBoxPanel(_currentBox)?.AddListEntry(number, text2, spellSchool);
             }
             catch
@@ -290,11 +297,11 @@ namespace BloodCraftUI.Services
         public int PrestigeLevel { get; set; }
         public int ExperienceValue { get; set; }
         public int ExperiencePercent { get; set; }
-        public int MaxHealth { get; set; }
-        public int PhysicalPower { get; set; }
-        public int SpellPower { get; set; }
+        public string MaxHealth { get; set; }
+        public string PhysicalPower { get; set; }
+        public string SpellPower { get; set; }
         public string Name { get; set; }
         public string School { get; set; }
-        public string DamageReduction { get; set; }
+        public Dictionary<string, string> Stats { get; set; } = new();
     }
 }

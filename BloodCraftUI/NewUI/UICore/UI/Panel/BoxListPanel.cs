@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Timers;
 using BloodCraftUI.Config;
 using BloodCraftUI.NewUI.UICore.UI.Cells;
@@ -34,6 +35,8 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
 
         public void AddListEntry(string name)
         {
+            if(_dataList.Any(a=> a.Name.Equals(name)))
+                return;
             _dataList.Add(new FamBoxData { Name = name });
             _scrollDataHandler.RefreshData();
             _scrollPool.Refresh(true);
