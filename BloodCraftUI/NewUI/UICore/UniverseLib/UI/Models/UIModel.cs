@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace BloodCraftUI.NewUI.UICore.UniverseLib.UI.Models;
 
@@ -35,6 +36,6 @@ public abstract class UIModel
     public virtual void Destroy()
     {
         if (UIRoot)
-            GameObject.Destroy(UIRoot);
+            Object.Destroy(UIRoot);
     }
 }

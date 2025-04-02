@@ -4,5 +4,6 @@
     {
         //// FLAG PROPERTIES
         public static bool IsFamUnbound { get; set; }
+        public static string CurrentFamName { get; set; }
     }
 }

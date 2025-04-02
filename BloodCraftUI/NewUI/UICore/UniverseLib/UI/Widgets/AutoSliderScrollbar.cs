@@ -35,7 +35,6 @@ public class AutoSliderScrollbar : UIBehaviourModel
         this.Scrollbar.onValueChanged.AddListener(this.OnScrollbarValueChanged);
         this.Slider.onValueChanged.AddListener(this.OnSliderValueChanged);
 
-        //this.RefreshVisibility();
         this.Slider.Set(0f, false);
 
         UpdateSliderHandle();
@@ -52,17 +51,17 @@ public class AutoSliderScrollbar : UIBehaviourModel
             return;
 
         _refreshWanted = false;
-        if (ContentRect.localPosition.y != lastAnchorPosition)
+        if (Math.Abs(ContentRect.localPosition.y - lastAnchorPosition) > 0.0001)
         {
             lastAnchorPosition = ContentRect.localPosition.y;
             _refreshWanted = true;
         }
-        if (ContentRect.rect.height != lastContentHeight)
+        if (Math.Abs(ContentRect.rect.height - lastContentHeight) > 0.0001)
         {
             lastContentHeight = ContentRect.rect.height;
             _refreshWanted = true;
         }
-        if (ViewportRect.rect.height != lastViewportHeight)
+        if (Math.Abs(ViewportRect.rect.height - lastViewportHeight) > 0.0001)
         {
             lastViewportHeight = ViewportRect.rect.height;
             _refreshWanted = true;
@@ -104,21 +103,28 @@ public class AutoSliderScrollbar : UIBehaviourModel
         if (totalHeight > 0f)
             val = (float)((decimal)ContentRect.localPosition.y / (decimal)(totalHeight - ViewportRect.rect.height));
 
-        Slider.value = val;
+        Slider.Set(val);
     }
 
     public void OnScrollbarValueChanged(float value)
     {
         value = 1f - value;
-        if (this.Slider.value != value)
-            this.Slider.Set(value, false);
-        //OnValueChanged?.Invoke(value);
+        // Don't update the value if it is the same, as we don't want to loop setting the values
+        if (Math.Abs(Slider.value - value) > 0.0001)
+        {
+            // Make sure we send the callback to correctly propagate the value
+            Slider.Set(value, true);
+        }
     }
 
     public void OnSliderValueChanged(float value)
     {
         value = 1f - value;
-        this.Scrollbar.value = value;
-        //OnValueChanged?.Invoke(value);
+        // Don't update the value if it is the same, as we don't want to loop setting the values
+        if (Math.Abs(Scrollbar.value - value) > 0.0001)
+        {
+            // Make sure we send the callback to correctly propagate the value
+            Scrollbar.Set(value, true);
+        }
     }
 }

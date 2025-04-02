@@ -411,6 +411,10 @@ public static class UIFactory
         Image handleImage = handleObj.AddComponent<Image>();
         handleImage.color = Colour.SliderHandle;
 
+        var outline = handleObj.AddComponent<Outline>();
+        outline.effectColor = Colour.DarkBackground;
+        outline.effectDistance = outlineDistance;
+
         handleObj.GetComponent<RectTransform>().sizeDelta = new Vector2(20f, 0f);
 
         slider = sliderObj.AddComponent<Slider>();
@@ -820,32 +824,44 @@ public static class UIFactory
         SetLayoutGroup<VerticalLayoutGroup>(content, true, false, true, true, 0, 2, 2, 2, 2, TextAnchor.UpperCenter);
         content.AddComponent<ContentSizeFitter>().verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
+        // Slider
+
+        GameObject scrollBarObj = CreateUIObject("AutoSliderScrollbar", mainObj);
+        RectTransform scrollBarRect = scrollBarObj.GetComponent<RectTransform>();
+        scrollBarRect.anchorMin = new Vector2(1, 0);
+        scrollBarRect.anchorMax = Vector2.one;
+        scrollBarRect.offsetMin = new Vector2(-25, 0);
+        SetLayoutGroup<VerticalLayoutGroup>(scrollBarObj, false, true, true, true);
+        scrollBarObj.AddComponent<Image>().color = Colour.PanelBackground;
+        scrollBarObj.AddComponent<Mask>().showMaskGraphic = false;
+
+        GameObject hiddenBar = CreateScrollbar(scrollBarObj, "HiddenScrollviewScroller", out Scrollbar hiddenScrollbar);
+        hiddenScrollbar.SetDirection(Scrollbar.Direction.BottomToTop, true);
+
+        for (int i = 0; i < hiddenBar.transform.childCount; i++)
+        {
+            Transform child = hiddenBar.transform.GetChild(i);
+            child.gameObject.SetActive(false);
+        }
+
+        CreateSliderScrollbar(scrollBarObj, out Slider scrollSlider);
+
+        new AutoSliderScrollbar(hiddenScrollbar, scrollSlider, contentRect, viewportRect);
+
+        // Set up the ScrollRect component
+
         ScrollRect scrollRect = mainObj.AddComponent<ScrollRect>();
-        scrollRect.movementType = ScrollRect.MovementType.Clamped;
-        //scrollRect.inertia = false;
-        scrollRect.inertia = true;
-        scrollRect.elasticity = 0.125f;
-        scrollRect.scrollSensitivity = 25;
         scrollRect.horizontal = false;
         scrollRect.vertical = true;
+        scrollRect.verticalScrollbar = hiddenScrollbar;
+        scrollRect.movementType = ScrollRect.MovementType.Clamped;
+        scrollRect.scrollSensitivity = 35;
+        scrollRect.horizontalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHideAndExpandViewport;
+        scrollRect.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.Permanent;
 
         scrollRect.viewport = viewportRect;
         scrollRect.content = contentRect;
 
-        // Slider
-
-        GameObject sliderContainer = CreateVerticalGroup(mainObj, "SliderContainer", false, false, true, true);
-        SetLayoutElement(sliderContainer, minWidth: 25, flexibleWidth: 0, flexibleHeight: 9999);
-        sliderContainer.AddComponent<Mask>().showMaskGraphic = false;
-
-        CreateSliderScrollbar(sliderContainer, out Slider slider);
-        
-        var colourBlock = new ColorBlock()
-        {
-            disabledColor = new Color(0.1f, 0.1f, 0.1f),
-            colorMultiplier = 1
-        };
-        slider.colors = colourBlock;
 
         // finalize and create ScrollPool
 
@@ -866,25 +882,12 @@ public static class UIFactory
     public static GameObject CreateSliderScrollbar(GameObject parent, out Slider slider)
     {
         GameObject mainObj = CreateUIObject("SliderScrollbar", parent, smallElementSize);
-        mainObj.AddComponent<Mask>().showMaskGraphic = false;
+        //mainObj.AddComponent<Mask>().showMaskGraphic = false;
         mainObj.AddComponent<Image>().color = Colour.DarkBackground;
 
-        GameObject bgImageObj = CreateUIObject("Background", mainObj);
+        //GameObject bgImageObj = CreateUIObject("Background", mainObj);
         GameObject handleSlideAreaObj = CreateUIObject("Handle Slide Area", mainObj);
         GameObject handleObj = CreateUIObject("Handle", handleSlideAreaObj);
-
-        Image bgImage = bgImageObj.AddComponent<Image>();
-        bgImage.type = Image.Type.Sliced;
-        bgImage.color = Colour.DarkBackground;
-
-        bgImageObj.AddComponent<Mask>();
-
-        RectTransform bgRect = bgImageObj.GetComponent<RectTransform>();
-        bgRect.pivot = new Vector2(0, 1);
-        bgRect.anchorMin = Vector2.zero;
-        bgRect.anchorMax = Vector2.one;
-        bgRect.sizeDelta = Vector2.zero;
-        bgRect.offsetMax = new Vector2(0f, 0f);
 
         RectTransform handleSlideRect = handleSlideAreaObj.GetComponent<RectTransform>();
         handleSlideRect.anchorMin = Vector3.zero;
@@ -905,7 +908,8 @@ public static class UIFactory
         sliderBarLayout.flexibleHeight = 9999;
 
         slider = mainObj.AddComponent<Slider>();
-        slider.handleRect = handleObj.GetComponent<RectTransform>();
+        slider.handleRect = handleRect;
+        slider.fillRect = handleRect;
         slider.targetGraphic = handleImage;
         slider.direction = Slider.Direction.TopToBottom;
 
@@ -941,7 +945,7 @@ public static class UIFactory
         mainRect.anchorMax = Vector2.one;
         Image mainImage = mainObj.AddComponent<Image>();
         mainImage.type = Image.Type.Filled;
-        mainImage.color = (color == default) ? Colour.DarkBackground : color;
+        mainImage.color = (color == default) ? Colour.Level1 : color;
 
         SetLayoutElement(mainObj, flexibleHeight: 9999, flexibleWidth: 9999);
 
@@ -951,6 +955,7 @@ public static class UIFactory
         viewportRect.anchorMax = Vector2.one;
         viewportRect.pivot = new Vector2(0.0f, 1.0f);
         viewportRect.offsetMax = new Vector2(-28, 0);
+        // Need both <Image> and <Mask> to ensure the viewport masks correctly (even if viewport image isn't visible)
         viewportObj.AddComponent<Image>().color = Colour.ViewportBackground;
         viewportObj.AddComponent<Mask>().showMaskGraphic = false;
 

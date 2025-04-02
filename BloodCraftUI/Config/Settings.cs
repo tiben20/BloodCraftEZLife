@@ -7,17 +7,22 @@ namespace BloodCraftUI.Config
 {
     public class Settings
     {
-        public const string BCCOM_LISTBOXES = ".fam boxes";
-        public const string BCCOM_SWITCHBOX = ".fam cb {0}";
-        public const string BCCOM_BOXCONTENT = ".fam l";
-        public const string BCCOM_BINDFAM = ".fam b {0}";
-        public const string BCCOM_UNBINDFAM = ".fam ub";
-
         private static string CONFIG_PATH = Path.Combine(Paths.ConfigPath, PluginInfo.PLUGIN_NAME);
+        private static readonly List<ConfigEntryBase> ConfigEntries = new();
 
-        public static bool ClearServerMessages => (_configEntries[0] as ConfigEntry<bool>)?.Value ?? false;
+        public static bool ClearServerMessages => (ConfigEntries[0] as ConfigEntry<bool>)?.Value ?? false;
+        public static int FamStatsQueryIntervalInSeconds
+        {
+            get
+            {
+                var value = (ConfigEntries[1] as ConfigEntry<int>)?.Value ?? 5;
+                if (value < 3) value = 3;
+                return value;
+            }
+        }
 
-        private static List<ConfigEntryBase> _configEntries = new();
+        public static int GlobalQueryIntervalInSeconds { get; } = 2;
+
 
         public Settings InitConfig()
         {
@@ -26,7 +31,8 @@ namespace BloodCraftUI.Config
                 Directory.CreateDirectory(CONFIG_PATH);
             }
 
-            _configEntries.Add(InitConfigEntry("GeneralOptions", "ClearServerMessages", false, "Enable/Disable"));
+            ConfigEntries.Add(InitConfigEntry("GeneralOptions", "ClearServerMessages", false, "Clear server and command messages from chat"));
+            ConfigEntries.Add(InitConfigEntry("GeneralOptions", "FamStatsQueryIntervalInSeconds", false, "Query interval for familiar stats update (no less than 3 sec)"));
             return this;
         }
 

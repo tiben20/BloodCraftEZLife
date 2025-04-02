@@ -15,9 +15,9 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
 {
     internal class BoxListPanel: ResizeablePanelBase
     {
-        public override string Name => "Box List";
+        public override string PanelId => "BoxList";
         public override int MinWidth => 340;
-        public override int MinHeight => 25;
+        public override int MinHeight => 180;
         public override Vector2 DefaultAnchorMin => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultAnchorMax => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultPivot => new Vector2(0.5f, 1f);
@@ -29,6 +29,7 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
 
         public BoxListPanel(UIBase owner) : base(owner)
         {
+            SetTitle("Box List");
         }
 
         public void AddListEntry(string name)
@@ -62,9 +63,6 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
             UIFactory.SetLayoutElement(_updateButton.GameObject, minWidth: 250, minHeight: 25, flexibleWidth: 9999);
             _updateButton.OnClick += RunUpdateCommand;
 
-            //var l = UIFactory.CreateLabel(ContentRoot, "Header", "", TextAlignmentOptions.Top);
-            //UIFactory.SetLayoutElement(l.gameObject, minWidth: 250, minHeight: 25, flexibleWidth: 0);
-
             _scrollDataHandler = new ButtonListHandler<FamBoxData, ButtonCell>(_scrollPool, GetEntries, SetCell, ShouldDisplay, OnCellClicked);
             _scrollPool = UIFactory.CreateScrollPool<ButtonCell>(ContentRoot, "ContentList", out GameObject scrollObj,
                 out _, new Color(0.03f, 0.03f, 0.03f));
@@ -83,7 +81,7 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         private void SendCommand()
         {
             EnableAllButtons(false);
-            MessageService.QueueMessage(Settings.BCCOM_LISTBOXES);
+            MessageService.EnqueueMessage(MessageService.BCCOM_LISTBOXES1);
             var t = new Timer(3000) { AutoReset = false };
             t.Elapsed += (_, _) => EnableAllButtons(true);
             t.Start();

@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using ButtonRef = BloodCraftUI.NewUI.UICore.UniverseLib.UI.Models.ButtonRef;
 using Models_UIBehaviourModel = BloodCraftUI.NewUI.UICore.UniverseLib.UI.Models.UIBehaviourModel;
+using Object = UnityEngine.Object;
 
 namespace BloodCraftUI.NewUI.UICore.UniverseLib.UI.Panels;
 
@@ -14,7 +15,7 @@ public abstract class PanelBase : Models_UIBehaviourModel
     public UIBase Owner { get; }
     public abstract BCUIManager.Panels PanelType { get; }
 
-    public abstract string Name { get; }
+    public abstract string PanelId { get; }
 
     public abstract int MinWidth { get; }
     public abstract int MinHeight { get; }
@@ -33,6 +34,7 @@ public abstract class PanelBase : Models_UIBehaviourModel
     public GameObject ContentRoot { get; protected set; }
 
     public GameObject TitleBar { get; private set; }
+    private TextMeshProUGUI TitleLabel { get; set; }
     public GameObject CloseButton { get; private set; }
 
     public PanelBase(UIBase owner)
@@ -43,6 +45,11 @@ public abstract class PanelBase : Models_UIBehaviourModel
 
         // Add to owner
         Owner.Panels.AddPanel(this);
+    }
+
+    public void SetTitle(string label)
+    {
+        TitleLabel.SetText(label);
     }
 
     public override void Destroy()
@@ -126,6 +133,9 @@ public abstract class PanelBase : Models_UIBehaviourModel
 
         pos.x = Math.Clamp(pos.x, minPosX, maxPosX);
         pos.y = Math.Clamp(pos.y, minPosY, maxPosY);
+        //pos.x = Math.Clamp(pos.x, minPosX > maxPosX ? maxPosX : minPosX, maxPosX > minPosX ? minPosX : maxPosX);
+        //pos.y = Math.Clamp(pos.y, minPosY > maxPosY ? maxPosY : minPosY, maxPosY > minPosY ? minPosY : maxPosY);
+
 
         Rect.anchoredPosition = pos;
     }
@@ -139,7 +149,7 @@ public abstract class PanelBase : Models_UIBehaviourModel
     public virtual void ConstructUI()
     {
         // create core canvas 
-        uiRoot = UIFactory.CreatePanel(Name, Owner.Panels.PanelHolder, out GameObject contentRoot);
+        uiRoot = UIFactory.CreatePanel(PanelId, Owner.Panels.PanelHolder, out GameObject contentRoot);
         ContentRoot = contentRoot;
         Rect = uiRoot.GetComponent<RectTransform>();
 
@@ -147,12 +157,12 @@ public abstract class PanelBase : Models_UIBehaviourModel
 
         // Title bar
         TitleBar = UIFactory.CreateHorizontalGroup(ContentRoot, "TitleBar", false, true, true, true, 2,
-            new Vector4(2, 2, 2, 2), Colour.DarkBackground);
+            new Vector4(2, 2, 2, 2), Colour.PanelBackground);
         UIFactory.SetLayoutElement(TitleBar, minHeight: 25, flexibleHeight: 0);
 
         // Title text
-        TextMeshProUGUI titleTxt = UIFactory.CreateLabel(TitleBar, "TitleBar", Name, TextAlignmentOptions.MidlineLeft);
-        UIFactory.SetLayoutElement(titleTxt.gameObject, 50, 25, 9999, 0);
+        TitleLabel = UIFactory.CreateLabel(TitleBar, "TitleBar", PanelId, TextAlignmentOptions.Center);
+        UIFactory.SetLayoutElement(TitleLabel.gameObject, 50, 25, 9999, 0);
 
         // close button
 
@@ -160,6 +170,8 @@ public abstract class PanelBase : Models_UIBehaviourModel
         UIFactory.SetLayoutElement(CloseButton, minHeight: 25, flexibleHeight: 0, minWidth: 30, flexibleWidth: 9999);
         UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(CloseButton, false, false, true, true, 3, childAlignment: TextAnchor.MiddleRight);
         ButtonRef closeBtn = UIFactory.CreateButton(CloseButton, "CloseButton", "—");
+        // Remove the button outline
+        Object.Destroy(closeBtn.Component.gameObject.GetComponent<Outline>());
         UIFactory.SetLayoutElement(closeBtn.Component.gameObject, minHeight: 25, minWidth: 25, flexibleWidth: 0);
         closeBtn.Component.colors = new ColorBlock()
         {
@@ -167,10 +179,7 @@ public abstract class PanelBase : Models_UIBehaviourModel
             colorMultiplier = 1
         };
 
-        closeBtn.OnClick += () =>
-        {
-            OnClosePanelClicked();
-        };
+        closeBtn.OnClick += OnClosePanelClicked;
 
         if (!(CanDrag || CanResize > 0)) TitleBar.SetActive(false);
 

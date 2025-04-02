@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BloodCraftUI.NewUI.UICore.UI.Panel;
 using BloodCraftUI.NewUI.UICore.UniverseLib.UI.Panels;
+using BloodCraftUI.Services;
 using UnityEngine;
 using Object = UnityEngine.Object;
 using UIBase = BloodCraftUI.NewUI.UICore.UniverseLib.UI.UIBase;
@@ -16,7 +17,8 @@ public static class BCUIManager
     {
         Base,
         BoxList,
-        BoxContent
+        BoxContent,
+        FamStats
     }
 
     public static UIBase UiBase { get; private set; }
@@ -108,6 +110,29 @@ public static class BCUIManager
                 }
                 break;
             }
+            case Panels.FamStats:
+            {
+                var panel = GetPanel<FamStatsPanel>();
+                if (panel == null)
+                {
+                    var item = new FamStatsPanel(UiBase);
+                    UIPanels.Add(item);
+                    if (Plugin.IS_TESTING)
+                    {
+                        item.UpdateData(new FamStats()
+                        {
+                            Level = 99,
+                            PrestigeLevel = 5,
+                            ExperiencePercent = 65
+                        });
+                    }
+                }
+                else
+                {
+                    panel.SetActive(!panel.Enabled);
+                }
+            }
+                break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
@@ -123,7 +148,7 @@ public static class BCUIManager
 
     internal static BoxContentPanel GetBoxPanel(string currentBox)
     {
-        return UIPanels.FirstOrDefault(a => a.PanelType == Panels.BoxContent && a.Name.Equals(currentBox)) as
+        return UIPanels.FirstOrDefault(a => a.PanelType == Panels.BoxContent && a.PanelId.Equals(currentBox)) as
             BoxContentPanel;
     }
 }

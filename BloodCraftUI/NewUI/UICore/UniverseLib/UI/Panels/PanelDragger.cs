@@ -35,6 +35,7 @@ public class PanelDragger
 
     // Resizing
     public bool WasResizing { get; internal set; }
+    private bool IsHoverResize { get; set; }
     private bool WasHoveringResize =>
         PanelManager.resizeCursor != null &&
         PanelManager.resizeCursor.activeInHierarchy;
@@ -66,7 +67,10 @@ public class PanelDragger
         if (state.HasFlag(MouseState.ButtonState.Clicked))
         {
             if (inDragPos || inResizePos)
+            {
                 UIPanel.SetActive(true);
+                PanelManager.draggerHandledThisFrame = true;
+            }
 
             // Resize with priority as actually shows an icon change (maybe show an icon for drag as well?)
             if (inResizePos)
@@ -80,6 +84,11 @@ public class PanelDragger
         }
         else if (state.HasFlag(MouseState.ButtonState.Down))
         {
+            if (WasDragging || WasResizing)
+            {
+                PanelManager.draggerHandledThisFrame = true;
+            }
+
             if (WasDragging)
             {
                 OnDrag();
@@ -116,9 +125,10 @@ public class PanelDragger
         {
             if (inResizePos)
             {
+                IsHoverResize = true;
                 OnHoverResize(type);
             }
-            else if (!WasResizing)
+            else if (!WasResizing && IsHoverResize)
             {
                 OnHoverResizeEnd();
             }
@@ -126,8 +136,6 @@ public class PanelDragger
         
         if (WasHoveringResize && PanelManager.resizeCursor)
             UpdateHoverImagePos();
-        
-        PanelManager.draggerHandledThisFrame = true;
     }
 
     #region DRAGGING
@@ -296,6 +304,7 @@ public class PanelDragger
         PanelManager.resizeCursor.transform.rotation = rot;
 
         UpdateHoverImagePos();
+        PanelManager.draggerHandledThisFrame = true;
     }
 
     // update the resize icon position to be above the mouse
@@ -312,7 +321,8 @@ public class PanelDragger
 
     public virtual void OnHoverResizeEnd()
     {
-        if(PanelManager.resizeCursorUIBase != null)
+        IsHoverResize = false;
+        if (PanelManager.resizeCursorUIBase != null)
             PanelManager.resizeCursorUIBase.Enabled = false;
         if (PanelManager.resizeCursor != null)
             PanelManager.resizeCursor.SetActive(false);

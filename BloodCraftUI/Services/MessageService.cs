@@ -1,13 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using BloodCraftUI.Config;
 using BloodCraftUI.Utils;
 using Il2CppInterop.Runtime;
 using ProjectM.Network;
 using Unity.Entities;
+using DateTime = System.DateTime;
 
 namespace BloodCraftUI.Services
 {
-    internal static class MessageService
+    internal static partial class MessageService
     {
         static EntityManager EntityManager => Plugin.EntityManager;
 
@@ -31,17 +34,21 @@ namespace BloodCraftUI.Services
             IsDebugEvent = false,
         };
 
-        public static void QueueMessage(string text)
+        private static int Timeout;
+
+        public static void EnqueueMessage(string text)
         {
             OutputMessages.Enqueue(text);
         }
 
         private static string DequeueMessage()
         {
-            return OutputMessages.Any() ? OutputMessages.Dequeue() : null;
+            return OutputMessages.Dequeue();
         }
 
-        public static void SendMessage(string text)
+        private static DateTime _lastAction = DateTime.MinValue;
+
+        private static void SendMessage(string text)
         {
             ChatMessageEvent chatMessageEvent = new()
             {
@@ -60,12 +67,15 @@ namespace BloodCraftUI.Services
         {
             if(!_isInitialized) return;
 
-            var msg = DequeueMessage();
-            while (!string.IsNullOrEmpty(msg))
-            {
-                SendMessage(msg);
-                msg = DequeueMessage();
-            }
+            if(Timeout == 0)
+                Timeout = Settings.GlobalQueryIntervalInSeconds;
+
+            if ((DateTime.Now - _lastAction).TotalSeconds < Timeout)
+                return;
+            _lastAction = DateTime.Now;
+
+            if(OutputMessages.Any())
+                SendMessage(DequeueMessage());
         }
 
         public static void Destroy()

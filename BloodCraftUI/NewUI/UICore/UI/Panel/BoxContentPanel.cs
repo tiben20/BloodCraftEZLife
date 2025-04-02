@@ -9,23 +9,23 @@ using BloodCraftUI.NewUI.UICore.UniverseLib.UI.Panels;
 using TMPro;
 using BloodCraftUI.Services;
 using BloodCraftUI.NewUI.UICore.UniverseLib.UI.Widgets.ScrollView;
-using static BloodCraftUI.Patches.ClientChatPatch;
 using BloodCraftUI.NewUI.UICore.UI.Cells.Handlers;
 using BloodCraftUI.NewUI.UICore.UI.Cells;
+using ProjectM;
 
 namespace BloodCraftUI.NewUI.UICore.UI.Panel
 {
     internal class BoxContentPanel: ResizeablePanelBase
     {
-        public override string Name { get; }
-        public override BCUIManager.Panels PanelType => BCUIManager.Panels.BoxContent;
-        public override int MinWidth => 250;
-        public override int MinHeight => 100;
-        public override Vector2 DefaultAnchorMin => new(0.4f, 0.4f);
-        public override Vector2 DefaultAnchorMax => new(0.6f, 0.6f);
-        public override Vector2 DefaultPivot => new Vector2(0.5f, 0.5f);
+        public override string PanelId { get; }
+        public override int MinWidth => 340;
+        public override int MinHeight => 220;
+        public override Vector2 DefaultAnchorMin => new(0.5f, 0.5f);
+        public override Vector2 DefaultAnchorMax => new(0.5f, 0.5f);
+        public override Vector2 DefaultPivot => new Vector2(0.5f, 1f);
         public override bool CanDrag => true;
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
+        public override BCUIManager.Panels PanelType => BCUIManager.Panels.BoxContent;
 
         private readonly string _boxName;
         private bool _isInitialized;
@@ -33,8 +33,8 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
 
         public BoxContentPanel(UIBase owner, string name) : base(owner)
         {
-            Name = $"Box '{name}' content";
-            TitleBar.GetComponentInChildren<TextMeshProUGUI>().text = Name;
+            PanelId = name;
+            SetTitle($"Box '{name}' content");
             _boxName = name;
         }
 
@@ -64,7 +64,7 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
             EnableAllButtons(false);
             if (string.IsNullOrEmpty(_boxName))
                 return;
-            MessageService.QueueMessage(string.Format(Settings.BCCOM_SWITCHBOX, _boxName));
+            MessageService.EnqueueMessage(string.Format(MessageService.BCCOM_SWITCHBOX, _boxName));
             var t = new Timer(1000);
             t.AutoReset = false;
             t.Elapsed += (_, _) =>
@@ -75,10 +75,10 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
                     {
                         for (int i = 0; i < 10; i++)
                         {
-                            AddListEntry(i, $"Test Familiar {i}", new ColorNameData { Color = Color.white, Name = "Normal"});
+                            AddListEntry(i, $"Test Familiar {i}", AbilitySchoolType.Unholy);
                         }
                     }
-                    MessageService.QueueMessage(Settings.BCCOM_BOXCONTENT);
+                    MessageService.EnqueueMessage(MessageService.BCCOM_BOXCONTENT);
                     t.Dispose();
                 }
                 finally
@@ -92,14 +92,14 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         private void SendBindCommand(int number)
         {
             EnableAllButtons(false);
-            MessageService.QueueMessage(Settings.BCCOM_UNBINDFAM);
+            MessageService.EnqueueMessage(MessageService.BCCOM_UNBINDFAM);
             var t = new Timer(3000);
             t.AutoReset = false;
             t.Elapsed += (_, _) =>
             {
                 try
                 {
-                    MessageService.QueueMessage(string.Format(Settings.BCCOM_BINDFAM, number));
+                    MessageService.EnqueueMessage(string.Format(MessageService.BCCOM_BINDFAM, number));
                     t.Dispose();
                 }
                 finally
@@ -112,9 +112,9 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         }
         #endregion
 
-        public void AddListEntry(int number, string name, ColorNameData cnData)
+        public void AddListEntry(int number, string name, AbilitySchoolType? schoolType)
         {
-            _dataList.Add(new FamData { Number = number, Name = name, Data = cnData });
+            _dataList.Add(new FamData { Number = number, Name = name, SpellSchool = schoolType });
             _scrollDataHandler.RefreshData();
             _scrollPool.Refresh(true);
         }
@@ -182,7 +182,7 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         {
             public int Number { get; set; }
             public string Name { get; set; }
-            public ColorNameData Data { get; set; }
+            public AbilitySchoolType? SpellSchool { get; set; }
         }
         #endregion
     }

@@ -16,5 +16,6 @@ public class EscapeMenuPatch
         // User has left the server. Reset all ui as the next server might be a different one
         BCUIManager.Reset();
         MessageService.Destroy();
+        Plugin.Reset();
     }
 }
