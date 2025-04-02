@@ -117,15 +117,6 @@ public static class BCUIManager
                 {
                     var item = new FamStatsPanel(UiBase);
                     UIPanels.Add(item);
-                    if (Plugin.IS_TESTING)
-                    {
-                        item.UpdateData(new FamStats()
-                        {
-                            Level = 99,
-                            PrestigeLevel = 5,
-                            ExperiencePercent = 65
-                        });
-                    }
                 }
                 else
                 {

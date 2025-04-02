@@ -17,7 +17,7 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
     {
         public override string PanelId => "FamStatsPanel";
         public override int MinWidth => 340;
-        public override int MinHeight => 25;
+        public override int MinHeight => 300;
         public override Vector2 DefaultAnchorMin => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultAnchorMax => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultPivot => new Vector2(0.5f, 0.5f);
@@ -171,55 +171,12 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         {
             base.LateConstructUI();
 
-            // Get a reference to the progress bar's main GameObject and adjust its width
-            // This is a second attempt to fix the width if the first one in CreateProgressBarSection failed
-            FixProgressBarWidth();
-
             // Start querying for updates
             SendUpdateStatsCommand();
             _queryTimer = new Timer(Settings.FamStatsQueryIntervalInSeconds * 1000);
             _queryTimer.AutoReset = true;
             _queryTimer.Elapsed += (_, _) => SendUpdateStatsCommand();
             _queryTimer.Start();
-        }
-
-        private void FixProgressBarWidth()
-        {
-            // Find all possible progress bar objects
-            var progressBarTransforms = _uiAnchor.GetComponentsInChildren<RectTransform>(true);
-            foreach (var transform in progressBarTransforms)
-            {
-                if (transform.name == "ProgressBarBase")
-                {
-                    var layoutElement = transform.GetComponent<LayoutElement>();
-                    if (layoutElement != null)
-                    {
-                        // Override the hardcoded width limitation
-                        layoutElement.flexibleWidth = 9999;
-                        layoutElement.minWidth = Rect.rect.width - 20; // Set a reasonable minimum width
-                    }
-
-                    // Also look for the ProgressBarSection inside
-                    var childTransforms = transform.GetComponentsInChildren<RectTransform>(true);
-                    foreach (var childTransform in childTransforms)
-                    {
-                        if (childTransform.name == "ProgressBarSection")
-                        {
-                            var childLayoutElement = childTransform.GetComponent<LayoutElement>();
-                            if (childLayoutElement != null)
-                            {
-                                // Make sure this section can also stretch
-                                childLayoutElement.flexibleWidth = 9999;
-                                childLayoutElement.minWidth = Rect.rect.width - 50;
-                            }
-                        }
-                    }
-
-                    // Force layout rebuild
-                    LayoutRebuilder.ForceRebuildLayoutImmediate(transform);
-                    break;
-                }
-            }
         }
 
         private void SendUpdateStatsCommand()
