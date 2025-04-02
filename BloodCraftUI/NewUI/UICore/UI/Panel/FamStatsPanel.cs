@@ -65,7 +65,7 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
 
             // Get the content size with padding
             float contentHeight = _uiAnchor.GetComponent<RectTransform>().rect.height;
-            float paddingTotal = 0; // Account for padding (12px top + 12px bottom)
+            float paddingTotal = 4; // Account for padding (12px top + 12px bottom)
 
             // Set the minimum height based on content or MinHeight, whichever is larger
             float newHeight = Mathf.Max(contentHeight + paddingTotal, MinHeight);
