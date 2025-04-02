@@ -16,7 +16,7 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
     {
         public override string PanelId => "FamStatsPanel";
         public override int MinWidth => 340;
-        public override int MinHeight => 300;
+        public override int MinHeight => 30;
         public override Vector2 DefaultAnchorMin => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultAnchorMax => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultPivot => new Vector2(0.5f, 0.5f);
@@ -77,9 +77,6 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
                 data.ExperienceValue.ToString(),
                 doFlash
             );
-
-            // Force layout rebuild to ensure all elements are correctly sized
-            //LayoutRebuilder.ForceRebuildLayoutImmediate(Rect);
         }
 
         protected override void ConstructPanelContent()
