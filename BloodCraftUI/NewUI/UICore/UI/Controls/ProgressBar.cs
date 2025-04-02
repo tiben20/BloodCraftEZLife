@@ -9,40 +9,31 @@ namespace BloodCraftUI.NewUI.UICore.UI.Controls;
 
 public class ProgressBar
 {
-    public const int BaseWidth = 50;
+    public const int BaseWidth = 200;
     public const int BarHeight = 22;
-
-    private const int MinHeaderWidth = 30;
 
     private readonly GameObject _contentBase;
     private readonly CanvasGroup _canvasGroup;
     private readonly Outline _highlight;
-    private readonly LayoutElement _layoutBackground;
-    private readonly LayoutElement _layoutFilled;
     private readonly TextMeshProUGUI _tooltipText;
-    private readonly TextMeshProUGUI _headerText;
-    private readonly Image _barImage;
+    private readonly Image _fillImage;
+    private readonly GameObject _maskObject;
     private readonly TextMeshProUGUI _changeText;
+    private readonly RectTransform _maskRect;
 
     private readonly FrameTimer _timer = new();
     private int _alertTimeRemainingMs = 0;
     private bool _alertTransitionOff = true;
     private const int TaskIterationDelay = 15;
 
-    // Timeline:
-    // (flash in -> flash stay -> flash fade) x3 -> visible -> (if _alertOff) fade out
-
-    // In animation order:
+    // Timeline constants
     private const int FlashInLengthMs = 150;
     private const int FlashLengthMs = 150;
     private const int FlashOutLengthMs = 150;
     private const int VisibleLengthMs = 500;
     private const int FadeOutLengthMs = 500;
-
     private const int FlashPulseInEnds = FlashLengthMs + FlashOutLengthMs;
     private const int FlashPulseLengthMs = FlashInLengthMs + FlashLengthMs + FlashOutLengthMs;
-
-    // Time remaining constants
     private const int FlashPulseEndsMs = VisibleLengthMs + FadeOutLengthMs;
     private const int AlertAnimationLength = FlashPulseLengthMs * 3 + FlashPulseEndsMs;
 
@@ -51,60 +42,94 @@ public class ProgressBar
     public event EventHandler ProgressBarMinimised;
 
     private ActiveState _activeState = ActiveState.Unchanged;
+    private float _currentProgress = 0f;
 
-    public ProgressBar(GameObject panel, Color colour)
+    public ProgressBar(GameObject panel, Color fillColor)
     {
-        // This is the base panel for the bar
-        _contentBase = UIFactory.CreateHorizontalGroup(panel, "ProgressBarBase", true, false, true, true, 0, default, Color.black);
-        UIFactory.SetLayoutElement(_contentBase, minWidth: BaseWidth, minHeight: BarHeight, flexibleWidth: 0, flexibleHeight: 0, preferredHeight: BarHeight);
+        // Create base container
+        _contentBase = UIFactory.CreateUIObject("MaskedProgressBar", panel);
+        UIFactory.SetLayoutElement(_contentBase, minHeight: BarHeight, flexibleWidth: 9999, flexibleHeight: 0);
+
+        // Set rect transform to fill width
+        RectTransform rect = _contentBase.GetComponent<RectTransform>();
+        rect.anchorMin = new Vector2(0, 0);
+        rect.anchorMax = new Vector2(1, 0);
+        rect.sizeDelta = new Vector2(0, BarHeight);
+
+        // Add background image
+        var bgImage = _contentBase.AddComponent<Image>();
+        bgImage.color = Color.black;
+
+        // Add canvas group and outline
         _canvasGroup = _contentBase.AddComponent<CanvasGroup>();
-        _canvasGroup.alpha = 1.0f;
         _highlight = _contentBase.AddComponent<Outline>();
         _highlight.effectColor = Color.black;
 
-        // Split the base bar panel into _headerTxt, progressBarSection and _tooltipTxt
-        _headerText = UIFactory.CreateLabel(_contentBase, "HeaderText", "");
-        UIFactory.SetLayoutElement(_headerText.gameObject, minWidth: MinHeaderWidth, minHeight: BarHeight,
-            preferredHeight: BarHeight, preferredWidth: MinHeaderWidth);
+        // Create a mask object for clipping the fill
+        _maskObject = UIFactory.CreateUIObject("MaskRect", _contentBase);
+        _maskRect = _maskObject.GetComponent<RectTransform>();
 
-        var progressBarSection = UIFactory.CreateHorizontalGroup(_contentBase, "ProgressBarSection", false, true,
-            true, true, 0, default, Colour.PanelBackground);
-        UIFactory.SetLayoutElement(progressBarSection, minWidth: BaseWidth - MinHeaderWidth, minHeight: BarHeight,
-            flexibleWidth: 10000);
+        // Configure mask rect to start with zero width
+        _maskRect.anchorMin = new Vector2(0, 0);
+        _maskRect.anchorMax = new Vector2(0, 1);
+        _maskRect.pivot = new Vector2(0, 0.5f);
+        _maskRect.sizeDelta = new Vector2(0, 0);
 
-        var progressFilled = UIFactory.CreateUIObject("ProgressFilled", progressBarSection);
-        _barImage = progressFilled.AddComponent<Image>();
-        _barImage.color = colour;
-        _layoutFilled = UIFactory.SetLayoutElement(progressFilled, minWidth: 0, flexibleWidth: 1);
-        var progressBackground = UIFactory.CreateUIObject("ProgressBackground", progressBarSection);
-        var backgroundImage = progressBackground.AddComponent<Image>();
-        backgroundImage.color = Color.black;
-        _layoutBackground = UIFactory.SetLayoutElement(progressBackground, minWidth: 0, flexibleWidth: 1);
+        // Add mask component
+        var mask = _maskObject.AddComponent<Mask>();
+        mask.showMaskGraphic = false;
 
-        // Add the tooltip text after the bars so that it appears on top
-        _tooltipText = UIFactory.CreateLabel(progressBarSection, "tooltipText", "");
-        UIFactory.SetLayoutElement(_tooltipText.gameObject, ignoreLayout: true);
-        // Outline the text so it can be seen regardless of the colour or bar fill.
-        _tooltipText.gameObject.AddComponent<Outline>();
-        var tooltipRect = _tooltipText.gameObject.GetComponent<RectTransform>();
+        // Add a graphic to make the mask work
+        var maskImage = _maskObject.AddComponent<Image>();
+        maskImage.color = Color.white;
+
+        // Create a fill image inside the mask
+        var fillObj = UIFactory.CreateUIObject("Fill", _maskObject);
+        _fillImage = fillObj.AddComponent<Image>();
+        _fillImage.color = fillColor;
+
+        // Set fill image to cover entire bar area
+        RectTransform fillRect = fillObj.GetComponent<RectTransform>();
+        fillRect.anchorMin = Vector2.zero;
+        fillRect.anchorMax = Vector2.one;
+        fillRect.sizeDelta = Vector2.zero;
+
+        // Add tooltip text on top of everything
+        var tooltipObj = UIFactory.CreateUIObject("Tooltip", _contentBase);
+        _tooltipText = tooltipObj.AddComponent<TextMeshProUGUI>();
+        UIFactory.SetDefaultTextValues(_tooltipText);
+        _tooltipText.alignment = TextAlignmentOptions.Center;
+        _tooltipText.text = "";
+
+        // Position tooltip to cover entire bar
+        RectTransform tooltipRect = tooltipObj.GetComponent<RectTransform>();
         tooltipRect.anchorMin = Vector2.zero;
         tooltipRect.anchorMax = Vector2.one;
+        tooltipRect.sizeDelta = Vector2.zero;
 
-        // Add some change text. Positioning to be updated, but it should be outside the regular layout
-        _changeText = UIFactory.CreateLabel(_headerText.gameObject, "ChangeText", "", alignment: TextAlignmentOptions.MidlineRight, color: Colour.Highlight);
-        UIFactory.SetLayoutElement(_changeText.gameObject, ignoreLayout: true);
-        _changeText.gameObject.AddComponent<Outline>();
-        _changeText.overflowMode = TextOverflowModes.Overflow;
-        var floatingTextRect = _changeText.gameObject.GetComponent<RectTransform>();
-        floatingTextRect.anchorMin = Vector2.zero;
-        floatingTextRect.anchorMax = Vector2.up;
-        floatingTextRect.pivot = new Vector2(1, 0.5f);
-        floatingTextRect.localPosition = Vector3.left * 10;
-        floatingTextRect.sizeDelta = new Vector2(50, 25);
-        // Initialise it inactive
+        // Add outline to tooltip
+        var tooltipOutline = tooltipObj.AddComponent<Outline>();
+        tooltipOutline.effectColor = Color.black;
+
+        // Add change text indicator
+        var changeTextObj = UIFactory.CreateUIObject("ChangeText", _contentBase);
+        _changeText = changeTextObj.AddComponent<TextMeshProUGUI>();
+        UIFactory.SetDefaultTextValues(_changeText);
+        _changeText.alignment = TextAlignmentOptions.MidlineLeft;
+        _changeText.text = "";
+
+        // Position change text
+        RectTransform changeTextRect = changeTextObj.GetComponent<RectTransform>();
+        changeTextRect.anchorMin = new Vector2(0, 0.5f);
+        changeTextRect.anchorMax = new Vector2(0, 0.5f);
+        changeTextRect.pivot = new Vector2(0, 0.5f);
+        changeTextRect.anchoredPosition = new Vector2(5, 0);
+        changeTextRect.sizeDelta = new Vector2(50, 20);
+
+        // Initialize change text as inactive
         _changeText.gameObject.SetActive(false);
 
-        // Initialise the timer, so we can start/stop it as necessary
+        // Set up animation timer
         _timer.Initialise(
             AlertIteration,
             TimeSpan.FromMilliseconds(TaskIterationDelay),
@@ -119,14 +144,17 @@ public class ProgressBar
     public void SetProgress(float progress, string header, string tooltip, ActiveState activeState, Color colour,
         string changeText, bool flash)
     {
-        _layoutBackground.flexibleWidth = 1.0f - progress;
-        _layoutFilled.flexibleWidth = progress;
-        _headerText.text = header;
+        // Store current progress value
+        _currentProgress = Mathf.Clamp01(progress);
+        UpdateMaskWidth();
+
+        // Update visual elements
+        _fillImage.color = colour;
         _tooltipText.text = tooltip;
-        _barImage.color = colour;
         _changeText.text = changeText;
         _changeText.color = changeText.StartsWith("-") ? Colour.NegativeChange : Colour.PositiveChange;
 
+        // Handle active state
         switch (activeState)
         {
             case ActiveState.NotActive:
@@ -144,24 +172,33 @@ public class ProgressBar
                 break;
         }
 
+        // Handle flash animation
         if (flash)
         {
             _activeState = ActiveState.Active;
             _canvasGroup.alpha = 1;
-            // Set alert time remaining to full animation length
             _alertTimeRemainingMs = AlertAnimationLength;
             _timer.Start();
         }
+    }
+
+    private void UpdateMaskWidth()
+    {
+        // Get parent width to calculate mask width
+        RectTransform contentRect = _contentBase.GetComponent<RectTransform>();
+        float parentWidth = contentRect.rect.width;
+
+        // Set mask width based on progress percentage
+        float width = parentWidth * _currentProgress;
+        _maskRect.sizeDelta = new Vector2(width, 0);
     }
 
     public void FadeOut()
     {
         if (_alertTimeRemainingMs > 0)
         {
-            // If we are in an alert, then either this will disappear shortly, or we can update it to disappear
             if (!_alertTransitionOff)
             {
-                // Use the max of the FadeOut length or time remaining, so it smoothly transitions out
                 _alertTimeRemainingMs = Math.Max(FadeOutLengthMs, _alertTimeRemainingMs);
                 _alertTransitionOff = true;
             }
@@ -169,7 +206,6 @@ public class ProgressBar
         }
         else if (_activeState == ActiveState.Active)
         {
-            // If we are active, then fade out
             _alertTimeRemainingMs = FadeOutLengthMs;
             _alertTransitionOff = true;
             _timer.Start();
@@ -181,16 +217,17 @@ public class ProgressBar
         }
     }
 
-    // See constants section for timeline
     private void AlertIteration()
     {
-        // Only iterate if this is active (don't progress if the UI is disabled)
+        // Update mask width in case parent size has changed
+        UpdateMaskWidth();
+
         if (!IsActive) return;
 
         switch (_alertTimeRemainingMs)
         {
             case > FlashPulseEndsMs:
-                // Do flash pulse
+                // Flash pulse animation
                 var flashPulseTimeMs = (_alertTimeRemainingMs - FlashPulseEndsMs) % FlashPulseLengthMs;
                 switch (flashPulseTimeMs)
                 {
@@ -209,21 +246,19 @@ public class ProgressBar
                 }
                 // Show change text
                 _changeText.gameObject.SetActive(true);
-                _changeText.color = Colour.Highlight;
                 break;
             case > FadeOutLengthMs:
-                // Total visible length
+                // After flashing, maintain visibility
                 _highlight.effectColor = Color.black;
-                // Hide change text
                 if (_changeText.gameObject.active) _changeText.gameObject.SetActive(false);
                 break;
             case > 0:
-                // Fade out overtime
+                // Fade out
                 if (_alertTransitionOff) _canvasGroup.alpha = Math.Min((float)_alertTimeRemainingMs / FadeOutLengthMs, 1.0f);
-                // If not fading out, then we are done with the animation. Skip to end.
                 else _alertTimeRemainingMs = 0;
                 break;
             default:
+                // Animation complete
                 _timer.Stop();
                 if (_alertTransitionOff)
                 {
@@ -241,12 +276,4 @@ public class ProgressBar
     {
         ProgressBarMinimised?.Invoke(this, EventArgs.Empty);
     }
-}
-
-public enum ActiveState
-{
-    Unchanged,
-    NotActive,
-    Active,
-    OnlyActive
 }

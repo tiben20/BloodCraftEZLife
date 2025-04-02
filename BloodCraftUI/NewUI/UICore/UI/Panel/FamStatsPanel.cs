@@ -9,7 +9,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using BloodCraftUI.NewUI.UICore.UI.Util;
-using ProgressBar = BloodCraftUI.NewUI.UICore.UI.Panel.Base.ProgressBar;
 
 namespace BloodCraftUI.NewUI.UICore.UI.Panel
 {
@@ -80,7 +79,7 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
             );
 
             // Force layout rebuild to ensure all elements are correctly sized
-            LayoutRebuilder.ForceRebuildLayoutImmediate(Rect);
+            //LayoutRebuilder.ForceRebuildLayoutImmediate(Rect);
         }
 
         protected override void ConstructPanelContent()
@@ -153,13 +152,27 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
 
         private void CreateProgressBarSection()
         {
-            // Create a container for the progress bar at the bottom
+            // Create a simple container with absolute positioning
             var progressBarHolder = UIFactory.CreateUIObject("ProgressBarContent", _uiAnchor);
-            UIFactory.SetLayoutGroup<VerticalLayoutGroup>(progressBarHolder, false, false, true, true);
+
+            // Set layout element to control height only
             UIFactory.SetLayoutElement(progressBarHolder, minHeight: 30, flexibleHeight: 0, flexibleWidth: 9999);
+
+            // Set rect transform to stretch horizontally
+            var rect = progressBarHolder.GetComponent<RectTransform>();
+            rect.anchorMin = Vector2.zero;
+            rect.anchorMax = new Vector2(1, 0);
+            rect.pivot = new Vector2(0.5f, 0);
+            rect.sizeDelta = new Vector2(0, 30);
 
             // Create the progress bar
             _progressBar = new ProgressBar(progressBarHolder, Colour.DefaultBar);
+
+            // Force layout rebuild to ensure everything is sized correctly
+            LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
+
+            // Set initial progress (important for mask approach)
+            _progressBar.SetProgress(0f, "", "XP: 0 (0%)", ActiveState.Active, Colour.DefaultBar, "", false);
         }
 
         internal override void Reset()
@@ -171,11 +184,37 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         {
             base.LateConstructUI();
 
+            if (Plugin.IS_TESTING)
+            {
+                UpdateData(new FamStats
+                {
+                    Name = "TestFamiliar",
+                    Level = 99,
+                    PrestigeLevel = 5,
+                    ExperienceValue = 6500,
+                    ExperiencePercent = 65,
+                    MaxHealth = 5000,
+                    PhysicalPower = 450,
+                    SpellPower = 575,
+                    School = "Unholy"
+                });
+            }
+
             // Start querying for updates
             SendUpdateStatsCommand();
             _queryTimer = new Timer(Settings.FamStatsQueryIntervalInSeconds * 1000);
             _queryTimer.AutoReset = true;
-            _queryTimer.Elapsed += (_, _) => SendUpdateStatsCommand();
+            _queryTimer.Elapsed += (_, _) =>
+            {
+                SendUpdateStatsCommand();
+                if (Plugin.IS_TESTING)
+                {
+                    _data.ExperiencePercent += 10;
+                    if(_data.ExperiencePercent > 100)
+                        _data.ExperiencePercent = 0;
+                    UpdateData(_data);
+                }
+            };
             _queryTimer.Start();
         }
 
