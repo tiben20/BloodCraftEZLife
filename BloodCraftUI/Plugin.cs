@@ -10,7 +10,6 @@ using BloodCraftUI.Utils;
 using Bloodstone;
 using Bloodstone.API;
 using HarmonyLib;
-using ProjectM;
 using Unity.Entities;
 
 namespace BloodCraftUI
@@ -24,15 +23,17 @@ namespace BloodCraftUI
         private static World _client;
         public static EntityManager EntityManager => _client.EntityManager;
         public static bool IsInitialized { get; private set; }
+        private static bool IsGameDataInitialized { get; set; }
 
         public static bool IsClientNull() => _client == null;
 
-        public const bool IS_TESTING = true;
+        public const bool IS_TESTING = false;
 
         public static void Reset()
         {
             _client = null;
             IsInitialized = false;
+            IsGameDataInitialized = false;
         }
 
         private static Harmony _harmonyBootPatch;
@@ -93,9 +94,10 @@ namespace BloodCraftUI
         //run on game start
         public static void GameDataOnInitialize(World world)
         {
-            if (VWorld.IsClient)
+            if (!IsGameDataInitialized && VWorld.IsClient)
             {
                 _client = world;
+                IsGameDataInitialized = true;
                 // We only want to run this once, so unpatch the hook that initiates this callback.
                 _harmonyBootPatch.UnpatchSelf();
                 _uiInitializedTimer = new FrameTimer();

@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using BloodCraftUI.Config;
 using Unity.Entities;
 using BloodCraftUI.Utils;
+using ProjectM;
 using static Il2CppSystem.Globalization.TimeSpanFormat;
 using Unity.Collections;
 
@@ -16,6 +17,8 @@ namespace BloodCraftUI.Services
 {
     internal static partial class MessageService
     {
+        private static AbilitySchoolType? _oldVersionColor;
+        private static string _oldVersionName;
         public const string BCCOM_LISTBOXES1 = ".fam boxes";
         public const string BCCOM_LISTBOXES2 = ".familiar listboxes";
         public const string BCCOM_SWITCHBOX = ".fam cb {0}";
@@ -93,7 +96,19 @@ namespace BloodCraftUI.Services
                     BloodCraftStateService.IsFamUnbound = true;
                     break;
                 case not null when message.Contains(">bound</color>!"):
+                {
                     BloodCraftStateService.IsFamUnbound = false;
+                    //old version failsafe
+                    var regex =
+                        new Regex(@"<color=\w+>(?<name>[^<]+)</color>(?:\s*<color=(?<color>#[A-Fa-f0-9]{6})>\*</color>)?");
+
+                    Match match = regex.Match(message);
+                    if (match.Success)
+                    {
+                        _oldVersionName = match.Groups["name"].Value;
+                        _oldVersionColor = match.Groups["color"].Success ? GameHelper.GetSchoolFromColor(match.Groups["color"].Value) : null;
+                    }
+                }
                     break;
 
                 /////// CLEANUP
@@ -104,6 +119,8 @@ namespace BloodCraftUI.Services
                     ClearFlags();
                     Flags[InterceptFlag.FamStats] = 1;
                     ProcessFamStatsData(message, 0);
+                    if (Settings.ClearServerMessages)
+                        DestroyMessage(entity);
                     break;
                 case not null when message.StartsWith("Familiar Boxes"):
                     ClearFlags();
@@ -200,6 +217,10 @@ namespace BloodCraftUI.Services
                 case 0: //level data
                 {
                     _currentFamStats = new FamStats();
+                    //old version failsafe
+                    _currentFamStats.Name = _oldVersionName;
+                    _currentFamStats.School = _oldVersionColor?.ToString();
+
                     var match = Regex.Match(message, EXTRACT_FAM_LVL_PATTERN);
                     if (match.Success)
                     {
@@ -244,6 +265,9 @@ namespace BloodCraftUI.Services
                     break;
                 case 2: //name
                 {
+                    //old version fail safe
+                    if(message.StartsWith("<color=green>Familiar Stats"))
+                        break;
                     var nameMatch = Regex.Match(message, EXTRACT_FAM_NAME_PATTERN);
                     if (nameMatch.Success)
                     {

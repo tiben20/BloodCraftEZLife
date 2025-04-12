@@ -40,6 +40,8 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         private TextMeshProUGUI _nameLabel;
         private TextMeshProUGUI _levelLabel;
         private GameObject _statsContainer;
+        private GameObject _headerContainer;
+        private GameObject _progressBarContainer;
         private ProgressBar _progressBar;
 
         private readonly Dictionary<string, GameObject> _statRowPool = new();
@@ -51,8 +53,6 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         private void RecalculateHeight()
         {
             if (_uiAnchor == null) return;
-
-            Canvas.ForceUpdateCanvases();
 
             // Force a recursive layout update
             foreach (var child in _uiAnchor.transform)
@@ -72,25 +72,68 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
             float contentHeight = 0;
             int activeChildCount = 0;
 
-            foreach (Transform child in _uiAnchor.transform)
+            var t = _headerContainer.GetComponent<RectTransform>();
+            if (t != null)
+                contentHeight += LayoutUtility.GetPreferredHeight(t);
+
+            foreach (var gameObject in _statRowPool.Values)
             {
-                if (child.gameObject.activeSelf)
+                if (gameObject.activeSelf)
                 {
-                    RectTransform childRect = child as RectTransform;
-                    if (childRect != null)
-                    {
-                        contentHeight += LayoutUtility.GetPreferredHeight(childRect);
-                        activeChildCount++;
-                    }
+                    var height = LayoutUtility.GetPreferredHeight(gameObject.GetComponent<RectTransform>());
+                    contentHeight += height;
                 }
             }
 
-            // Add spacing between children
-            if (activeChildCount > 1)
-                contentHeight += (activeChildCount - 1) * vlg.spacing;
+            t = _progressBarContainer.GetComponent<RectTransform>();
+            if (t != null)
+            {
+                contentHeight += LayoutUtility.GetPreferredHeight(t);
+                t.anchoredPosition = new Vector2(t.anchoredPosition.x, -contentHeight);
+            }
 
+            // Add spacing between children
+            contentHeight += (3 - 1) * vlg.spacing;
             // Add padding
-            contentHeight += vlg.padding.top + vlg.padding.bottom + 10f;
+            contentHeight += vlg.padding.top + vlg.padding.bottom + 30f;
+
+
+            /*foreach (var childRaw in _uiAnchor.transform)
+            {
+                if(childRaw is null)
+                    continue;
+                var child = childRaw as Transform;
+                if(child == null) 
+                    continue;
+                if (child.gameObject.activeSelf)
+                {
+                    var childRect = child.gameObject.GetComponent<RectTransform>();
+                    if (childRect != null)
+                    {
+                        if (childRect.gameObject.name == "StatsContainer")
+                        {
+                            foreach (var gameObject in _statRowPool.Values)
+                            {
+                                if (gameObject.activeSelf)
+                                {
+                                    var height = LayoutUtility.GetPreferredHeight(gameObject.GetComponent<RectTransform>());
+                                    contentHeight += height;
+                                }
+                            }
+                        }
+                        else
+                            contentHeight += LayoutUtility.GetPreferredHeight(childRect);
+                        activeChildCount++;
+                        //pb hack
+                        if (child.gameObject.name == "ProgressBarContent")
+                        {
+                            childRect.anchoredPosition = new Vector2(childRect.anchoredPosition.x, -contentHeight);
+                        }
+                    }
+                }
+            }*/
+
+
 
             // Set panel height
             if (Rect != null)
@@ -273,18 +316,18 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         private void CreateHeaderSection()
         {
             // Create container with reduced height and spacing
-            var headerContainer = UIFactory.CreateVerticalGroup(_uiAnchor, "HeaderContainer", false, false, true, true, 2,
+            _headerContainer = UIFactory.CreateVerticalGroup(_uiAnchor, "HeaderContainer", false, false, true, true, 2,
                 default, new Color(0.15f, 0.15f, 0.15f));
-            UIFactory.SetLayoutElement(headerContainer, minHeight: 60, preferredHeight: 60, flexibleHeight: 0, flexibleWidth: 9999);
+            UIFactory.SetLayoutElement(_headerContainer, minHeight: 60, preferredHeight: 60, flexibleHeight: 0, flexibleWidth: 9999);
 
             // Familiar name with larger font
-            _nameLabel = UIFactory.CreateLabel(headerContainer, "FamNameText", BloodCraftStateService.CurrentFamName ?? "Unknown",
+            _nameLabel = UIFactory.CreateLabel(_headerContainer, "FamNameText", BloodCraftStateService.CurrentFamName ?? "Unknown",
                 TextAlignmentOptions.Center, null, 18);
             UIFactory.SetLayoutElement(_nameLabel.gameObject, minHeight: 25, preferredHeight: 25, flexibleHeight: 0, flexibleWidth: 9999);
             _nameLabel.fontStyle = FontStyles.Bold;
 
             // Level info - reduced height
-            _levelLabel = UIFactory.CreateLabel(headerContainer, "FamLevelText", "Level: Unknown   Prestige: Unknown",
+            _levelLabel = UIFactory.CreateLabel(_headerContainer, "FamLevelText", "Level: Unknown   Prestige: Unknown",
                 TextAlignmentOptions.Center, null, 16);
             UIFactory.SetLayoutElement(_levelLabel.gameObject, minHeight: 25, preferredHeight: 25, flexibleHeight: 0, flexibleWidth: 9999);
         }
@@ -317,14 +360,14 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
         private void CreateProgressBarSection()
         {
             // Create bare container without layout elements
-            var progressBarHolder = UIFactory.CreateUIObject("ProgressBarContent", _uiAnchor);
+            _progressBarContainer= UIFactory.CreateUIObject("ProgressBarContent", _uiAnchor);
 
             // Set fixed height with no flexibility
-            UIFactory.SetLayoutElement(progressBarHolder, minHeight: 25, preferredHeight: 25,
+            UIFactory.SetLayoutElement(_progressBarContainer, minHeight: 25, preferredHeight: 25,
                 flexibleHeight: 0, flexibleWidth: 9999);
 
             // Create the progress bar
-            _progressBar = new ProgressBar(progressBarHolder, Colour.DefaultBar);
+            _progressBar = new ProgressBar(_progressBarContainer, Colour.DefaultBar);
 
             // Set initial progress
             _progressBar.SetProgress(0f, "", "XP: 0 (0%)", ActiveState.Active, Colour.DefaultBar, "", false);
@@ -393,7 +436,8 @@ namespace BloodCraftUI.NewUI.UICore.UI.Panel
             }
 
             // Delay the initial height calculation
-            CoroutineUtility.StartCoroutine(DelayedHeightCalculation());
+            //CoroutineUtility.StartCoroutine(DelayedHeightCalculation());
+            RecalculateHeight();
 
             // Start querying for updates
             SendUpdateStatsCommand();

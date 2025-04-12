@@ -35,6 +35,7 @@ namespace BloodCraftUI.Patches
         static void OnUpdatePostfix(CommonClientDataSystem __instance)
         {
             if (!BCUIManager.IsInitialized) return;
+            Plugin.GameDataOnInitialize(__instance.World);
 
             var entities = __instance.__query_1840110765_0.ToEntityArray(Allocator.Temp);
 

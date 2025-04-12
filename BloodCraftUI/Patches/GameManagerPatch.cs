@@ -8,7 +8,7 @@ namespace BloodCraftUI.Patches;
 
 public class GameManagerPatch
 {
-    [HarmonyPatch(typeof(GameDataManager), "OnUpdate")]
+    /*[HarmonyPatch(typeof(GameDataManager), "OnUpdate")]
     [HarmonyPostfix]
     private static void GameDataManagerOnUpdatePostfix(GameDataManager __instance)
     {
@@ -21,5 +21,5 @@ public class GameManagerPatch
         {
             LogUtils.LogError(ex.ToString());
         }
-    }
+    }*/
 }

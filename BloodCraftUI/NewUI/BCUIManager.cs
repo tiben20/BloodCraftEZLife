@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BloodCraftUI.NewUI.UICore.UI.Panel;
+using BloodCraftUI.NewUI.UICore.UI.Panel.Base;
 using BloodCraftUI.NewUI.UICore.UniverseLib.UI.Panels;
 using BloodCraftUI.Services;
 using UnityEngine;
@@ -37,10 +38,14 @@ public static class BCUIManager
     public static void SetupAndShowUI()
     {
         if (IsInitialized) return;
-        
-        UiBase = UniversalUI.RegisterUI(PluginInfo.PLUGIN_GUID, UiUpdate);
-        AddPanel(Panels.Base);
+
+        if (UiBase == null)
+        {
+            UiBase = UniversalUI.RegisterUI(PluginInfo.PLUGIN_GUID, UiUpdate);
+            AddPanel(Panels.Base);
+        }
         SetActive(true);
+
         IsInitialized = true;
     }
 
@@ -54,12 +59,17 @@ public static class BCUIManager
     {
         IsInitialized = false;
         foreach (var value in UIPanels)
+        {
+            if(value is ResizeablePanelBase panel)
+                panel.Reset();
             value.Destroy();
+        }
 
         UIPanels.Clear();
 
-        ContentPanel.Destroy();
-        Object.Destroy(UIRoot);
+        //ContentPanel.Destroy();
+        //Object.Destroy(UIRoot);
+        SetActive(false);
     }
 
     private static void UiUpdate()

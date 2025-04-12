@@ -31,8 +31,8 @@ namespace BloodCraftUI.Config
                 Directory.CreateDirectory(CONFIG_PATH);
             }
 
-            ConfigEntries.Add(InitConfigEntry("GeneralOptions", "ClearServerMessages", false, "Clear server and command messages from chat"));
-            ConfigEntries.Add(InitConfigEntry("GeneralOptions", "FamStatsQueryIntervalInSeconds", false, "Query interval for familiar stats update (no less than 3 sec)"));
+            ConfigEntries.Add(InitConfigEntry("GeneralOptions", "ClearServerMessages", true, "Clear server and command messages from chat"));
+            ConfigEntries.Add(InitConfigEntry("GeneralOptions", "FamStatsQueryIntervalInSeconds", 3, "Query interval for familiar stats update (no less than 3 sec)"));
             return this;
         }
 
