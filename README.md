@@ -8,6 +8,9 @@ Functionality may be incomplete
 ## Misc info
 You will see control panel on top of the screen and can drag it around as you like.
 
+![image](https://github.com/user-attachments/assets/9eb95de0-292d-4d41-9a38-045d365ba019)
+
+
 ### Changelog
 `1.0.0`
 - Supported Bloodcraft v1.6.6 & v1.7.7
