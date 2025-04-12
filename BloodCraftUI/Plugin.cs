@@ -4,6 +4,7 @@ using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using BloodCraftUI.Behaviors;
 using BloodCraftUI.Config;
+using BloodCraftUI.Eclipse;
 using BloodCraftUI.NewUI;
 using BloodCraftUI.Patches;
 using BloodCraftUI.Utils;
@@ -11,6 +12,7 @@ using Bloodstone;
 using Bloodstone.API;
 using HarmonyLib;
 using Unity.Entities;
+using UnityEngine;
 
 namespace BloodCraftUI
 {
@@ -23,7 +25,7 @@ namespace BloodCraftUI
         private static World _client;
         public static EntityManager EntityManager => _client.EntityManager;
         public static bool IsInitialized { get; private set; }
-        private static bool IsGameDataInitialized { get; set; }
+        public static bool IsGameDataInitialized { get; set; }
 
         public static bool IsClientNull() => _client == null;
 
@@ -43,11 +45,19 @@ namespace BloodCraftUI
         private static Harmony _harmonyMenuPatch;
         internal static Harmony HarmonyVersionStringPatch;
         private static FrameTimer _uiInitializedTimer;
+        private static Harmony _eclipsePatch;
 
         public override void Load()
         {
             LogUtils.Init(Log);
             Instance = this;
+
+
+            if (Application.productName == "VRisingServer")
+            {
+                LogUtils.LogInfo($"{MyPluginInfo.PLUGIN_NAME}[{MyPluginInfo.PLUGIN_VERSION}] is a client mod! ({Application.productName})");
+                return;
+            }
 
             if (VWorld.IsServer)
             {
@@ -68,6 +78,7 @@ namespace BloodCraftUI
             HarmonyVersionStringPatch = Harmony.CreateAndPatchAll(typeof(VersionStringPatch));
             _harmonyChatPatch = Harmony.CreateAndPatchAll(typeof(ClientChatPatch));
             _harmonyInitPatch = Harmony.CreateAndPatchAll(typeof(InitializationPatch));
+            //_eclipsePatch = Harmony.CreateAndPatchAll(typeof(EclipseClientChatSystemPatch));
 
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} version {PluginInfo.PLUGIN_VERSION} is loaded!");
 
@@ -83,6 +94,7 @@ namespace BloodCraftUI
             HarmonyVersionStringPatch.UnpatchSelf();
             _harmonyChatPatch.UnpatchSelf();
             _harmonyInitPatch.UnpatchSelf();
+            //_eclipsePatch.UnpatchSelf();
             return true;
         }
 

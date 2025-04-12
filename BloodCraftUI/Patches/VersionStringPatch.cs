@@ -1,4 +1,4 @@
-using BloodCraftUI.NewUI.UICore.UniverseLib.UI;
+using BloodCraftUI.NewUI.UniverseLib.UI;
 using HarmonyLib;
 using TMPro;
 

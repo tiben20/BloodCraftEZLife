@@ -15,8 +15,8 @@ namespace BloodCraftUI.Config
         {
             get
             {
-                var value = (ConfigEntries[1] as ConfigEntry<int>)?.Value ?? 5;
-                if (value < 3) value = 3;
+                var value = (ConfigEntries[1] as ConfigEntry<int>)?.Value ?? 10;
+                if (value < 5) value = 5;
                 return value;
             }
         }
@@ -32,7 +32,7 @@ namespace BloodCraftUI.Config
             }
 
             ConfigEntries.Add(InitConfigEntry("GeneralOptions", "ClearServerMessages", true, "Clear server and command messages from chat"));
-            ConfigEntries.Add(InitConfigEntry("GeneralOptions", "FamStatsQueryIntervalInSeconds", 3, "Query interval for familiar stats update (no less than 3 sec)"));
+            ConfigEntries.Add(InitConfigEntry("GeneralOptions", "FamStatsQueryIntervalInSeconds", 10, "Query interval for familiar stats update (no less than 10 sec)"));
             return this;
         }
 

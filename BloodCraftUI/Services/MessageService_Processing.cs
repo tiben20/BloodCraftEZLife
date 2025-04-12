@@ -1,5 +1,4 @@
-﻿using BloodCraftUI.NewUI.UICore.UI.Panel;
-using BloodCraftUI.NewUI;
+﻿using BloodCraftUI.NewUI;
 using ProjectM.Network;
 using System;
 using System.Collections;
@@ -12,6 +11,7 @@ using BloodCraftUI.Utils;
 using ProjectM;
 using static Il2CppSystem.Globalization.TimeSpanFormat;
 using Unity.Collections;
+using BloodCraftUI.NewUI.ModContent;
 
 namespace BloodCraftUI.Services
 {
