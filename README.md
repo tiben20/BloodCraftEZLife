@@ -5,14 +5,14 @@ Supported Bloodcraft `v1.6.6` & `v1.7.7`
 
 ## Showcase and FAQ
 You will see control panel on top of the screen and can drag it around as you like.
+<img src="https://github.com/user-attachments/assets/8c8277ec-cc64-4e6a-b45b-8509bf365c6d" width="750">
 
-![image](https://github.com/user-attachments/assets/8c8277ec-cc64-4e6a-b45b-8509bf365c6d)
 
 ### Box List button
 Will open list of available boxes. Update occur on opening the panel. Press '-' button to close panel.
 You can drag this panel by the title area. Clicking the box in the list will open the Box Content panel
-![image](https://github.com/user-attachments/assets/9b549f17-8738-46b6-a1d7-72cec6753221)
 
+<img src="https://github.com/user-attachments/assets/9b549f17-8738-46b6-a1d7-72cec6753221" width="200">
 
 ### Box Content panel
 Will open list of available familiars in the box. Update occur on opening the panel. Press '-' button to close panel.
@@ -20,18 +20,18 @@ You can drag this panel by the title area. Clicking familiar in the list will pe
 1. Try to unbind current familiar
 2. Bind selected familiar
 Action might take several seconds due to server response lag.
-![image](https://github.com/user-attachments/assets/276351ca-b4ed-4645-ab48-a4813787c4a9)
 
+<img src="https://github.com/user-attachments/assets/276351ca-b4ed-4645-ab48-a4813787c4a9" width="200">
 
 ### Fam Stats button
 Will open familiar stats panel. Press the button again to hide panel. You can drag this panel by the title area.
-![image](https://github.com/user-attachments/assets/7fa6e0bf-7e80-4792-9ebd-dd37705e2395)
 
+<img src="https://github.com/user-attachments/assets/7fa6e0bf-7e80-4792-9ebd-dd37705e2395" width="200">
 
 ### Unbind button
 Will try to unbind current familiar.
 
-### Bind Last
+### Bind Last button
 Will try to bind familiar, the last one that you have binded before. 
 Will not work if:
 - You checked content of another box (as it selects it as current box)
