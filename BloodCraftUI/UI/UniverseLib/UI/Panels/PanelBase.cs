@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using BloodCraftUI.NewUI.UniverseLib.UI;
+using System.Collections.Generic;
 using BloodCraftUI.UI.CustomLib.Util;
 using TMPro;
 using UnityEngine;
@@ -20,6 +20,8 @@ public abstract class PanelBase : Models_UIBehaviourModel
 
     public abstract int MinWidth { get; }
     public abstract int MinHeight { get; }
+    public virtual int MaxWidth { get; }
+
     public abstract Vector2 DefaultAnchorMin { get; }
     public abstract Vector2 DefaultAnchorMax { get; }
     public virtual Vector2 DefaultPivot => Vector2.one * 0.5f;
@@ -46,6 +48,36 @@ public abstract class PanelBase : Models_UIBehaviourModel
 
         // Add to owner
         Owner.Panels.AddPanel(this);
+    }
+
+    protected void ForceRecalculateBasePanelWidth(List<GameObject> data = null)
+    {
+        float contentWidth = 0;
+        if(data != null)
+        {
+            foreach (var obj in data)
+            {
+                var child = obj.GetComponent<RectTransform>();
+                LayoutRebuilder.ForceRebuildLayoutImmediate(child);
+                var width = LayoutUtility.GetPreferredWidth(child);
+                contentWidth = Math.Max(contentWidth, width);
+            }
+        }
+        else
+        {
+            foreach (var child in uiRoot.transform)
+            {
+                var childRect = child as RectTransform;
+                if (childRect != null)
+                {
+                    LayoutRebuilder.ForceRebuildLayoutImmediate(childRect);
+                    var width = LayoutUtility.GetPreferredWidth(childRect.GetComponent<RectTransform>());
+                    contentWidth = Math.Max(contentWidth, width);
+                }
+            }
+        }
+
+        Rect.sizeDelta = new Vector2(contentWidth, Rect.sizeDelta.y);
     }
 
     public void SetTitle(string label)
@@ -110,6 +142,8 @@ public abstract class PanelBase : Models_UIBehaviourModel
     {
         if (Rect.rect.width < MinWidth)
             Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, MinWidth);
+        if (MaxWidth > 0 && Rect.rect.width > MaxWidth)
+            Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, MaxWidth);
 
         if (Rect.rect.height < MinHeight)
             Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, MinHeight);
@@ -183,7 +217,7 @@ public abstract class PanelBase : Models_UIBehaviourModel
         closeBtn.OnClick += OnClosePanelClicked;
 
         if (!(CanDrag || CanResize > 0)) TitleBar.SetActive(false);
-
+       
         // Panel dragger
 
         Dragger = CreatePanelDragger();

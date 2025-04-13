@@ -4,16 +4,14 @@ namespace BloodCraftUI.UI.CustomLib.Controls;
 
 public abstract class SettingsButtonBase
 {
-    private const string Group = "UISettings";
-    private readonly string _id;
+    private const string GROUP = "UISettings";
 
-    private readonly ConfigEntry<string> _setting;
-    protected string State => _setting.Value;
+    protected readonly ConfigEntry<string> Setting;
+    protected string State => Setting.Value;
 
-    protected SettingsButtonBase(string id)
+    protected SettingsButtonBase(string id, string defaultValue)
     {
-        _id = id;
-        _setting = Plugin.Instance.Config.Bind("UISettings", $"{_id}", "");
+        Setting = Plugin.Instance.Config.Bind(GROUP, $"{id}", defaultValue);
     }
 
     // Implementers to use this to set/toggle/perform action
@@ -25,7 +23,7 @@ public abstract class SettingsButtonBase
 
     private void OnToggle()
     {
-        _setting.Value = PerformAction();
+        Setting.Value = PerformAction();
 
         UpdateButton();
     }

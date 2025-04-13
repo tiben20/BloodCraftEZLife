@@ -16,7 +16,7 @@ public class UIScaleSettingButton : SettingsButtonBase
 
     private int scaleIndex;
 
-    public UIScaleSettingButton() : base("UIScale")
+    public UIScaleSettingButton() : base("UIScale", "normal")
     {
         scaleIndex = State switch
         {
@@ -35,6 +35,7 @@ public class UIScaleSettingButton : SettingsButtonBase
         scaleIndex = (scaleIndex + 1) % scales.Count;
         ApplyScale(scales[scaleIndex].Item2);
 
+        Setting.Value = scales[scaleIndex].Item1;
         return scales[scaleIndex].Item1;
     }
 

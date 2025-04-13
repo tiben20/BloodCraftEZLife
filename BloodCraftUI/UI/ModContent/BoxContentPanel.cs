@@ -94,12 +94,13 @@ namespace BloodCraftUI.UI.ModContent
             {
                 try
                 {
-                    MessageService.EnqueueMessage(string.Format(MessageService.BCCOM_BINDFAM, number));
+                    var message = string.Format(MessageService.BCCOM_BINDFAM, number);
+                    MessageService.LastBindCommand = message;
+                    MessageService.EnqueueMessage(message);
                 }
                 finally
                 {
                     EnableAllButtons(true);
-
                 }
             });
         }

@@ -6,7 +6,7 @@ public class ToggleDraggerSettingButton : SettingsButtonBase
 {
     private readonly Action<bool> _action;
     private bool currentState => State == "True";
-    public ToggleDraggerSettingButton(Action<bool> action) : base("ShowDragAnchor")
+    public ToggleDraggerSettingButton(Action<bool> action) : base("ShowDragAnchor", "true")
     {
         action(currentState);
         _action = action;

@@ -9,7 +9,7 @@ namespace BloodCraftUI.Config
     {
         private static string CONFIG_PATH = Path.Combine(Paths.ConfigPath, PluginInfo.PLUGIN_NAME);
         private static readonly List<ConfigEntryBase> ConfigEntries = new();
-
+        public const string UI_SETTINGS_GROUP = "UISettings";
         public static bool ClearServerMessages => (ConfigEntries[0] as ConfigEntry<bool>)?.Value ?? false;
         public static int FamStatsQueryIntervalInSeconds
         {
@@ -20,6 +20,7 @@ namespace BloodCraftUI.Config
                 return value;
             }
         }
+        public static bool UseHorizontalLayout => (ConfigEntries[2] as ConfigEntry<bool>)?.Value ?? true;
 
         public static int GlobalQueryIntervalInSeconds { get; } = 2;
 
@@ -31,8 +32,9 @@ namespace BloodCraftUI.Config
                 Directory.CreateDirectory(CONFIG_PATH);
             }
 
-            ConfigEntries.Add(InitConfigEntry("GeneralOptions", "ClearServerMessages", true, "Clear server and command messages from chat"));
-            ConfigEntries.Add(InitConfigEntry("GeneralOptions", "FamStatsQueryIntervalInSeconds", 10, "Query interval for familiar stats update (no less than 10 sec)"));
+            ConfigEntries.Add(InitConfigEntry("GeneralOptions",  "ClearServerMessages", true, "Clear server and command messages from chat"));
+            ConfigEntries.Add(InitConfigEntry("GeneralOptions",  "FamStatsQueryIntervalInSeconds", 10, "Query interval for familiar stats update (no less than 10 sec)"));
+            ConfigEntries.Add(InitConfigEntry(UI_SETTINGS_GROUP, "UseHorizontalContentLayout", true, "Use horizontal or vertical layout for main content panel"));
             return this;
         }
 
