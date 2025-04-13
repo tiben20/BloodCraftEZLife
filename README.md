@@ -39,8 +39,9 @@ Will try to unbind current familiar.
 ### Bind Last button
 Will try to bind familiar, the last one that you have binded before. 
 Will not work if:
-- You checked content of another box (as it selects it as current box)
+- You checked content of another box (as it selects it as current box to get fam list)
 - Server was restarted and reset your current selected box
+  
 In all other cases it would persist even when client is restarted.
 
 ### * button
