@@ -42,8 +42,6 @@ namespace BloodCraftUI.Services
 
         private static string _currentBox;
         private static FamStats _currentFamStats;
-        public static string LastBindCommand { get; set; }
-
 
         internal static void HandleMessage(Entity entity)
         {
@@ -58,7 +56,7 @@ namespace BloodCraftUI.Services
                     {
                         case not null when message.StartsWith(".fam b"):
                         case not null when message.StartsWith(".familiar bind"):
-                            LastBindCommand = message;
+                            Settings.LastBindCommand = message;
                             break;
                         case not null when message.StartsWith(BCCOM_FAMSTATS):
                             ClearFlags();

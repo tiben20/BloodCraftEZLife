@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using BloodCraftUI.Config;
 using BloodCraftUI.NewUI;
 using BloodCraftUI.NewUI.UniverseLib.UI;
 using BloodCraftUI.NewUI.UniverseLib.UI.Models;
@@ -95,7 +96,7 @@ namespace BloodCraftUI.UI.ModContent
                 try
                 {
                     var message = string.Format(MessageService.BCCOM_BINDFAM, number);
-                    MessageService.LastBindCommand = message;
+                    Settings.LastBindCommand = message;
                     MessageService.EnqueueMessage(message);
                 }
                 finally

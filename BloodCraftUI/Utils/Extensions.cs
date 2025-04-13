@@ -10,6 +10,7 @@ using Stunlock.Core;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using UnityEngine;
 
 namespace BloodCraftUI.Utils;
 internal static class Extensions
@@ -20,6 +21,11 @@ internal static class Extensions
    // static PrefabCollectionSystem PrefabCollectionSystem => SystemService.PrefabCollectionSystem;
 
     const string EMPTY_KEY = "LocalizationKey.Empty";
+
+    public static Color GetTransparent(this Color baseColor, float alpha = 0.7f)
+    {
+        return new Color(baseColor.r, baseColor.g, baseColor.b, alpha);
+    }
 
     public delegate void WithRefHandler<T>(ref T item);
     public static void With<T>(this Entity entity, WithRefHandler<T> action) where T : struct

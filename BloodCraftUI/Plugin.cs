@@ -44,7 +44,6 @@ namespace BloodCraftUI
         private static Harmony _harmonyMenuPatch;
         internal static Harmony HarmonyVersionStringPatch;
         private static FrameTimer _uiInitializedTimer;
-        private static Harmony _eclipsePatch;
 
         public override void Load()
         {

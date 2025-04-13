@@ -7,7 +7,6 @@ using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Controls;
 using BloodCraftUI.UI.CustomLib.Panel;
 using BloodCraftUI.Utils;
-using ProjectM;
 using UnityEngine;
 using UIBase = BloodCraftUI.NewUI.UniverseLib.UI.UIBase;
 
@@ -82,10 +81,10 @@ namespace BloodCraftUI.UI.ModContent
             _objectsList.Add(bindLastButton.GameObject);
             bindLastButton.OnClick = () =>
             {
-                if(string.IsNullOrEmpty(MessageService.LastBindCommand))
+                if(string.IsNullOrEmpty(Settings.LastBindCommand))
                     return;
                 bindLastButton.Component.interactable = false;
-                MessageService.EnqueueMessage(MessageService.LastBindCommand);
+                MessageService.EnqueueMessage(Settings.LastBindCommand);
                 TimerHelper.OneTickTimer(2000, () => bindLastButton.Component.interactable = true);
             };
 
@@ -101,8 +100,6 @@ namespace BloodCraftUI.UI.ModContent
                 if(panel != null && panel.UIRoot.active)
                     panel.RecalculateHeight();
             };
-
-            //SetDefaultSizeAndPosition();
         }
 
         protected override void LateConstructUI()

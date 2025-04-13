@@ -80,7 +80,7 @@ public abstract class ResizeablePanelBase : Panels_PanelBase
 
     private void ApplySaveData()
     {
-        var data = Plugin.Instance.Config.Bind("Panels", PanelConfigKey, "", "Serialised panel data").Value;
+        var data = Plugin.Instance.Config.Bind("Panels", PanelConfigKey, "", "Serialized panel data").Value;
         // Load from the old key if the new key is empty. This ensures a good transition to the new format, while not losing existing config.
         // This is deprecated and should be removed in a later version.
         if (string.IsNullOrEmpty(data))

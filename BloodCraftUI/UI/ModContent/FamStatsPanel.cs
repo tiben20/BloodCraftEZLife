@@ -10,6 +10,7 @@ using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Controls;
 using BloodCraftUI.UI.CustomLib.Panel;
 using BloodCraftUI.UI.CustomLib.Util;
+using BloodCraftUI.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -236,8 +237,7 @@ namespace BloodCraftUI.UI.ModContent
             // Set ContentRoot layout element to fill available space
             UIFactory.SetLayoutElement(ContentRoot, flexibleWidth: 9999, flexibleHeight: 9999);
 
-            var color = Colour.PanelBackground;
-            color.a = 100f;
+            var color = Colour.PanelBackground.GetTransparent(Settings.FamStatsPanelTransparency);
 
             // Create main container with explicit settings to eliminate bottom space
             _uiAnchor = UIFactory.CreateUIObject("UIAnchor", ContentRoot);
@@ -280,7 +280,7 @@ namespace BloodCraftUI.UI.ModContent
         {
             // Create container with reduced height and spacing
             _headerContainer = UIFactory.CreateVerticalGroup(_uiAnchor, "HeaderContainer", false, false, true, true, 2,
-                default, new Color(0.15f, 0.15f, 0.15f));
+                default, new Color(0.15f, 0.15f, 0.15f).GetTransparent(Settings.FamStatsPanelTransparency));
             UIFactory.SetLayoutElement(_headerContainer, minHeight: 60, preferredHeight: 60, flexibleHeight: 0, flexibleWidth: 9999);
 
             // Familiar name with larger font
@@ -299,7 +299,7 @@ namespace BloodCraftUI.UI.ModContent
         {
             // Stats container with reduced height and tighter spacing
             _statsContainer = UIFactory.CreateVerticalGroup(_uiAnchor, "StatsContainer", true, false, true, true, 2,
-                new Vector4(4, 2, 4, 2), new Color(0.12f, 0.12f, 0.12f));
+                new Vector4(4, 2, 4, 2), new Color(0.12f, 0.12f, 0.12f).GetTransparent(Settings.FamStatsPanelTransparency));
             UIFactory.SetLayoutElement(_statsContainer, minHeight: 20, preferredHeight: 120, flexibleHeight: 0, flexibleWidth: 9999);
         }
 
@@ -307,7 +307,7 @@ namespace BloodCraftUI.UI.ModContent
         {
             // Create a horizontal row with reduced height
             rowObj = UIFactory.CreateHorizontalGroup(parent, $"{label}Row", false, false, true, true, 5,
-                default, new Color(0.18f, 0.18f, 0.18f));
+                default, new Color(0.18f, 0.18f, 0.18f).GetTransparent(Settings.FamStatsPanelTransparency));
             UIFactory.SetLayoutElement(rowObj, minHeight: 28, preferredHeight: 28, flexibleHeight: 0, flexibleWidth: 9999);
 
             // Stat label - reduced height
@@ -466,6 +466,16 @@ namespace BloodCraftUI.UI.ModContent
         private void SendUpdateStatsCommand()
         {
             MessageService.EnqueueMessage(MessageService.BCCOM_FAMSTATS);
+        }
+
+        public override void ConstructUI()
+        {
+            base.ConstructUI();
+
+            // Make panel background semi-transparent
+            var images = UIRoot.GetComponentsInChildren<Image>(true);
+            foreach (var img in images)
+                img.color = img.color.GetTransparent(Settings.FamStatsPanelTransparency);
         }
     }
 }
