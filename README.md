@@ -3,6 +3,11 @@
 Currently BloodCraftUI is in development and provides UI only for Familiars. It is coded to send Bloodcraft commands and parse chatlog response messages. Considering the 'unreliable' nature of message parsing approach it may sometimes produce errors in parsing boxes and its content if some other server messages interfere with the routine.
 Supported Bloodcraft `v1.6.6` & `v1.7.7`
 
+## Installation
+1. Install [BepInEx](https://thunderstore.io/c/v-rising/p/BepInEx/BepInExPack_V_Rising/) mod launcher
+2. Download mod archive from [Releases](https://github.com/panthernet/BloodCraftUI/releases) and unpack its content into `VRising\BepInEx\plugins` folder
+3. Run the game
+
 ## Showcase and FAQ
 You will see control panel on top of the screen and can drag it around as you like.
 <img src="https://github.com/user-attachments/assets/8c8277ec-cc64-4e6a-b45b-8509bf365c6d" width="750">
