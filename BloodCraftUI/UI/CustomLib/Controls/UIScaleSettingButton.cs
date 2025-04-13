@@ -30,7 +30,7 @@ public class UIScaleSettingButton : SettingsButtonBase
         ApplyScale(scales[scaleIndex].Item2);
     }
 
-    protected override string PerformAction()
+    public override string PerformAction()
     {
         scaleIndex = (scaleIndex + 1) % scales.Count;
         ApplyScale(scales[scaleIndex].Item2);

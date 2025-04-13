@@ -18,7 +18,7 @@ public abstract class SettingsButtonBase
 
     // Implementers to use this to set/toggle/perform action
     // This should return the new config that can be stored in the config file
-    protected abstract string PerformAction();
+    public abstract string PerformAction();
 
     // Gets the label that should be displayed on the button due to the current state
     protected abstract string Label();

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BloodCraftUI.NewUI.ModContent;
 using BloodCraftUI.NewUI.UniverseLib.UI.Panels;
-using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Panel;
+using BloodCraftUI.UI.ModContent;
 using UnityEngine;
-using Object = UnityEngine.Object;
 using UIBase = BloodCraftUI.NewUI.UniverseLib.UI.UIBase;
 using UniversalUI = BloodCraftUI.NewUI.UniverseLib.UI.UniversalUI;
 

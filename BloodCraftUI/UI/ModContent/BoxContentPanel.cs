@@ -1,19 +1,18 @@
 ﻿using System.Collections.Generic;
-using System.Timers;
-using BloodCraftUI.Config;
-using UnityEngine;
-using TMPro;
-using BloodCraftUI.Services;
-using ProjectM;
+using BloodCraftUI.NewUI;
 using BloodCraftUI.NewUI.UniverseLib.UI;
 using BloodCraftUI.NewUI.UniverseLib.UI.Models;
 using BloodCraftUI.NewUI.UniverseLib.UI.Panels;
 using BloodCraftUI.NewUI.UniverseLib.UI.Widgets.ScrollView;
+using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Cells;
 using BloodCraftUI.UI.CustomLib.Cells.Handlers;
 using BloodCraftUI.UI.CustomLib.Panel;
+using BloodCraftUI.Utils;
+using ProjectM;
+using UnityEngine;
 
-namespace BloodCraftUI.NewUI.ModContent
+namespace BloodCraftUI.UI.ModContent
 {
     internal class BoxContentPanel : ResizeablePanelBase
     {
@@ -61,13 +60,12 @@ namespace BloodCraftUI.NewUI.ModContent
         #region Commands
         public void SendUpdateCommand()
         {
-            EnableAllButtons(false);
             if (string.IsNullOrEmpty(_boxName))
                 return;
+
+            EnableAllButtons(false);
             MessageService.EnqueueMessage(string.Format(MessageService.BCCOM_SWITCHBOX, _boxName));
-            var t = new Timer(1000);
-            t.AutoReset = false;
-            t.Elapsed += (_, _) =>
+            TimerHelper.OneTickTimer(1000, () =>
             {
                 try
                 {
@@ -78,37 +76,32 @@ namespace BloodCraftUI.NewUI.ModContent
                             AddListEntry(i, $"Test Familiar {i}", AbilitySchoolType.Unholy);
                         }
                     }
+
                     MessageService.EnqueueMessage(MessageService.BCCOM_BOXCONTENT);
-                    t.Dispose();
                 }
                 finally
                 {
                     EnableAllButtons(true);
                 }
-            };
-            t.Start();
+            });
         }
 
         private void SendBindCommand(int number)
         {
             EnableAllButtons(false);
             MessageService.EnqueueMessage(MessageService.BCCOM_UNBINDFAM);
-            var t = new Timer(3000);
-            t.AutoReset = false;
-            t.Elapsed += (_, _) =>
+            TimerHelper.OneTickTimer(3000, () =>
             {
                 try
                 {
                     MessageService.EnqueueMessage(string.Format(MessageService.BCCOM_BINDFAM, number));
-                    t.Dispose();
                 }
                 finally
                 {
                     EnableAllButtons(true);
 
                 }
-            };
-            t.Start();
+            });
         }
         #endregion
 
@@ -121,15 +114,15 @@ namespace BloodCraftUI.NewUI.ModContent
 
         protected override void ConstructPanelContent()
         {
-            var horGroup = UIFactory.CreateHorizontalGroup(ContentRoot, "ButtonGroup", true, false, true, false, 3,
+            /*var horGroup = UIFactory.CreateHorizontalGroup(ContentRoot, "ButtonGroup", true, false, true, false, 3,
                 default, new Color(1, 1, 1, 0), TextAnchor.MiddleLeft);
             _updateButton = UIFactory.CreateButton(horGroup, "butPopulate", "Populate Box Content");
             UIFactory.SetLayoutElement(_updateButton.GameObject, minWidth: 250, minHeight: 25, flexibleWidth: 9999);
-            _updateButton.OnClick += SendUpdateCommand;
+            _updateButton.OnClick += SendUpdateCommand;*/
 
-            var l = UIFactory.CreateLabel(ContentRoot, "Header", "", TextAlignmentOptions.Top);
+            /*var l = UIFactory.CreateLabel(ContentRoot, "Header", "", TextAlignmentOptions.Top);
             UIFactory.SetLayoutElement(l.gameObject, minWidth: 250, minHeight: 25, flexibleWidth: 0);
-
+            */
             _scrollDataHandler = new ButtonListHandler<FamData, ButtonCell>(_scrollPool, GetEntries, SetCell, ShouldDisplay, OnCellClicked);
             _scrollPool = UIFactory.CreateScrollPool<ButtonCell>(ContentRoot, "ContentList", out GameObject scrollObj,
                 out _, new Color(0.03f, 0.03f, 0.03f));
@@ -144,7 +137,8 @@ namespace BloodCraftUI.NewUI.ModContent
 
         private void EnableAllButtons(bool value)
         {
-            _updateButton.Component.interactable = value;
+            if(_updateButton != null)
+                _updateButton.Component.interactable = value;
             foreach (var a in _scrollPool.CellPool)
                 a.Button.Component.interactable = value;
         }

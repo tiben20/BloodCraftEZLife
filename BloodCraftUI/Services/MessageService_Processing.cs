@@ -1,17 +1,14 @@
 ﻿using BloodCraftUI.NewUI;
 using ProjectM.Network;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BloodCraftUI.Config;
+using BloodCraftUI.UI.ModContent;
 using Unity.Entities;
 using BloodCraftUI.Utils;
 using ProjectM;
-using static Il2CppSystem.Globalization.TimeSpanFormat;
-using Unity.Collections;
-using BloodCraftUI.NewUI.ModContent;
 
 namespace BloodCraftUI.Services
 {
@@ -92,6 +89,10 @@ namespace BloodCraftUI.Services
             {
                 /////// FLAGS
                 case not null when message.StartsWith("Couldn't find familiar to unbind"):
+                    BloodCraftStateService.IsFamUnbound = true;
+                    if (Settings.ClearServerMessages)
+                        DestroyMessage(entity);
+                    break;
                 case not null when message.Contains(">unbound</color>!"):
                     BloodCraftStateService.IsFamUnbound = true;
                     break;
@@ -113,7 +114,8 @@ namespace BloodCraftUI.Services
 
                 /////// CLEANUP
                 case not null when message.StartsWith("Couldn't find active familiar"):
-                    DestroyMessage(entity);
+                    if (Settings.ClearServerMessages)
+                        DestroyMessage(entity);
                     break;
                 case not null when message.StartsWith("Your familiar is level"):
                     ClearFlags();
@@ -126,6 +128,8 @@ namespace BloodCraftUI.Services
                     ClearFlags();
                     Flags[InterceptFlag.ListBoxes] = 1;
                     BCUIManager.GetPanel<BoxListPanel>().Reset();
+                    if (Settings.ClearServerMessages)
+                        DestroyMessage(entity);
                     break;
                 case not null when message.StartsWith("<color=yellow>1</color>|"):
                     ClearFlags();
@@ -135,7 +139,8 @@ namespace BloodCraftUI.Services
                         BCUIManager.GetBoxPanel(_currentBox).Reset();
                         ProcessBoxContentEntry(message);
                     }
-
+                    if (Settings.ClearServerMessages)
+                        DestroyMessage(entity);
                     break;
                 case not null when message.StartsWith("Box Selected"):
                     var index = message.IndexOf('-');

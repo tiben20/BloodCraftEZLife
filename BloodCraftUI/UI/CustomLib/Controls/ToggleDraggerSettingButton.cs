@@ -12,7 +12,7 @@ public class ToggleDraggerSettingButton : SettingsButtonBase
         _action = action;
     }
 
-    protected override string PerformAction()
+    public override string PerformAction()
     {
         _action(!currentState);
         return $"{!currentState}";

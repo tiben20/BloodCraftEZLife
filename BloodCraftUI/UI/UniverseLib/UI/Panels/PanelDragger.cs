@@ -142,7 +142,6 @@ public class PanelDragger
 
     public virtual void OnBeginDrag()
     {
-        LogUtils.LogWarning("BEGIN DRAG");
         PanelManager.wasAnyDragging = true;
         WasDragging = true;
         _initialMousePos = UIPanel.Owner.Panels.MousePosition;
@@ -162,7 +161,6 @@ public class PanelDragger
 
     public virtual void OnEndDrag()
     {
-        LogUtils.LogWarning("END DRAG");
         WasDragging = false;
 
         OnFinishDrag?.Invoke();

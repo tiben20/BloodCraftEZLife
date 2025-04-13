@@ -4,7 +4,6 @@ using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using BloodCraftUI.Behaviors;
 using BloodCraftUI.Config;
-using BloodCraftUI.Eclipse;
 using BloodCraftUI.NewUI;
 using BloodCraftUI.Patches;
 using BloodCraftUI.Utils;
@@ -134,6 +133,6 @@ namespace BloodCraftUI
     {
         public const string PLUGIN_GUID = "panthernet.BloodCraftUI";
         public const string PLUGIN_NAME = "BloodCraftUI";
-        public const string PLUGIN_VERSION = "1.0.0";
+        public const string PLUGIN_VERSION = "1.0.1";
     }
 }

@@ -1,10 +1,14 @@
-﻿using BloodCraftUI.NewUI.UniverseLib.UI;
+﻿using BloodCraftUI.NewUI;
+using BloodCraftUI.NewUI.UniverseLib.UI;
 using BloodCraftUI.NewUI.UniverseLib.UI.Panels;
+using BloodCraftUI.Services;
+using BloodCraftUI.UI.CustomLib.Controls;
 using BloodCraftUI.UI.CustomLib.Panel;
+using BloodCraftUI.Utils;
 using UnityEngine;
 using UIBase = BloodCraftUI.NewUI.UniverseLib.UI.UIBase;
 
-namespace BloodCraftUI.NewUI.ModContent
+namespace BloodCraftUI.UI.ModContent
 {
     public class ContentPanel : ResizeablePanelBase
     {
@@ -19,6 +23,7 @@ namespace BloodCraftUI.NewUI.ModContent
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.None;
         public override BCUIManager.Panels PanelType => BCUIManager.Panels.Base;
         private GameObject _uiAnchor;
+        private UIScaleSettingButton _scaleButtonData;
 
         public ContentPanel(UIBase owner) : base(owner)
         {
@@ -45,6 +50,26 @@ namespace BloodCraftUI.NewUI.ModContent
             famStatsButton.OnClick = () =>
             {
                 BCUIManager.AddPanel(BCUIManager.Panels.FamStats);
+            };
+
+            var unbindButton = UIFactory.CreateButton(_uiAnchor, "FamStatsButton", "Unbind");
+            UIFactory.SetLayoutElement(unbindButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
+            unbindButton.OnClick = () =>
+            {
+                unbindButton.Component.interactable = false;
+                MessageService.EnqueueMessage(MessageService.BCCOM_UNBINDFAM);
+                TimerHelper.OneTickTimer(2000, () => unbindButton.Component.interactable = true);
+            };
+
+            var scaleButton = UIFactory.CreateButton(_uiAnchor, "ScaleButton", "*");
+            UIFactory.SetLayoutElement(scaleButton.GameObject, ignoreLayout: false, minWidth: 25, minHeight: 25);
+            _scaleButtonData = new UIScaleSettingButton();
+            scaleButton.OnClick = () =>
+            {
+                _scaleButtonData.PerformAction();
+                var panel = BCUIManager.GetPanel<FamStatsPanel>();
+                if(panel != null && panel.UIRoot.active)
+                    panel.RecalculateHeight();
             };
 
             SetDefaultSizeAndPosition();

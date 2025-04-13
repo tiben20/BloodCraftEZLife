@@ -1,29 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using BloodCraftUI.Services;
 using System.Timers;
 using BloodCraftUI.Config;
-using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
+using BloodCraftUI.NewUI;
 using BloodCraftUI.NewUI.UniverseLib.UI;
 using BloodCraftUI.NewUI.UniverseLib.UI.Panels;
+using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Controls;
 using BloodCraftUI.UI.CustomLib.Panel;
 using BloodCraftUI.UI.CustomLib.Util;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
-namespace BloodCraftUI.NewUI.ModContent
+namespace BloodCraftUI.UI.ModContent
 {
     internal class FamStatsPanel : ResizeablePanelBase
     {
         public override string PanelId => "FamStatsPanel";
-        public override int MinWidth => 340;
+        public override int MinWidth => 240;
         public override int MinHeight => 300;
         public override Vector2 DefaultAnchorMin => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultAnchorMax => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultPivot => new Vector2(0.5f, 0.5f);
-        public override Vector2 DefaultPosition => new Vector2(Owner.Scaler.m_ReferenceResolution.x - 150,
+        public override Vector2 DefaultPosition => new Vector2(Owner.Scaler.m_ReferenceResolution.x - 240,
             Owner.Scaler.m_ReferenceResolution.y * 0.5f);
         public override bool CanDrag => true;
         private readonly Color _pbColor = new Color(1f, 50f, 32f, 255f);
@@ -50,7 +51,7 @@ namespace BloodCraftUI.NewUI.ModContent
         {
         }
 
-        private void RecalculateHeight()
+        public void RecalculateHeight()
         {
             if (_uiAnchor == null) return;
 
@@ -236,7 +237,7 @@ namespace BloodCraftUI.NewUI.ModContent
             UIFactory.SetLayoutElement(ContentRoot, flexibleWidth: 9999, flexibleHeight: 9999);
 
             var color = Colour.PanelBackground;
-            color.a = 200f;
+            color.a = 100f;
 
             // Create main container with explicit settings to eliminate bottom space
             _uiAnchor = UIFactory.CreateUIObject("UIAnchor", ContentRoot);

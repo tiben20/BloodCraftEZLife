@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Timers;
-using BloodCraftUI.Config;
+using BloodCraftUI.NewUI;
 using BloodCraftUI.NewUI.UniverseLib.UI;
 using BloodCraftUI.NewUI.UniverseLib.UI.Models;
 using BloodCraftUI.NewUI.UniverseLib.UI.Panels;
@@ -10,9 +9,10 @@ using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Cells;
 using BloodCraftUI.UI.CustomLib.Cells.Handlers;
 using BloodCraftUI.UI.CustomLib.Panel;
+using BloodCraftUI.Utils;
 using UnityEngine;
 
-namespace BloodCraftUI.NewUI.ModContent
+namespace BloodCraftUI.UI.ModContent
 {
     internal class BoxListPanel : ResizeablePanelBase
     {
@@ -48,11 +48,6 @@ namespace BloodCraftUI.NewUI.ModContent
             RunUpdateCommand();
         }
 
-        public void RunUpdateCommand()
-        {
-            SendCommand();
-        }
-
         protected override void OnClosePanelClicked()
         {
             SetActive(false);
@@ -60,11 +55,11 @@ namespace BloodCraftUI.NewUI.ModContent
 
         protected override void ConstructPanelContent()
         {
-            var horGroup = UIFactory.CreateHorizontalGroup(ContentRoot, "ButtonGroup", true, false, true, false, 3,
+            /*var horGroup = UIFactory.CreateHorizontalGroup(ContentRoot, "ButtonGroup", true, false, true, false, 3,
                 default, new Color(1, 1, 1, 0), TextAnchor.MiddleLeft);
             _updateButton = UIFactory.CreateButton(horGroup, "butPopulate", "Populate List Boxes");
             UIFactory.SetLayoutElement(_updateButton.GameObject, minWidth: 250, minHeight: 25, flexibleWidth: 9999);
-            _updateButton.OnClick += RunUpdateCommand;
+            _updateButton.OnClick += RunUpdateCommand;*/
 
             _scrollDataHandler = new ButtonListHandler<FamBoxData, ButtonCell>(_scrollPool, GetEntries, SetCell, ShouldDisplay, OnCellClicked);
             _scrollPool = UIFactory.CreateScrollPool<ButtonCell>(ContentRoot, "ContentList", out GameObject scrollObj,
@@ -81,20 +76,31 @@ namespace BloodCraftUI.NewUI.ModContent
             _scrollPool.Refresh(true);
         }
 
-        private void SendCommand()
+        private void RunUpdateCommand()
         {
             EnableAllButtons(false);
             MessageService.EnqueueMessage(MessageService.BCCOM_LISTBOXES1);
-            var t = new Timer(3000) { AutoReset = false };
-            t.Elapsed += (_, _) => EnableAllButtons(true);
-            t.Start();
+            TimerHelper.OneTickTimer(3000, () =>
+            {
+                EnableAllButtons(true);
+            });
         }
 
         private void EnableAllButtons(bool value)
         {
-            _updateButton.Component.interactable = value;
+            if(_updateButton != null)
+                _updateButton.Component.interactable = value;
             foreach (var a in _scrollPool.CellPool)
                 a.Button.Component.interactable = value;
+        }
+
+        public override void SetActive(bool active)
+        {
+            var shouldUpdateData = _isInitialized && active && Enabled == false;
+            _isInitialized = true;
+            base.SetActive(active);
+            if (shouldUpdateData)
+                RunUpdateCommand();
         }
 
         #region ScrollPool handling
@@ -102,6 +108,7 @@ namespace BloodCraftUI.NewUI.ModContent
         private ScrollPool<ButtonCell> _scrollPool;
         private ButtonListHandler<FamBoxData, ButtonCell> _scrollDataHandler;
         private readonly List<FamBoxData> _dataList = new();
+        private bool _isInitialized;
 
         private class FamBoxData
         {
