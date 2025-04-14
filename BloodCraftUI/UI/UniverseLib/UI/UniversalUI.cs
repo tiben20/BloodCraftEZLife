@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BloodCraftUI.NewUI.UniverseLib.UI.ObjectPool;
-using BloodCraftUI.NewUI.UniverseLib.UI.Panels;
 using BloodCraftUI.UI.CustomLib;
+using BloodCraftUI.UI.UniverseLib.UI.ObjectPool;
+using BloodCraftUI.UI.UniverseLib.UI.Panels;
 using Bloodstone.Hooks;
 using UnityEngine;
-using InputFieldRef = BloodCraftUI.NewUI.UniverseLib.UI.Models.InputFieldRef;
-using UIBehaviourModel = BloodCraftUI.NewUI.UniverseLib.UI.Models.UIBehaviourModel;
+using InputFieldRef = BloodCraftUI.UI.UniverseLib.UI.Models.InputFieldRef;
+using UIBehaviourModel = BloodCraftUI.UI.UniverseLib.UI.Models.UIBehaviourModel;
 
-namespace BloodCraftUI.NewUI.UniverseLib.UI;
+namespace BloodCraftUI.UI.UniverseLib.UI;
 
 /// <summary>Handles all <see cref="UIBase"/> UIs on the UniverseLib UI canvas.</summary>
 public static class UniversalUI

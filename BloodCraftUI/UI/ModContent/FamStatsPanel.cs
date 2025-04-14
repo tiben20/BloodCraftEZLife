@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using BloodCraftUI.Config;
-using BloodCraftUI.NewUI;
-using BloodCraftUI.NewUI.UniverseLib.UI;
-using BloodCraftUI.NewUI.UniverseLib.UI.Panels;
 using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Controls;
 using BloodCraftUI.UI.CustomLib.Panel;
 using BloodCraftUI.UI.CustomLib.Util;
+using BloodCraftUI.UI.UniverseLib.UI;
+using BloodCraftUI.UI.UniverseLib.UI.Panels;
 using BloodCraftUI.Utils;
 using TMPro;
 using UnityEngine;
@@ -28,7 +27,8 @@ namespace BloodCraftUI.UI.ModContent
         public override Vector2 DefaultPosition => new Vector2(Owner.Scaler.m_ReferenceResolution.x - 240,
             Owner.Scaler.m_ReferenceResolution.y * 0.5f);
         public override bool CanDrag => true;
-        private readonly Color _pbColor = new Color(1f, 50f, 32f, 255f);
+        private readonly Color _pbColor;
+        public override float Opacity => Settings.UITransparency;
 
         // Allow vertical resizing only
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.None;
@@ -50,6 +50,7 @@ namespace BloodCraftUI.UI.ModContent
 
         public FamStatsPanel(UIBase owner) : base(owner)
         {
+            _pbColor = new Color(1f, 50f, 32f).GetTransparent(Opacity);
         }
 
         public void RecalculateHeight()
@@ -237,7 +238,7 @@ namespace BloodCraftUI.UI.ModContent
             // Set ContentRoot layout element to fill available space
             UIFactory.SetLayoutElement(ContentRoot, flexibleWidth: 9999, flexibleHeight: 9999);
 
-            var color = Colour.PanelBackground.GetTransparent(Settings.FamStatsPanelTransparency);
+            var color = Colour.PanelBackground;
 
             // Create main container with explicit settings to eliminate bottom space
             _uiAnchor = UIFactory.CreateUIObject("UIAnchor", ContentRoot);
@@ -280,7 +281,7 @@ namespace BloodCraftUI.UI.ModContent
         {
             // Create container with reduced height and spacing
             _headerContainer = UIFactory.CreateVerticalGroup(_uiAnchor, "HeaderContainer", false, false, true, true, 2,
-                default, new Color(0.15f, 0.15f, 0.15f).GetTransparent(Settings.FamStatsPanelTransparency));
+                default, new Color(0.15f, 0.15f, 0.15f).GetTransparent(Opacity));
             UIFactory.SetLayoutElement(_headerContainer, minHeight: 60, preferredHeight: 60, flexibleHeight: 0, flexibleWidth: 9999);
 
             // Familiar name with larger font
@@ -299,7 +300,7 @@ namespace BloodCraftUI.UI.ModContent
         {
             // Stats container with reduced height and tighter spacing
             _statsContainer = UIFactory.CreateVerticalGroup(_uiAnchor, "StatsContainer", true, false, true, true, 2,
-                new Vector4(4, 2, 4, 2), new Color(0.12f, 0.12f, 0.12f).GetTransparent(Settings.FamStatsPanelTransparency));
+                new Vector4(4, 2, 4, 2), new Color(0.12f, 0.12f, 0.12f).GetTransparent(Opacity));
             UIFactory.SetLayoutElement(_statsContainer, minHeight: 20, preferredHeight: 120, flexibleHeight: 0, flexibleWidth: 9999);
         }
 
@@ -307,7 +308,7 @@ namespace BloodCraftUI.UI.ModContent
         {
             // Create a horizontal row with reduced height
             rowObj = UIFactory.CreateHorizontalGroup(parent, $"{label}Row", false, false, true, true, 5,
-                default, new Color(0.18f, 0.18f, 0.18f).GetTransparent(Settings.FamStatsPanelTransparency));
+                default, new Color(0.18f, 0.18f, 0.18f).GetTransparent(Opacity));
             UIFactory.SetLayoutElement(rowObj, minHeight: 28, preferredHeight: 28, flexibleHeight: 0, flexibleWidth: 9999);
 
             // Stat label - reduced height
@@ -475,7 +476,7 @@ namespace BloodCraftUI.UI.ModContent
             // Make panel background semi-transparent
             var images = UIRoot.GetComponentsInChildren<Image>(true);
             foreach (var img in images)
-                img.color = img.color.GetTransparent(Settings.FamStatsPanelTransparency);
+                img.color = img.color.GetTransparent(Opacity);
         }
     }
 }

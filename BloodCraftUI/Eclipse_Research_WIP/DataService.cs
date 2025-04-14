@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Stunlock.Core;
 using System.Globalization;
 using System.Linq;
 using BloodCraftUI.Utils;
-using Unity.Entities;
+using Stunlock.Core;
 using UnityEngine;
-using UnityEngine.InputSystem.Utilities;
 
-namespace Eclipse.Services;
+namespace BloodCraftUI.Eclipse_Research_WIP;
 internal static class DataService
 {
     public enum TargetType

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BepInEx.Logging;
 using BloodCraftUI.Utils;
 
-namespace BloodCraftUI.NewUI.UniverseLib.UI.Models;
+namespace BloodCraftUI.UI.UniverseLib.UI.Models;
 
 /// <summary>
 /// A class which can be used as an abstract UI object, which does not exist as a Component but which can receive Update calls.

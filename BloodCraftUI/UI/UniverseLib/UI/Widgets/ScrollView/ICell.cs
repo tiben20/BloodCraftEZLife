@@ -1,7 +1,7 @@
-﻿using BloodCraftUI.NewUI.UniverseLib.UI.ObjectPool;
+﻿using BloodCraftUI.UI.UniverseLib.UI.ObjectPool;
 using UnityEngine;
 
-namespace BloodCraftUI.NewUI.UniverseLib.UI.Widgets.ScrollView;
+namespace BloodCraftUI.UI.UniverseLib.UI.Widgets.ScrollView;
 
 public interface ICell : IPooledObject
 {

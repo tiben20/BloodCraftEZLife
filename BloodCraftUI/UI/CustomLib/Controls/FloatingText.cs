@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using BloodCraftUI.NewUI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
-using UIFactory = BloodCraftUI.NewUI.UniverseLib.UI.UIFactory;
+using UIFactory = BloodCraftUI.UI.UniverseLib.UI.UIFactory;
 
 namespace BloodCraftUI.UI.CustomLib.Controls;
 

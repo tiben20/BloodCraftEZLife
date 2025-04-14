@@ -1,12 +1,12 @@
 using System;
-using BloodCraftUI.NewUI.UniverseLib.UI.Panels;
+using BloodCraftUI.UI.UniverseLib.UI.Panels;
 using BloodCraftUI.Utils;
-using Panels_PanelBase = BloodCraftUI.NewUI.UniverseLib.UI.Panels.PanelBase;
-using UIBase = BloodCraftUI.NewUI.UniverseLib.UI.UIBase;
+using Panels_PanelBase = BloodCraftUI.UI.UniverseLib.UI.Panels.PanelBase;
+using UIBase = BloodCraftUI.UI.UniverseLib.UI.UIBase;
 
 namespace BloodCraftUI.UI.CustomLib.Panel;
 
-public abstract class ResizeablePanelBase : Panels_PanelBase
+public abstract class ResizeablePanelBase : PanelBase
 {
     protected ResizeablePanelBase(UIBase owner) : base(owner) { }
 

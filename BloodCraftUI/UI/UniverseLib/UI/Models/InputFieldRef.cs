@@ -1,4 +1,3 @@
-using BloodCraftUI.NewUI.UniverseLib.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BloodCraftUI.NewUI.UniverseLib.UI.Models;
+namespace BloodCraftUI.UI.UniverseLib.UI.Models;
 
 /// <summary>
 /// A simple wrapper class for working with InputFields, with some helpers and performance improvements.

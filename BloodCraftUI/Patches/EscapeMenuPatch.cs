@@ -1,5 +1,5 @@
-using BloodCraftUI.NewUI;
 using BloodCraftUI.Services;
+using BloodCraftUI.UI;
 using HarmonyLib;
 using ProjectM.UI;
 

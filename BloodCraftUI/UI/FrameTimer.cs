@@ -2,7 +2,7 @@ using System;
 using BloodCraftUI.Utils;
 using Bloodstone.Hooks;
 
-namespace BloodCraftUI.NewUI;
+namespace BloodCraftUI.UI;
 
 public class FrameTimer
     {

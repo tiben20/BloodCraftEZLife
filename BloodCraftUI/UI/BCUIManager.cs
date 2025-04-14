@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BloodCraftUI.NewUI.UniverseLib.UI.Panels;
 using BloodCraftUI.UI.CustomLib.Panel;
 using BloodCraftUI.UI.ModContent;
+using BloodCraftUI.UI.UniverseLib.UI.Panels;
 using UnityEngine;
-using UIBase = BloodCraftUI.NewUI.UniverseLib.UI.UIBase;
-using UniversalUI = BloodCraftUI.NewUI.UniverseLib.UI.UniversalUI;
+using UIBase = BloodCraftUI.UI.UniverseLib.UI.UIBase;
+using UniversalUI = BloodCraftUI.UI.UniverseLib.UI.UniversalUI;
 
-namespace BloodCraftUI.NewUI;
+namespace BloodCraftUI.UI;
 
 public static class BCUIManager
 {
@@ -17,7 +17,8 @@ public static class BCUIManager
         Base,
         BoxList,
         BoxContent,
-        FamStats
+        FamStats,
+        TestPanel
     }
 
     public static UIBase UiBase { get; private set; }
@@ -26,7 +27,7 @@ public static class BCUIManager
     public static bool IsInitialized { get; private set; }
 
 
-    private static List<PanelBase> UIPanels { get; set; } = new();
+    private static List<IPanelBase> UIPanels { get; set; } = new();
 
     internal static void Initialize()
     {
@@ -124,6 +125,20 @@ public static class BCUIManager
                 if (panel == null)
                 {
                     var item = new FamStatsPanel(UiBase);
+                    UIPanels.Add(item);
+                }
+                else
+                {
+                    panel.SetActive(!panel.Enabled);
+                }
+            }
+                break;
+            case Panels.TestPanel:
+            {
+                var panel = GetPanel<TestPanel>();
+                if (panel == null)
+                {
+                    var item = new TestPanel(UiBase);
                     UIPanels.Add(item);
                 }
                 else

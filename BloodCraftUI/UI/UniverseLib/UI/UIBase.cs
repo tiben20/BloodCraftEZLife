@@ -1,11 +1,10 @@
 ﻿using System;
-using BepInEx.Logging;
 using BloodCraftUI.Utils;
 using UnityEngine;
 using UnityEngine.UI;
-using PanelManager = BloodCraftUI.NewUI.UniverseLib.UI.Panels.PanelManager;
+using PanelManager = BloodCraftUI.UI.UniverseLib.UI.Panels.PanelManager;
 
-namespace BloodCraftUI.NewUI.UniverseLib.UI;
+namespace BloodCraftUI.UI.UniverseLib.UI;
 
 /// <summary>
 /// A simple wrapper to handle a UI created with <see cref="UniversalUI.RegisterUI"/>.

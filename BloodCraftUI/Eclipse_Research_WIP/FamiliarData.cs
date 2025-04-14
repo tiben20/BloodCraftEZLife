@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Linq;
 
-namespace BloodCraftUI.Eclipse
+namespace BloodCraftUI.Eclipse_Research_WIP
 {
     internal class FamiliarData(string percent, string level, string prestige, string familiarName, string familiarStats)
     {

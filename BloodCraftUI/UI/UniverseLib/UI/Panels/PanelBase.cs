@@ -2,16 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using BloodCraftUI.UI.CustomLib.Util;
+using BloodCraftUI.UI.UniverseLib.UI.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using ButtonRef = BloodCraftUI.NewUI.UniverseLib.UI.Models.ButtonRef;
-using Models_UIBehaviourModel = BloodCraftUI.NewUI.UniverseLib.UI.Models.UIBehaviourModel;
+using ButtonRef = BloodCraftUI.UI.UniverseLib.UI.Models.ButtonRef;
 using Object = UnityEngine.Object;
 
-namespace BloodCraftUI.NewUI.UniverseLib.UI.Panels;
+namespace BloodCraftUI.UI.UniverseLib.UI.Panels;
 
-public abstract class PanelBase : Models_UIBehaviourModel
+public abstract class PanelBase : UIBehaviourModel, IPanelBase
 {
     public UIBase Owner { get; }
     public abstract BCUIManager.Panels PanelType { get; }
@@ -26,6 +26,7 @@ public abstract class PanelBase : Models_UIBehaviourModel
     public abstract Vector2 DefaultAnchorMax { get; }
     public virtual Vector2 DefaultPivot => Vector2.one * 0.5f;
     public virtual Vector2 DefaultPosition { get; }
+    public virtual float Opacity { get; set; } = 1.0f;
 
     public virtual bool CanDrag => true;
     public virtual PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
@@ -184,7 +185,7 @@ public abstract class PanelBase : Models_UIBehaviourModel
     public virtual void ConstructUI()
     {
         // create core canvas 
-        uiRoot = UIFactory.CreatePanel(PanelId, Owner.Panels.PanelHolder, out GameObject contentRoot);
+        uiRoot = UIFactory.CreatePanel(PanelId, Owner.Panels.PanelHolder, out GameObject contentRoot, opacity: Opacity);
         ContentRoot = contentRoot;
         Rect = uiRoot.GetComponent<RectTransform>();
 
@@ -204,7 +205,7 @@ public abstract class PanelBase : Models_UIBehaviourModel
         CloseButton = UIFactory.CreateUIObject("CloseHolder", TitleBar);
         UIFactory.SetLayoutElement(CloseButton, minHeight: 25, flexibleHeight: 0, minWidth: 30, flexibleWidth: 9999);
         UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(CloseButton, false, false, true, true, 3, childAlignment: TextAnchor.MiddleRight);
-        ButtonRef closeBtn = UIFactory.CreateButton(CloseButton, "CloseButton", "—");
+        ButtonRef closeBtn = UIFactory.CreateButton(CloseButton, "CloseButton", "—", opacity: Opacity);
         // Remove the button outline
         Object.Destroy(closeBtn.Component.gameObject.GetComponent<Outline>());
         UIFactory.SetLayoutElement(closeBtn.Component.gameObject, minHeight: 25, minWidth: 25, flexibleWidth: 0);

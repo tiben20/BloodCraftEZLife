@@ -2,7 +2,7 @@ using System;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace BloodCraftUI.NewUI.UniverseLib.UI;
+namespace BloodCraftUI.UI.UniverseLib.UI;
 
 public static class Il2CppExtensions
 {

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using BloodCraftUI.NewUI.UniverseLib.UI;
+using BloodCraftUI.UI.UniverseLib.UI;
 using UnityEngine;
 
 namespace BloodCraftUI.UI.CustomLib.Controls;

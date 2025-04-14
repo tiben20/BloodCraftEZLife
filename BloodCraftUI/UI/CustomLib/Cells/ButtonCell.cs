@@ -1,6 +1,8 @@
 ﻿using System;
-using BloodCraftUI.NewUI.UniverseLib.UI;
-using BloodCraftUI.NewUI.UniverseLib.UI.Models;
+using BloodCraftUI.Config;
+using BloodCraftUI.UI.UniverseLib.UI;
+using BloodCraftUI.UI.UniverseLib.UI.Models;
+using BloodCraftUI.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,7 +18,7 @@ namespace BloodCraftUI.UI.CustomLib.Cells
         public override GameObject CreateContent(GameObject parent)
         {
             UIRoot = UIFactory.CreateHorizontalGroup(parent, "ButtonCell", true, false, true, true, 2, default,
-                new Color(0.11f, 0.11f, 0.11f), TextAnchor.MiddleCenter);
+                new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency), TextAnchor.MiddleCenter);
             Rect = UIRoot.GetComponent<RectTransform>();
             Rect.anchorMin = new Vector2(0, 1);
             Rect.anchorMax = new Vector2(0, 1);
@@ -28,10 +30,10 @@ namespace BloodCraftUI.UI.CustomLib.Cells
 
             Button = UIFactory.CreateButton(UIRoot, "NameButton", "Name", new ColorBlock
             {
-                normalColor = new(0.11f, 0.11f, 0.11f),
-                disabledColor = new(1, 1, 1, 0),
-                highlightedColor = new(0.16f, 0.16f, 0.16f),
-                pressedColor = new(0.05f, 0.05f, 0.05f)
+                normalColor = new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency),
+                disabledColor = new Color(1, 1, 1, 0).GetTransparent(Settings.UITransparency),
+                highlightedColor = new Color(0.16f, 0.16f, 0.16f).GetTransparent(Settings.UITransparency),
+                pressedColor = new Color(0.05f, 0.05f, 0.05f).GetTransparent(Settings.UITransparency)
             });
             UIFactory.SetLayoutElement(Button.Component.gameObject, flexibleWidth: 9999, minHeight: 25, flexibleHeight: 0);
             var buttonText = Button.Component.GetComponentInChildren<TextMeshProUGUI>();

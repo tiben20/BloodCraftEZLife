@@ -1,10 +1,10 @@
-﻿using BloodCraftUI.NewUI;
-using ProjectM.Network;
+﻿using ProjectM.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BloodCraftUI.Config;
+using BloodCraftUI.UI;
 using BloodCraftUI.UI.ModContent;
 using Unity.Entities;
 using BloodCraftUI.Utils;

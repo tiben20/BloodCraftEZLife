@@ -44,7 +44,7 @@ internal static class Extensions
 
         entity.With(action);
     }
-    public unsafe static void Write<T>(this Entity entity, T componentData) where T : struct
+    public static unsafe void Write<T>(this Entity entity, T componentData) where T : struct
     {
         ComponentType componentType = new(Il2CppType.Of<T>());
         TypeIndex typeIndex = componentType.TypeIndex;

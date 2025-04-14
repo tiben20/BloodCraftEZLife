@@ -1,16 +1,15 @@
-﻿using HarmonyLib;
-using ProjectM.Network;
-using ProjectM.UI;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using BloodCraftUI.Utils;
 using Bloodstone;
-using Eclipse.Services;
+using HarmonyLib;
+using ProjectM.Network;
+using ProjectM.UI;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace BloodCraftUI.Eclipse
+namespace BloodCraftUI.Eclipse_Research_WIP
 {
     [HarmonyPatch]
     internal class EclipseClientChatSystemPatch

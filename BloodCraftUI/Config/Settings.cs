@@ -23,13 +23,12 @@ namespace BloodCraftUI.Config
         public static bool UseHorizontalLayout => (ConfigEntries[2] as ConfigEntry<bool>)?.Value ?? true;
 
         public static int GlobalQueryIntervalInSeconds { get; } = 2;
-        public static float UITransparency { get; } = 0.6f;
-        public static float FamStatsPanelTransparency => (ConfigEntries[3] as ConfigEntry<float>)?.Value ?? 0.6f;
+        public static float UITransparency => (ConfigEntries[4] as ConfigEntry<float>)?.Value ?? 0.6f;
 
         public static string LastBindCommand
         {
-            get => (ConfigEntries[4] as ConfigEntry<string>)?.Value ?? "";
-            set => ConfigEntries[4].BoxedValue = value;
+            get => (ConfigEntries[3] as ConfigEntry<string>)?.Value ?? "";
+            set => ConfigEntries[3].BoxedValue = value;
         }
 
         
@@ -40,11 +39,11 @@ namespace BloodCraftUI.Config
                 Directory.CreateDirectory(CONFIG_PATH);
             }
 
-            ConfigEntries.Add(InitConfigEntry("GeneralOptions",  "ClearServerMessages", true, "Clear server and command messages from chat"));
-            ConfigEntries.Add(InitConfigEntry("GeneralOptions",  "FamStatsQueryIntervalInSeconds", 10, "Query interval for familiar stats update (no less than 10 sec)"));
-            ConfigEntries.Add(InitConfigEntry(UI_SETTINGS_GROUP, "UseHorizontalContentLayout", true, "Use horizontal or vertical layout for main content panel"));
-            ConfigEntries.Add(InitConfigEntry(UI_SETTINGS_GROUP, "FamStatsPanelTransparency", 0.5f, "Set transparency for FamStats panel between 1.0f as opaque and 0f as transparent"));
+            ConfigEntries.Add(InitConfigEntry("GeneralOptions",   "ClearServerMessages", true, "Clear server and command messages from chat"));
+            ConfigEntries.Add(InitConfigEntry("GeneralOptions",   "FamStatsQueryIntervalInSeconds", 10, "Query interval for familiar stats update (no less than 10 sec)"));
+            ConfigEntries.Add(InitConfigEntry(UI_SETTINGS_GROUP,  "UseHorizontalContentLayout", true, "Use horizontal or vertical layout for main content panel"));
             ConfigEntries.Add(InitConfigEntry("FamiliarSettings", "LastBindCommand", "", "Last bind fam command stored"));
+            ConfigEntries.Add(InitConfigEntry(UI_SETTINGS_GROUP,  "UITransparency", 0.6f, "Set transparency for all panels between 1.0f as opaque and 0f as transparent"));
             return this;
         }
 

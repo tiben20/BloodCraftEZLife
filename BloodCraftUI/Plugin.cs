@@ -4,8 +4,9 @@ using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
 using BloodCraftUI.Behaviors;
 using BloodCraftUI.Config;
-using BloodCraftUI.NewUI;
 using BloodCraftUI.Patches;
+using BloodCraftUI.UI;
+using BloodCraftUI.UI.CustomLib.Util;
 using BloodCraftUI.Utils;
 using Bloodstone;
 using Bloodstone.API;
@@ -63,10 +64,13 @@ namespace BloodCraftUI
                 return;
             }
 
+            Settings = new Settings().InitConfig();
+            Colour.SetOpacity(Settings.UITransparency);
+
+
             BCUIManager.Initialize();
             BCUIManager.SetActive(true);
 
-            Settings = new Settings().InitConfig();
             CoreBehavior.Setup();
             IsInitialized = true;
 

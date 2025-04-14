@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BloodCraftUI.NewUI;
-using BloodCraftUI.NewUI.UniverseLib.UI;
-using BloodCraftUI.NewUI.UniverseLib.UI.Models;
-using BloodCraftUI.NewUI.UniverseLib.UI.Panels;
-using BloodCraftUI.NewUI.UniverseLib.UI.Widgets.ScrollView;
+using BloodCraftUI.Config;
 using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Cells;
 using BloodCraftUI.UI.CustomLib.Cells.Handlers;
 using BloodCraftUI.UI.CustomLib.Panel;
+using BloodCraftUI.UI.UniverseLib.UI;
+using BloodCraftUI.UI.UniverseLib.UI.Models;
+using BloodCraftUI.UI.UniverseLib.UI.Panels;
+using BloodCraftUI.UI.UniverseLib.UI.Widgets.ScrollView;
 using BloodCraftUI.Utils;
 using UnityEngine;
 
@@ -25,6 +25,7 @@ namespace BloodCraftUI.UI.ModContent
         public override bool CanDrag => true;
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
         public override BCUIManager.Panels PanelType => BCUIManager.Panels.BoxList;
+        public override float Opacity => Settings.UITransparency;
 
         private ButtonRef _updateButton;
 
@@ -55,15 +56,9 @@ namespace BloodCraftUI.UI.ModContent
 
         protected override void ConstructPanelContent()
         {
-            /*var horGroup = UIFactory.CreateHorizontalGroup(ContentRoot, "ButtonGroup", true, false, true, false, 3,
-                default, new Color(1, 1, 1, 0), TextAnchor.MiddleLeft);
-            _updateButton = UIFactory.CreateButton(horGroup, "butPopulate", "Populate List Boxes");
-            UIFactory.SetLayoutElement(_updateButton.GameObject, minWidth: 250, minHeight: 25, flexibleWidth: 9999);
-            _updateButton.OnClick += RunUpdateCommand;*/
-
             _scrollDataHandler = new ButtonListHandler<FamBoxData, ButtonCell>(_scrollPool, GetEntries, SetCell, ShouldDisplay, OnCellClicked);
             _scrollPool = UIFactory.CreateScrollPool<ButtonCell>(ContentRoot, "ContentList", out GameObject scrollObj,
-                out _, new Color(0.03f, 0.03f, 0.03f));
+                out _, new Color(0.03f, 0.03f, 0.03f).GetTransparent(Opacity));
             _scrollPool.Initialize(_scrollDataHandler);
             UIFactory.SetLayoutElement(scrollObj, flexibleHeight: 9999);
         }

@@ -1,4 +1,4 @@
-﻿using BloodCraftUI.NewUI.UniverseLib.UI.Widgets.ScrollView;
+﻿using BloodCraftUI.UI.UniverseLib.UI.Widgets.ScrollView;
 using UnityEngine;
 
 namespace BloodCraftUI.UI.CustomLib.Cells

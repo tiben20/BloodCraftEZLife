@@ -1,10 +1,9 @@
 using System;
-using BloodCraftUI.NewUI;
 using BloodCraftUI.UI.CustomLib.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UIFactory = BloodCraftUI.NewUI.UniverseLib.UI.UIFactory;
+using UIFactory = BloodCraftUI.UI.UniverseLib.UI.UIFactory;
 
 namespace BloodCraftUI.UI.CustomLib.Controls;
 

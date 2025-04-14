@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Concurrent;
 
-namespace BloodCraftUI.NewUI.UniverseLib.UI;
+namespace BloodCraftUI.UI.UniverseLib.UI;
 
 public static class CoroutineUtility
 {

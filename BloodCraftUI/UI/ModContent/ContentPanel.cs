@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using BloodCraftUI.Config;
-using BloodCraftUI.NewUI;
-using BloodCraftUI.NewUI.UniverseLib.UI;
-using BloodCraftUI.NewUI.UniverseLib.UI.Panels;
 using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Controls;
 using BloodCraftUI.UI.CustomLib.Panel;
+using BloodCraftUI.UI.UniverseLib.UI;
+using BloodCraftUI.UI.UniverseLib.UI.Panels;
 using BloodCraftUI.Utils;
 using UnityEngine;
-using UIBase = BloodCraftUI.NewUI.UniverseLib.UI.UIBase;
+using UIBase = BloodCraftUI.UI.UniverseLib.UI.UIBase;
 
 namespace BloodCraftUI.UI.ModContent
 {
@@ -30,6 +29,7 @@ namespace BloodCraftUI.UI.ModContent
         private GameObject _uiAnchor;
         private UIScaleSettingButton _scaleButtonData;
         private List<GameObject> _objectsList;
+        public override float Opacity => Settings.UITransparency;
 
         public ContentPanel(UIBase owner) : base(owner)
         {
@@ -100,6 +100,15 @@ namespace BloodCraftUI.UI.ModContent
                 if(panel != null && panel.UIRoot.active)
                     panel.RecalculateHeight();
             };
+
+            if (Plugin.IS_TESTING)
+            {
+                var b = UIFactory.CreateButton(_uiAnchor, "TestButton", "T");
+                UIFactory.SetLayoutElement(b.GameObject, ignoreLayout: false, minWidth: 25, minHeight: 25);
+                _objectsList.Add(scaleButton.GameObject);
+                b.OnClick = () => BCUIManager.AddPanel(BCUIManager.Panels.TestPanel);
+
+            }
         }
 
         protected override void LateConstructUI()

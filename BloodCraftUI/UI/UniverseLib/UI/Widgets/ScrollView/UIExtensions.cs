@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BloodCraftUI.NewUI.UniverseLib.UI.Widgets.ScrollView;
+namespace BloodCraftUI.UI.UniverseLib.UI.Widgets.ScrollView;
 
 public static class UIExtension
 {

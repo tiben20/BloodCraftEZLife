@@ -1,4 +1,4 @@
-﻿namespace BloodCraftUI.NewUI.UniverseLib.UI.Widgets.ScrollView
+﻿namespace BloodCraftUI.UI.UniverseLib.UI.Widgets.ScrollView
 {
     /// <summary>
     /// A data source for a ScrollPool.

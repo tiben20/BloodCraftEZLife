@@ -1,14 +1,15 @@
 ﻿using System;
 using BloodCraftUI.UI.CustomLib.Util;
+using BloodCraftUI.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using AutoSliderScrollbar = BloodCraftUI.NewUI.UniverseLib.UI.Widgets.AutoSliderScrollbar;
-using ButtonRef = BloodCraftUI.NewUI.UniverseLib.UI.Models.ButtonRef;
-using ICell = BloodCraftUI.NewUI.UniverseLib.UI.Widgets.ScrollView.ICell;
-using InputFieldRef = BloodCraftUI.NewUI.UniverseLib.UI.Models.InputFieldRef;
+using AutoSliderScrollbar = BloodCraftUI.UI.UniverseLib.UI.Widgets.AutoSliderScrollbar;
+using ButtonRef = BloodCraftUI.UI.UniverseLib.UI.Models.ButtonRef;
+using ICell = BloodCraftUI.UI.UniverseLib.UI.Widgets.ScrollView.ICell;
+using InputFieldRef = BloodCraftUI.UI.UniverseLib.UI.Models.InputFieldRef;
 
-namespace BloodCraftUI.NewUI.UniverseLib.UI;
+namespace BloodCraftUI.UI.UniverseLib.UI;
 
 /// <summary>
 /// Helper class to create Unity uGUI UI objects at runtime, as well as use some custom UniverseLib UI classes such as ScrollPool, InputFieldScroller and AutoSliderScrollbar.
@@ -59,9 +60,9 @@ public static class UIFactory
 
         var colourBlock = new ColorBlock()
         {
-            normalColor = new Color(0.2f, 0.2f, 0.2f),
-            highlightedColor = new Color(0.3f, 0.3f, 0.3f),
-            pressedColor = new Color(0.15f, 0.15f, 0.15f),
+            normalColor = Colour.SelectableNormal,
+            highlightedColor = Colour.SelectableHighlighted,
+            pressedColor = Colour.SelectablePressed,
             colorMultiplier = 1
         };
 
@@ -166,8 +167,9 @@ public static class UIFactory
     /// <param name="parent">The parent GameObject to attach this to</param>
     /// <param name="bgColor">The background color of your panel. Defaults to dark grey if null.</param>
     /// <param name="contentHolder">The GameObject which you should add your actual content on to.</param>
+    /// <param name="opacity"></param>
     /// <returns>The base panel GameObject (not for adding content to).</returns>
-    public static GameObject CreatePanel(string name, GameObject parent, out GameObject contentHolder, Color? bgColor = null)
+    public static GameObject CreatePanel(string name, GameObject parent, out GameObject contentHolder, Color? bgColor = null, float opacity = 1.0f)
     {
         GameObject panelObj = CreateUIObject(name, parent);
         SetLayoutGroup<VerticalLayoutGroup>(panelObj, true, true, true, true);
@@ -197,7 +199,7 @@ public static class UIFactory
     /// </summary>
     public static GameObject CreateVerticalGroup(GameObject parent, string name, bool forceWidth, bool forceHeight,
         bool childControlWidth, bool childControlHeight, int spacing = 0, Vector4 padding = default, Color? bgColor = null,
-        TextAnchor? childAlignment = null)
+        TextAnchor? childAlignment = null, float opacity = 1.0f)
     {
         GameObject groupObj = CreateUIObject(name, parent);
 
@@ -214,7 +216,7 @@ public static class UIFactory
     /// </summary>
     public static GameObject CreateHorizontalGroup(GameObject parent, string name, bool forceExpandWidth, bool forceExpandHeight,
         bool childControlWidth, bool childControlHeight, int spacing = 0, Vector4 padding = default, Color? bgColor = null,
-        TextAnchor? childAlignment = null)
+        TextAnchor? childAlignment = null, float opacity = 1.0f)
     {
         GameObject groupObj = CreateUIObject(name, parent);
 
@@ -293,16 +295,16 @@ public static class UIFactory
     /// <param name="text">The default button text</param>
     /// <param name="normalColor">The base color for your button, with the highlighted and pressed colors generated from this.</param>
     /// <returns>A ButtonRef wrapper for your Button component.</returns>
-    public static ButtonRef CreateButton(GameObject parent, string name, string text, Color? normalColor = null)
+    public static ButtonRef CreateButton(GameObject parent, string name, string text, Color? normalColor = null, float opacity = 1.0f)
     {
         var baseColour = normalColor ?? Colour.SliderFill;
         var colourBlock = new ColorBlock()
         {
             normalColor = baseColour,
-            highlightedColor = baseColour * 1.2f,
-            selectedColor = baseColour * 1.1f,
-            pressedColor = baseColour * 0.7f,
-            disabledColor = baseColour * 0.4f,
+            highlightedColor = (baseColour * 1.2f),
+            selectedColor = (baseColour * 1.1f),
+            pressedColor = (baseColour * 0.7f),
+            disabledColor = (baseColour * 0.4f),
             colorMultiplier = 1
         };
 
@@ -320,7 +322,7 @@ public static class UIFactory
     /// <param name="text">The default button text</param>
     /// <param name="colors">The ColorBlock used for your Button component</param>
     /// <returns>A ButtonRef wrapper for your Button component.</returns>
-    public static ButtonRef CreateButton(GameObject parent, string name, string text, ColorBlock colors)
+    public static ButtonRef CreateButton(GameObject parent, string name, string text, ColorBlock colors, float opacity = 1.0f)
     {
         GameObject buttonObj = CreateUIObject(name, parent, smallElementSize);
 
@@ -329,7 +331,7 @@ public static class UIFactory
         // Setting the background to white, so that the colour block can tint it correctly
         Image image = buttonObj.AddComponent<Image>();
         image.type = Image.Type.Sliced;
-        image.color = Color.white;
+        image.color = Colour.White;
 
         var outline = buttonObj.AddComponent<Outline>();
         outline.effectColor = Colour.DarkBackground;
@@ -425,9 +427,9 @@ public static class UIFactory
 
         var colourBlock = new ColorBlock()
         {
-            normalColor = new Color(0.4f, 0.4f, 0.4f),
-            highlightedColor = new Color(0.55f, 0.55f, 0.55f),
-            pressedColor = new Color(0.3f, 0.3f, 0.3f),
+            normalColor = Colour.SliderNormal,
+            highlightedColor = Colour.SliderHighlighted,
+            pressedColor = Colour.SliderPressed,
             colorMultiplier = 1
         };
         slider.colors = colourBlock;
@@ -557,9 +559,9 @@ public static class UIFactory
 
         var colourBlock = new ColorBlock()
         {
-            normalColor = new Color(1, 1, 1, 1),
-            highlightedColor = new Color(0.95f, 0.95f, 0.95f, 1.0f),
-            pressedColor = new Color(0.78f, 0.78f, 0.78f, 1.0f),
+            normalColor = Colour.InputFieldNormal,
+            highlightedColor = Colour.InputFieldHighlighted,
+            pressedColor = Colour.InputFieldPressed,
             colorMultiplier = 1
         };
         inputField.colors = colourBlock;
@@ -642,9 +644,9 @@ public static class UIFactory
 
         var scrollbarColours = new ColorBlock()
         {
-            normalColor = new Color(0.45f, 0.45f, 0.45f),
-            highlightedColor = new Color(0.6f, 0.6f, 0.6f),
-            pressedColor = new Color(0.4f, 0.4f, 0.4f),
+            normalColor = Colour.DropDownScrollBarNormal,
+            highlightedColor = Colour.DropDownScrollbarHighlighted,
+            pressedColor = Colour.DropDownScrollbarPressed,
             colorMultiplier = 1
         };
         scrollbar.colors = scrollbarColours;
@@ -680,8 +682,8 @@ public static class UIFactory
 
         var itemToggleColors = new ColorBlock()
         {
-            normalColor = new Color(0.35f, 0.35f, 0.35f, 1.0f),
-            highlightedColor = new Color(0.25f, 0.55f, 0.25f, 1.0f),
+            normalColor = Colour.DropDownToggleNormal,
+            highlightedColor = Colour.DropDownToggleHighlighted,
             colorMultiplier = 1
         };
         itemToggle.colors = itemToggleColors;
@@ -917,10 +919,10 @@ public static class UIFactory
 
         slider.colors = new ColorBlock()
         {
-            normalColor = new Color(0.4f, 0.4f, 0.4f),
-            highlightedColor = new Color(0.5f, 0.5f, 0.5f),
-            pressedColor = new Color(0.3f, 0.3f, 0.3f),
-            disabledColor = new Color(0.5f, 0.5f, 0.5f),
+            normalColor = Colour.ScrollbarNormal,
+            highlightedColor = Colour.ScrollbarHighlighted,
+            pressedColor = Colour.ScrollbarPressed,
+            disabledColor = Colour.ScrollbarDisabled,
             colorMultiplier = 1
         };
 

@@ -2,8 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using BepInEx.Logging;
-using BloodCraftUI.NewUI.UniverseLib.UI;
 using BloodCraftUI.UI.CustomLib;
 using BloodCraftUI.Utils;
 using Bloodstone;
@@ -11,7 +9,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BloodCraftUI.NewUI.UniverseLib.UI.Panels;
+namespace BloodCraftUI.UI.UniverseLib.UI.Panels;
 
 /// <summary>
 /// Handles updating, dragging and resizing all <see cref="PanelBase"/>s for the parent <see cref="UIBase"/>.
@@ -97,8 +95,8 @@ public class PanelManager
     /// <summary>Invoked when the user clicks outside of all panels.</summary>
     public event Action? OnClickedOutsidePanels;
 
-    protected readonly List<PanelBase> panelInstances = new();
-    protected readonly Dictionary<int, PanelBase> transformIDToUIPanel = new();
+    protected readonly List<IPanelBase> panelInstances = new();
+    protected readonly Dictionary<int, IPanelBase> transformIDToUIPanel = new();
     protected readonly List<PanelDragger> draggerInstances = new();
 
     public PanelManager(UIBase owner)
@@ -143,7 +141,7 @@ public class PanelManager
     private MouseState.ButtonState previousMouseButtonState = MouseState.ButtonState.Unknown;
 
     // invoked from UIPanel ctor
-    protected internal virtual void AddPanel(PanelBase panel)
+    protected internal virtual void AddPanel(IPanelBase panel)
     {
         allDraggers.Add(panel.Dragger);
         draggerInstances.Add(panel.Dragger);
@@ -194,7 +192,7 @@ public class PanelManager
             {
                 // make sure this is a real recognized panel
                 Transform transform = PanelHolder.transform.GetChild(i);
-                if (!transformIDToUIPanel.TryGetValue(transform.GetInstanceID(), out PanelBase? panel)) continue;
+                if (!transformIDToUIPanel.TryGetValue(transform.GetInstanceID(), out IPanelBase? panel)) continue;
 
                 // check if our mouse is clicking inside the panel
                 Vector3 pos = panel.Rect.InverseTransformPoint(mousePos);

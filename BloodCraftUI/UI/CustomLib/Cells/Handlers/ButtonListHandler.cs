@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using BloodCraftUI.NewUI.UniverseLib.UI.Widgets.ScrollView;
+using BloodCraftUI.UI.UniverseLib.UI.Widgets.ScrollView;
 
 namespace BloodCraftUI.UI.CustomLib.Cells.Handlers
 {

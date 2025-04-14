@@ -1,14 +1,9 @@
-﻿using BepInEx.Unity.IL2CPP.Utils.Collections;
+﻿using System.Collections;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 using ProjectM.Physics;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
-namespace BloodCraftUI.Eclipse
+namespace BloodCraftUI.Eclipse_Research_WIP
 {
     internal static class Extensions
     {
