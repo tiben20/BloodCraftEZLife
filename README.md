@@ -52,6 +52,6 @@ Will cycle the UI scaling for all panels. You can select the scale that better s
 Mod config file path: `VRising\BepInEx\config\panthernet.BloodCraftUI.cfg`
 
 - `UseHorizontalContentLayout` when set to False will render main panel vertically.
-- `FamStatsPanelTransparency` WIP, should change fam stats panel transparency but do not work now
+- `UITransparency` change all panels transparency from 1.0f as opaque to 0f as invisible
 - `FamStatsQueryIntervalInSeconds` time in seconds between queries to server to update fam stats, minimum value is 10 sec
 - `ClearServerMessages` when set to False will make server response messages visible, which can clutter your chat 
