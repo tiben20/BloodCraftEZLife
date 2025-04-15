@@ -30,7 +30,8 @@ namespace BloodCraftUI.UI.ModContent
         public override Vector2 DefaultPivot => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultPosition => new Vector2(Owner.Scaler.m_ReferenceResolution.x - 240,
             Owner.Scaler.m_ReferenceResolution.y * 0.5f);
-        public override bool CanDrag => true;
+
+        public override bool CanDrag { get; protected set; } = true;
         private readonly Color _pbColor;
         public override float Opacity => Settings.UITransparency;
 
@@ -50,6 +51,7 @@ namespace BloodCraftUI.UI.ModContent
         private GameObject _headerContainer;
         private GameObject _progressBarContainer;
         private ProgressBar _progressBar;
+        private Toggle _pinToggle;
 
         private readonly Dictionary<string, GameObject> _statRowPool = new();
 
@@ -324,6 +326,18 @@ namespace BloodCraftUI.UI.ModContent
             _levelLabel = UIFactory.CreateLabel(horGroup, "FamLevelText", "Level: Unknown   Prestige: Unknown",
                 TextAlignmentOptions.Center, null, 16);
             UIFactory.SetLayoutElement(_levelLabel.gameObject, minWidth: 90, flexibleWidth: 0, minHeight: 28, flexibleHeight: 0);
+
+            if (CanDrag)
+            {
+                var pinButton = UIFactory.CreateToggle(_uiAnchor, "PinButton", out var pinToggle, out var pinText);
+                UIFactory.SetLayoutElement(pinButton, minHeight: 20, preferredHeight: 20, flexibleHeight: 0,
+                    minWidth: 20, preferredWidth: 20, flexibleWidth: 0, ignoreLayout: true);
+                pinToggle.isOn = false;
+                pinToggle.onValueChanged.AddListener(value => IsPinned = value);
+                _pinToggle = pinToggle;
+                //pinButton.GetComponent<RectTransform>().anchorMin = new Vector2(0, 0);
+                // pinButton.GetComponent<RectTransform>().anchorMax = new Vector2(0, 0);
+            }
         }
 
         private void CreateStatsSection()
@@ -404,6 +418,9 @@ namespace BloodCraftUI.UI.ModContent
         protected override void LateConstructUI()
         {
             base.LateConstructUI();
+
+            if(_pinToggle != null)
+                _pinToggle.isOn = IsPinned;
 
             if (Plugin.IS_TESTING)
             {

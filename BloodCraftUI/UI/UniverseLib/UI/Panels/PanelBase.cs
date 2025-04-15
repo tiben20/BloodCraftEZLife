@@ -28,7 +28,7 @@ public abstract class PanelBase : UIBehaviourModel, IPanelBase
     public virtual Vector2 DefaultPosition { get; }
     public virtual float Opacity { get; set; } = 1.0f;
 
-    public virtual bool CanDrag => true;
+    public virtual bool CanDrag { get; protected set; } = true;
     public virtual PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
     public PanelDragger Dragger { get; internal set; }
 
