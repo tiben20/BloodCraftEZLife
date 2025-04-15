@@ -7,6 +7,7 @@ using ProjectM.Gameplay.Systems;
 using ProjectM.Network;
 using ProjectM.Shared;
 using Stunlock.Core;
+using TMPro;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -21,6 +22,11 @@ internal static class Extensions
    // static PrefabCollectionSystem PrefabCollectionSystem => SystemService.PrefabCollectionSystem;
 
     const string EMPTY_KEY = "LocalizationKey.Empty";
+
+    public static bool IsEnabled(this TextMeshProUGUI entity)
+    {
+        return entity?.gameObject?.activeSelf ?? false;
+    }
 
     public static Color GetTransparent(this Color baseColor, float alpha = 0.7f)
     {

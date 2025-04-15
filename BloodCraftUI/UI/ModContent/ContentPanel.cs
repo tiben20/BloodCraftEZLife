@@ -15,7 +15,7 @@ namespace BloodCraftUI.UI.ModContent
     {
         public override string PanelId => "CorePanel";
 
-        public override int MinWidth => Settings.UseHorizontalLayout ? 340 : 100;
+        public override int MinWidth => Settings.UseHorizontalContentLayout ? 340 : 100;
         //public override int MaxWidth => 150;
 
         public override int MinHeight => 25;
@@ -38,7 +38,7 @@ namespace BloodCraftUI.UI.ModContent
         protected override void ConstructPanelContent()
         {
             TitleBar.SetActive(false);
-            _uiAnchor = Settings.UseHorizontalLayout
+            _uiAnchor = Settings.UseHorizontalContentLayout
                 ? UIFactory.CreateHorizontalGroup(ContentRoot, "UIAnchor", true, true, true, true)
                 : UIFactory.CreateVerticalGroup(ContentRoot, "UIAnchor", false, true, true, true, padding: new Vector4(5,5,5,5));
 
@@ -51,43 +51,60 @@ namespace BloodCraftUI.UI.ModContent
             UIFactory.SetLayoutElement(text.gameObject, 80, 25, 1, 1);
             _objectsList.Add(text.gameObject);
 
-            var boxListButton = UIFactory.CreateButton(_uiAnchor, "BoxListButton", "Box List");
-            UIFactory.SetLayoutElement(boxListButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
-            _objectsList.Add(boxListButton.GameObject);
-            boxListButton.OnClick = () =>
+            if (Settings.IsBoxPanelEnabled)
             {
-                BCUIManager.AddPanel(BCUIManager.Panels.BoxList);
-            };
-            var famStatsButton = UIFactory.CreateButton(_uiAnchor, "FamStatsButton", "Fam Stats");
-            UIFactory.SetLayoutElement(famStatsButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
-            _objectsList.Add(famStatsButton.GameObject);
-            famStatsButton.OnClick = () =>
-            {
-                BCUIManager.AddPanel(BCUIManager.Panels.FamStats);
-            };
+                var boxListButton = UIFactory.CreateButton(_uiAnchor, "BoxListButton", "Box List");
+                UIFactory.SetLayoutElement(boxListButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
+                _objectsList.Add(boxListButton.GameObject);
+                boxListButton.OnClick = () => { BCUIManager.AddPanel(BCUIManager.Panels.BoxList); };
+            }
 
-            var unbindButton = UIFactory.CreateButton(_uiAnchor, "FamStatsButton", "Unbind");
-            UIFactory.SetLayoutElement(unbindButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
-            _objectsList.Add(unbindButton.GameObject);
-            unbindButton.OnClick = () =>
+            if (Settings.IsFamStatsPanelEnabled)
             {
-                unbindButton.Component.interactable = false;
-                MessageService.EnqueueMessage(MessageService.BCCOM_UNBINDFAM);
-                TimerHelper.OneTickTimer(2000, () => unbindButton.Component.interactable = true);
-            };
+                var famStatsButton = UIFactory.CreateButton(_uiAnchor, "FamStatsButton", "Fam Stats");
+                UIFactory.SetLayoutElement(famStatsButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
+                _objectsList.Add(famStatsButton.GameObject);
+                famStatsButton.OnClick = () => { BCUIManager.AddPanel(BCUIManager.Panels.FamStats); };
+            }
 
-            var bindLastButton = UIFactory.CreateButton(_uiAnchor, "FamBindLastButton", "Bind Last");
-            UIFactory.SetLayoutElement(bindLastButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
-            _objectsList.Add(bindLastButton.GameObject);
-            bindLastButton.OnClick = () =>
+            if (Settings.IsBindButtonEnabled)
             {
-                if(string.IsNullOrEmpty(Settings.LastBindCommand))
-                    return;
-                bindLastButton.Component.interactable = false;
-                MessageService.EnqueueMessage(Settings.LastBindCommand);
-                TimerHelper.OneTickTimer(2000, () => bindLastButton.Component.interactable = true);
-            };
+                var unbindButton = UIFactory.CreateButton(_uiAnchor, "FamStatsButton", "Unbind");
+                UIFactory.SetLayoutElement(unbindButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
+                _objectsList.Add(unbindButton.GameObject);
+                unbindButton.OnClick = () =>
+                {
+                    unbindButton.Component.interactable = false;
+                    MessageService.EnqueueMessage(MessageService.BCCOM_UNBINDFAM);
+                    TimerHelper.OneTickTimer(2000, () => unbindButton.Component.interactable = true);
+                };
 
+                var bindLastButton = UIFactory.CreateButton(_uiAnchor, "FamBindLastButton", "Bind Last");
+                UIFactory.SetLayoutElement(bindLastButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
+                _objectsList.Add(bindLastButton.GameObject);
+                bindLastButton.OnClick = () =>
+                {
+                    if (string.IsNullOrEmpty(Settings.LastBindCommand))
+                        return;
+                    bindLastButton.Component.interactable = false;
+                    MessageService.EnqueueMessage(Settings.LastBindCommand);
+                    TimerHelper.OneTickTimer(2000, () => bindLastButton.Component.interactable = true);
+                };
+            }
+
+            if (Settings.IsCombatButtonEnabled)
+            {
+                var combatToggle = UIFactory.CreateToggle(_uiAnchor, "FamToggleCombatButton", out var toggle, out var combatText);
+                combatText.text = "Combat Mode";
+                combatText.fontSize = 12;
+                toggle.onValueChanged.AddListener(value =>
+                {
+                    toggle.interactable = false;
+                    MessageService.EnqueueMessage(MessageService.BCCOM_COMBAT);
+                    TimerHelper.OneTickTimer(2000, () => toggle.interactable = true);
+                });
+                UIFactory.SetLayoutElement(combatToggle, ignoreLayout: false, minWidth: 110, minHeight: 25);
+            }
 
             var scaleButton = UIFactory.CreateButton(_uiAnchor, "ScaleButton", "*");
             UIFactory.SetLayoutElement(scaleButton.GameObject, ignoreLayout: false, minWidth: 25, minHeight: 25);
@@ -107,7 +124,6 @@ namespace BloodCraftUI.UI.ModContent
                 UIFactory.SetLayoutElement(b.GameObject, ignoreLayout: false, minWidth: 25, minHeight: 25);
                 _objectsList.Add(scaleButton.GameObject);
                 b.OnClick = () => BCUIManager.AddPanel(BCUIManager.Panels.TestPanel);
-
             }
         }
 
@@ -115,7 +131,7 @@ namespace BloodCraftUI.UI.ModContent
         {
             base.LateConstructUI();
 
-            if (!Settings.UseHorizontalLayout)
+            if (!Settings.UseHorizontalContentLayout)
                 ForceRecalculateBasePanelWidth(_objectsList);
         }
 

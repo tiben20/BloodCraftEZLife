@@ -29,7 +29,6 @@ namespace BloodCraftUI.UI.ModContent
 
         private readonly string _boxName;
         private bool _isInitialized;
-        private ButtonRef _updateButton;
 
         public BoxContentPanel(UIBase owner, string name) : base(owner)
         {
@@ -130,8 +129,6 @@ namespace BloodCraftUI.UI.ModContent
 
         private void EnableAllButtons(bool value)
         {
-            if(_updateButton != null)
-                _updateButton.Component.interactable = value;
             foreach (var a in _scrollPool.CellPool)
                 a.Button.Component.interactable = value;
         }

@@ -8,30 +8,45 @@ namespace BloodCraftUI.Config
     public class Settings
     {
         private static string CONFIG_PATH = Path.Combine(Paths.ConfigPath, PluginInfo.PLUGIN_NAME);
-        private static readonly List<ConfigEntryBase> ConfigEntries = new();
+        private static readonly Dictionary<string, ConfigEntryBase> ConfigEntries = new();
         public const string UI_SETTINGS_GROUP = "UISettings";
-        public static bool ClearServerMessages => (ConfigEntries[0] as ConfigEntry<bool>)?.Value ?? false;
+        public const string FAM_SETTINGS_GROUP = "FamiliarSettings";
+        public const string GENERAL_SETTINGS_GROUP = "GeneralOptions";
+
+
+        public static bool ClearServerMessages =>
+            (ConfigEntries[nameof(ClearServerMessages)] as ConfigEntry<bool>)?.Value ?? false;
+
         public static int FamStatsQueryIntervalInSeconds
         {
             get
             {
-                var value = (ConfigEntries[1] as ConfigEntry<int>)?.Value ?? 10;
+                var value = (ConfigEntries[nameof(FamStatsQueryIntervalInSeconds)] as ConfigEntry<int>)?.Value ?? 10;
                 if (value < 5) value = 5;
                 return value;
             }
         }
-        public static bool UseHorizontalLayout => (ConfigEntries[2] as ConfigEntry<bool>)?.Value ?? true;
+
+        public static bool UseHorizontalContentLayout =>
+            (ConfigEntries[nameof(UseHorizontalContentLayout)] as ConfigEntry<bool>)?.Value ?? true;
 
         public static int GlobalQueryIntervalInSeconds { get; } = 2;
-        public static float UITransparency => (ConfigEntries[4] as ConfigEntry<float>)?.Value ?? 0.6f;
+
+        public static float UITransparency =>
+            (ConfigEntries[nameof(UITransparency)] as ConfigEntry<float>)?.Value ?? 0.6f;
 
         public static string LastBindCommand
         {
-            get => (ConfigEntries[3] as ConfigEntry<string>)?.Value ?? "";
-            set => ConfigEntries[3].BoxedValue = value;
+            get => (ConfigEntries[nameof(LastBindCommand)] as ConfigEntry<string>)?.Value ?? "";
+            set => ConfigEntries[nameof(LastBindCommand)].BoxedValue = value;
         }
 
+        public static bool IsFamStatsPanelEnabled => (ConfigEntries[nameof(IsFamStatsPanelEnabled)] as ConfigEntry<bool>)?.Value ?? true;
+        public static bool IsBoxPanelEnabled => (ConfigEntries[nameof(IsBoxPanelEnabled)] as ConfigEntry<bool>)?.Value ?? true;
+        public static bool IsBindButtonEnabled => (ConfigEntries[nameof(IsBindButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
+        public static bool IsCombatButtonEnabled => (ConfigEntries[nameof(IsCombatButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
         
+
         public Settings InitConfig()
         {
             if (!Directory.Exists(CONFIG_PATH))
@@ -39,11 +54,19 @@ namespace BloodCraftUI.Config
                 Directory.CreateDirectory(CONFIG_PATH);
             }
 
-            ConfigEntries.Add(InitConfigEntry("GeneralOptions",   "ClearServerMessages", true, "Clear server and command messages from chat"));
-            ConfigEntries.Add(InitConfigEntry("GeneralOptions",   "FamStatsQueryIntervalInSeconds", 10, "Query interval for familiar stats update (no less than 10 sec)"));
-            ConfigEntries.Add(InitConfigEntry(UI_SETTINGS_GROUP,  "UseHorizontalContentLayout", true, "Use horizontal or vertical layout for main content panel"));
-            ConfigEntries.Add(InitConfigEntry("FamiliarSettings", "LastBindCommand", "", "Last bind fam command stored"));
-            ConfigEntries.Add(InitConfigEntry(UI_SETTINGS_GROUP,  "UITransparency", 0.6f, "Set transparency for all panels between 1.0f as opaque and 0f as transparent"));
+            InitConfigEntry(GENERAL_SETTINGS_GROUP, nameof(ClearServerMessages), true,
+                "Clear server and command messages from chat");
+            InitConfigEntry(GENERAL_SETTINGS_GROUP, nameof(FamStatsQueryIntervalInSeconds), 10,
+                "Query interval for familiar stats update (no less than 10 sec)");
+            InitConfigEntry(UI_SETTINGS_GROUP, nameof(UseHorizontalContentLayout), true,
+                "Use horizontal or vertical layout for main content panel");
+            InitConfigEntry(FAM_SETTINGS_GROUP, nameof(LastBindCommand), "", "Last bind fam command stored");
+            InitConfigEntry(UI_SETTINGS_GROUP, nameof(UITransparency), 0.6f,
+                "Set transparency for all panels between 1.0f as opaque and 0f as transparent");
+            InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsFamStatsPanelEnabled), true, "Is fam stats panel enabled");
+            InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsBoxPanelEnabled), true, "Is box panel enabled");
+            InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsBindButtonEnabled), true, "Is bind button enabled");
+            InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsCombatButtonEnabled), true, "Is combat button enabled");
             return this;
         }
 
@@ -64,6 +87,8 @@ namespace BloodCraftUI.Config
                     entry.Value = existingEntry.Value;
                 }
             }
+
+            ConfigEntries.Add(key, entry);
             return entry;
         }
     }

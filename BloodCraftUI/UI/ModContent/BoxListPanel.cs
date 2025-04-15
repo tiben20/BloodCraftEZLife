@@ -27,8 +27,6 @@ namespace BloodCraftUI.UI.ModContent
         public override BCUIManager.Panels PanelType => BCUIManager.Panels.BoxList;
         public override float Opacity => Settings.UITransparency;
 
-        private ButtonRef _updateButton;
-
         public BoxListPanel(UIBase owner) : base(owner)
         {
             SetTitle("Box List");
@@ -83,8 +81,6 @@ namespace BloodCraftUI.UI.ModContent
 
         private void EnableAllButtons(bool value)
         {
-            if(_updateButton != null)
-                _updateButton.Component.interactable = value;
             foreach (var a in _scrollPool.CellPool)
                 a.Button.Component.interactable = value;
         }

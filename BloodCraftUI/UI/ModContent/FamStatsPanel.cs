@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
@@ -10,16 +11,19 @@ using BloodCraftUI.UI.CustomLib.Util;
 using BloodCraftUI.UI.UniverseLib.UI;
 using BloodCraftUI.UI.UniverseLib.UI.Panels;
 using BloodCraftUI.Utils;
+using ProjectM;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Unity.Entities.Conversion.SceneHierarchy;
+using Object = UnityEngine.Object;
 
 namespace BloodCraftUI.UI.ModContent
 {
     internal class FamStatsPanel : ResizeablePanelBase
     {
         public override string PanelId => "FamStatsPanel";
-        public override int MinWidth => 240;
+        public override int MinWidth => 220;
         public override int MinHeight => 300;
         public override Vector2 DefaultAnchorMin => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultAnchorMax => new Vector2(0.5f, 0.5f);
@@ -31,7 +35,7 @@ namespace BloodCraftUI.UI.ModContent
         public override float Opacity => Settings.UITransparency;
 
         // Allow vertical resizing only
-        public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.None;
+        public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.Horizontal;
 
         public override BCUIManager.Panels PanelType => BCUIManager.Panels.FamStats;
         private GameObject _uiAnchor;
@@ -40,6 +44,7 @@ namespace BloodCraftUI.UI.ModContent
 
         // Controls for an update
         private TextMeshProUGUI _nameLabel;
+        private TextMeshProUGUI _schoolLabel;
         private TextMeshProUGUI _levelLabel;
         private GameObject _statsContainer;
         private GameObject _headerContainer;
@@ -55,17 +60,17 @@ namespace BloodCraftUI.UI.ModContent
 
         public void RecalculateHeight()
         {
-            if (_uiAnchor == null) return;
+            if (_uiAnchor == null || Rect == null) return;
 
             // Force a recursive layout update
-            foreach (var child in _uiAnchor.transform)
+            /*foreach (var child in _uiAnchor.transform)
             {
                 var childRect = child as RectTransform;
                 if (childRect != null)
                 {
                     LayoutRebuilder.ForceRebuildLayoutImmediate(childRect);
                 }
-            }
+            }*/
 
             // Get VerticalLayoutGroup to account for its spacing and padding
             var vlg = _uiAnchor.GetComponent<VerticalLayoutGroup>();
@@ -73,7 +78,7 @@ namespace BloodCraftUI.UI.ModContent
 
             // Count active children and calculate height
             float contentHeight = 0;
-            int activeChildCount = 0;
+            //int activeChildCount = 0;
 
             var t = _headerContainer.GetComponent<RectTransform>();
             if (t != null)
@@ -101,10 +106,7 @@ namespace BloodCraftUI.UI.ModContent
             contentHeight += vlg.padding.top + vlg.padding.bottom + 30f;
 
             // Set panel height
-            if (Rect != null)
-            {
-                Rect.sizeDelta = new Vector2(Rect.sizeDelta.x, contentHeight);
-            }
+            Rect.sizeDelta = new Vector2(Rect.sizeDelta.x, contentHeight);
         }
 
         public void UpdateData(FamStats data)
@@ -116,11 +118,29 @@ namespace BloodCraftUI.UI.ModContent
 
             // Ensure we have a name to display
             string nameToShow = !string.IsNullOrEmpty(data.Name) ? data.Name : "Unknown Familiar";
-
-            // Update name with school if available
-            var schoolText = string.IsNullOrEmpty(data.School) ? "" : $" - {data.School}";
             if (_nameLabel != null)
-                _nameLabel.text = $"{nameToShow}{schoolText}";
+                _nameLabel.text = nameToShow;
+
+            // Update school if available
+            if (_schoolLabel != null)
+            {
+                if (!string.IsNullOrEmpty(data.School))
+                {
+                    _schoolLabel.text = data.School;
+                    var color = Color.white;
+                    if (Enum.TryParse<AbilitySchoolType>(data.School, out var type))
+                    {
+                        var colorData = GameHelper.GetColorNameFromSchool(type);
+                        color = colorData.Color;
+                    }
+                    _schoolLabel.color = color;
+                    _schoolLabel.gameObject.SetActive(true);
+                }
+                else
+                    _schoolLabel.gameObject.SetActive(false);
+
+                //UIFactory.SetLayoutElement(_headerContainer, preferredHeight: _schoolLabel.IsActive() ? 75 : 50);
+            }
 
             // Update level info
             if (_levelLabel != null)
@@ -256,7 +276,7 @@ namespace BloodCraftUI.UI.ModContent
             vlg.childAlignment = TextAnchor.UpperCenter; // Align to top
             vlg.childControlHeight = true;
             vlg.childControlWidth = true;
-            vlg.childForceExpandHeight = false; // Critical to prevent extra space
+            vlg.childForceExpandHeight = true;
             vlg.childForceExpandWidth = true;
             vlg.spacing = 2;
             vlg.padding.left = 8;
@@ -282,7 +302,7 @@ namespace BloodCraftUI.UI.ModContent
             // Create container with reduced height and spacing
             _headerContainer = UIFactory.CreateVerticalGroup(_uiAnchor, "HeaderContainer", false, false, true, true, 2,
                 default, new Color(0.15f, 0.15f, 0.15f).GetTransparent(Opacity));
-            UIFactory.SetLayoutElement(_headerContainer, minHeight: 60, preferredHeight: 60, flexibleHeight: 0, flexibleWidth: 9999);
+            UIFactory.SetLayoutElement(_headerContainer, minHeight: 60, preferredHeight: 50, flexibleHeight: 0, flexibleWidth: 9999);
 
             // Familiar name with larger font
             _nameLabel = UIFactory.CreateLabel(_headerContainer, "FamNameText", BloodCraftStateService.CurrentFamName ?? "Unknown",
@@ -290,18 +310,28 @@ namespace BloodCraftUI.UI.ModContent
             UIFactory.SetLayoutElement(_nameLabel.gameObject, minHeight: 25, preferredHeight: 25, flexibleHeight: 0, flexibleWidth: 9999);
             _nameLabel.fontStyle = FontStyles.Bold;
 
-            // Level info - reduced height
-            _levelLabel = UIFactory.CreateLabel(_headerContainer, "FamLevelText", "Level: Unknown   Prestige: Unknown",
+            var horGroup = UIFactory.CreateHorizontalGroup(_headerContainer, "txtContainer", false, false, true, true,2,
+                childAlignment: TextAnchor.MiddleCenter);
+            UIFactory.SetLayoutElement(horGroup, minHeight: 25, preferredHeight: 25, flexibleHeight: 0, flexibleWidth: 9999);
+
+            // Familiar school with larger font
+            _schoolLabel = UIFactory.CreateLabel(horGroup, "FamSchoolText", "Unknown",
                 TextAlignmentOptions.Center, null, 16);
-            UIFactory.SetLayoutElement(_levelLabel.gameObject, minHeight: 25, preferredHeight: 25, flexibleHeight: 0, flexibleWidth: 9999);
+            UIFactory.SetLayoutElement(_schoolLabel.gameObject, minWidth: 60, flexibleWidth: 0, minHeight: 28, flexibleHeight: 0);
+            _schoolLabel.fontStyle = FontStyles.Bold;
+
+            // Level info - reduced height
+            _levelLabel = UIFactory.CreateLabel(horGroup, "FamLevelText", "Level: Unknown   Prestige: Unknown",
+                TextAlignmentOptions.Center, null, 16);
+            UIFactory.SetLayoutElement(_levelLabel.gameObject, minWidth: 90, flexibleWidth: 0, minHeight: 28, flexibleHeight: 0);
         }
 
         private void CreateStatsSection()
         {
-            // Stats container with reduced height and tighter spacing
+            // Stats container
             _statsContainer = UIFactory.CreateVerticalGroup(_uiAnchor, "StatsContainer", true, false, true, true, 2,
                 new Vector4(4, 2, 4, 2), new Color(0.12f, 0.12f, 0.12f).GetTransparent(Opacity));
-            UIFactory.SetLayoutElement(_statsContainer, minHeight: 20, preferredHeight: 120, flexibleHeight: 0, flexibleWidth: 9999);
+            UIFactory.SetLayoutElement(_statsContainer, minHeight: 20, preferredHeight: 0, flexibleHeight: 9999, flexibleWidth: 9999);
         }
 
         private void CreateStatRow(GameObject parent, string label, out GameObject rowObj, out TextMeshProUGUI valueText)
@@ -313,11 +343,11 @@ namespace BloodCraftUI.UI.ModContent
 
             // Stat label - reduced height
             var statLabel = UIFactory.CreateLabel(rowObj, $"{label}Label", label, TextAlignmentOptions.Left, null, 15);
-            UIFactory.SetLayoutElement(statLabel.gameObject, minWidth: 150, flexibleWidth: 0, minHeight: 28, flexibleHeight: 0);
+            UIFactory.SetLayoutElement(statLabel.gameObject, minWidth: 90, flexibleWidth: 0, minHeight: 28, flexibleHeight: 0);
 
             // Value display - reduced height
             valueText = UIFactory.CreateLabel(rowObj, $"{label}Value", "0", TextAlignmentOptions.Right, Color.white, 15);
-            UIFactory.SetLayoutElement(valueText.gameObject, minWidth: 100, flexibleWidth: 9999, minHeight: 28, flexibleHeight: 0);
+            UIFactory.SetLayoutElement(valueText.gameObject, minWidth: 90, flexibleWidth: 9999, minHeight: 28, flexibleHeight: 0);
             valueText.fontStyle = FontStyles.Bold;
         }
 
@@ -331,7 +361,7 @@ namespace BloodCraftUI.UI.ModContent
                 flexibleHeight: 0, flexibleWidth: 9999);
 
             // Create the progress bar
-            _progressBar = new ProgressBar(_progressBarContainer, Colour.DefaultBar);
+            _progressBar = new ProgressBar(_uiAnchor, Colour.DefaultBar, Color.black.GetTransparent(Opacity));
 
             // Set initial progress
             _progressBar.SetProgress(0f, "", "XP: 0 (0%)", ActiveState.Active, Colour.DefaultBar, "", false);
@@ -395,12 +425,12 @@ namespace BloodCraftUI.UI.ModContent
                         {"Stat3", "Value3"},
                         {"Stat4", "Value4"},
                         {"Stat5", "Value5"},
+                        {"Stat6", "Value6"},
+                        {"Stat7", "Value7"},
                     }
                 });
             }
 
-            // Delay the initial height calculation
-            //CoroutineUtility.StartCoroutine(DelayedHeightCalculation());
             RecalculateHeight();
 
             // Start querying for updates
@@ -437,18 +467,6 @@ namespace BloodCraftUI.UI.ModContent
             _queryTimer?.Stop();
         }
 
-        private IEnumerator DelayedHeightCalculation()
-        {
-            // Wait a few frames for layout to stabilize
-            yield return null;
-            yield return null;
-            yield return null;
-
-            // Calculate the height based on content
-            RecalculateHeight();
-        }
-
-
         public override void SetActive(bool active)
         {
             base.SetActive(active);
@@ -474,9 +492,9 @@ namespace BloodCraftUI.UI.ModContent
             base.ConstructUI();
 
             // Make panel background semi-transparent
-            var images = UIRoot.GetComponentsInChildren<Image>(true);
-            foreach (var img in images)
-                img.color = img.color.GetTransparent(Opacity);
+            //var images = UIRoot.GetComponentsInChildren<Image>(true);
+            //foreach (var img in images)
+            //    img.color = img.color.GetTransparent(Opacity);
         }
     }
 }

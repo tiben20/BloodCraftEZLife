@@ -32,7 +32,7 @@ namespace BloodCraftUI.UI.ModContent
         }
 
 
-        public void Destroy()
+        public override void Destroy()
         {
         }
 

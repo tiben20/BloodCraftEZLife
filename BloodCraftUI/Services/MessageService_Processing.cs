@@ -23,6 +23,7 @@ namespace BloodCraftUI.Services
         public const string BCCOM_BINDFAM = ".fam b {0}";
         public const string BCCOM_UNBINDFAM = ".fam ub";
         public const string BCCOM_FAMSTATS = ".fam gl";
+        public const string BCCOM_COMBAT = ".fam c";
 
         private enum InterceptFlag
         {
@@ -65,15 +66,23 @@ namespace BloodCraftUI.Services
                         case not null when message.StartsWith(BCCOM_LISTBOXES1):
                             ClearFlags();
                             Flags[InterceptFlag.ListBoxes] = 1;
-                            BCUIManager.GetPanel<BoxListPanel>().Reset();
+                            var panel = BCUIManager.GetPanel<BoxListPanel>();
+                            if (panel != null)
+                            {
+                                panel.Reset();
+                            }
                             break;
                         case not null when message.StartsWith(BCCOM_BOXCONTENT):
                             ClearFlags();
                             Flags[InterceptFlag.ListBoxContent] = 1;
                             if (_currentBox != null)
                             {
-                                BCUIManager.GetBoxPanel(_currentBox).Reset();
-                                ProcessBoxContentEntry(message);
+                                var boxPanel = BCUIManager.GetBoxPanel(_currentBox);
+                                if (boxPanel != null)
+                                {
+                                    boxPanel.Reset();
+                                    ProcessBoxContentEntry(message);
+                                }
                             }
                             break;
                     }
@@ -110,7 +119,7 @@ namespace BloodCraftUI.Services
                     if (match.Success)
                     {
                         _oldVersionName = match.Groups["name"].Value;
-                        _oldVersionColor = match.Groups["color"].Success ? GameHelper.GetSchoolFromColor(match.Groups["color"].Value) : null;
+                        _oldVersionColor = match.Groups["color"].Success ? GameHelper.GetSchoolFromHexColor(match.Groups["color"].Value) : null;
                     }
                 }
                     break;
@@ -122,25 +131,30 @@ namespace BloodCraftUI.Services
                     break;
                 case not null when message.StartsWith("Your familiar is level"):
                     ClearFlags();
-                    Flags[InterceptFlag.FamStats] = 1;
+                    Flags[InterceptFlag.FamStats] = Settings.IsFamStatsPanelEnabled ? 1 : 0;
                     ProcessFamStatsData(message, 0);
                     if (Settings.ClearServerMessages)
                         DestroyMessage(entity);
                     break;
                 case not null when message.StartsWith("Familiar Boxes"):
                     ClearFlags();
-                    Flags[InterceptFlag.ListBoxes] = 1;
-                    BCUIManager.GetPanel<BoxListPanel>().Reset();
+                    Flags[InterceptFlag.ListBoxes] = Settings.IsBoxPanelEnabled ? 1 : 0;
+                    BCUIManager.GetPanel<BoxListPanel>()?.Reset();
+
                     if (Settings.ClearServerMessages)
                         DestroyMessage(entity);
                     break;
                 case not null when message.StartsWith("<color=yellow>1</color>|"):
                     ClearFlags();
-                    Flags[InterceptFlag.ListBoxContent] = 1;
+                    Flags[InterceptFlag.ListBoxContent] = Settings.IsBoxPanelEnabled ? 1 : 0;
                     if (_currentBox != null)
                     {
-                        BCUIManager.GetBoxPanel(_currentBox).Reset();
-                        ProcessBoxContentEntry(message);
+                        var panel = BCUIManager.GetBoxPanel(_currentBox);
+                        if (panel != null)
+                        {
+                            panel.Reset();
+                            ProcessBoxContentEntry(message);
+                        }
                     }
                     if (Settings.ClearServerMessages)
                         DestroyMessage(entity);
@@ -299,7 +313,7 @@ namespace BloodCraftUI.Services
             {
                 var colorText = Regex.Match(message, EXTRACT_COLOR_PATTERN).Value;
                 var text = string.Join(' ', Regex.Matches(message, COLOR_PATTERN).Select(a => a.Groups[1].Value));
-                var spellSchool = GameHelper.GetSchoolFromColor(colorText);
+                var spellSchool = GameHelper.GetSchoolFromHexColor(colorText);
                 var colorName = GameHelper.GetColorNameFromSchool(spellSchool);
                 var text2 = $"{text.Substring(2).Trim()}{(spellSchool == null ? null : $" - {colorName.Name}")}";
                 var number = Convert.ToInt32(text.Substring(0, char.IsDigit(text[1]) ? 2 : 1));

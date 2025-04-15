@@ -24,14 +24,12 @@ namespace BloodCraftUI.Utils
                     return new ColorNameData { Name = "Chaos", Color = new Color(160f, 32f, 240f) };
                 case AbilitySchoolType.Storm:
                     return new ColorNameData { Name = "Storm", Color = new Color(255f, 215f, 0f) };
-                case AbilitySchoolType.Shadow:
-                    throw new Exception("SHADOW TYPE!!!"); //TODO
                 default:
                     throw new ArgumentOutOfRangeException(nameof(schoolType));
             }
         }
 
-        internal static AbilitySchoolType? GetSchoolFromColor(string colorText)
+        internal static AbilitySchoolType? GetSchoolFromHexColor(string colorText)
         {
             switch (colorText)
             {
@@ -47,8 +45,6 @@ namespace BloodCraftUI.Utils
                     return AbilitySchoolType.Chaos;
                 case "#00FF00":
                     return AbilitySchoolType.Unholy;
-                case "SHADOW": //TODO
-                    return AbilitySchoolType.Shadow;
                 default:
                     return null;
 

@@ -44,7 +44,7 @@ public class ProgressBar
     private ActiveState _activeState = ActiveState.Unchanged;
     private float _currentProgress = 0f;
 
-    public ProgressBar(GameObject panel, Color fillColor)
+    public ProgressBar(GameObject panel, Color fillColor, Color backColor)
     {
         // Create base container
         _contentBase = UIFactory.CreateUIObject("MaskedProgressBar", panel);
@@ -58,12 +58,12 @@ public class ProgressBar
 
         // Add background image
         var bgImage = _contentBase.AddComponent<Image>();
-        bgImage.color = Color.black;
+        bgImage.color = backColor;
 
         // Add canvas group and outline
         _canvasGroup = _contentBase.AddComponent<CanvasGroup>();
         _highlight = _contentBase.AddComponent<Outline>();
-        _highlight.effectColor = Color.black;
+        _highlight.effectColor = backColor;
 
         // Create a mask object for clipping the fill
         _maskObject = UIFactory.CreateUIObject("MaskRect", _contentBase);
