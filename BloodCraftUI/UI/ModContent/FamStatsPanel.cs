@@ -51,7 +51,6 @@ namespace BloodCraftUI.UI.ModContent
         private GameObject _headerContainer;
         private GameObject _progressBarContainer;
         private ProgressBar _progressBar;
-        private Toggle _pinToggle;
 
         private readonly Dictionary<string, GameObject> _statRowPool = new();
 
@@ -63,16 +62,6 @@ namespace BloodCraftUI.UI.ModContent
         public void RecalculateHeight()
         {
             if (_uiAnchor == null || Rect == null) return;
-
-            // Force a recursive layout update
-            /*foreach (var child in _uiAnchor.transform)
-            {
-                var childRect = child as RectTransform;
-                if (childRect != null)
-                {
-                    LayoutRebuilder.ForceRebuildLayoutImmediate(childRect);
-                }
-            }*/
 
             // Get VerticalLayoutGroup to account for its spacing and padding
             var vlg = _uiAnchor.GetComponent<VerticalLayoutGroup>();
@@ -329,14 +318,27 @@ namespace BloodCraftUI.UI.ModContent
 
             if (CanDrag)
             {
-                var pinButton = UIFactory.CreateToggle(_uiAnchor, "PinButton", out var pinToggle, out var pinText);
-                UIFactory.SetLayoutElement(pinButton, minHeight: 20, preferredHeight: 20, flexibleHeight: 0,
-                    minWidth: 20, preferredWidth: 20, flexibleWidth: 0, ignoreLayout: true);
+                // Create pin button as a child of ContentRoot (panel root) instead of _uiAnchor
+                var pinButton = UIFactory.CreateToggle(ContentRoot, "PinButton", out var pinToggle, out var pinText);
+
+                // Set layout element to position it correctly
+                UIFactory.SetLayoutElement(pinButton, minHeight: 15, preferredHeight: 15, flexibleHeight: 0,
+                    minWidth: 15, preferredWidth: 15, flexibleWidth: 0, ignoreLayout: true);
+
+                // Set RectTransform to position it at the top left
+                RectTransform pinRect = pinButton.GetComponent<RectTransform>();
+                pinRect.anchorMin = new Vector2(0, 1);
+                pinRect.anchorMax = new Vector2(0, 1);
+                pinRect.pivot = new Vector2(0, 1);
+                pinRect.anchoredPosition = new Vector2(5, -5); // Offset from top left corner
+
+                // Set toggle properties
                 pinToggle.isOn = false;
                 pinToggle.onValueChanged.AddListener(value => IsPinned = value);
-                _pinToggle = pinToggle;
-                //pinButton.GetComponent<RectTransform>().anchorMin = new Vector2(0, 0);
-                // pinButton.GetComponent<RectTransform>().anchorMax = new Vector2(0, 0);
+                PinPanelToggleControl = pinToggle;
+
+                // Make the label text empty or minimal
+                pinText.text = "";
             }
         }
 
@@ -419,14 +421,11 @@ namespace BloodCraftUI.UI.ModContent
         {
             base.LateConstructUI();
 
-            if(_pinToggle != null)
-                _pinToggle.isOn = IsPinned;
-
             if (Plugin.IS_TESTING)
             {
                 UpdateData(new FamStats
                 {
-                    Name = "TestFamiliar",
+                    Name = "TestFamiliar Test Familiar",
                     Level = 99,
                     PrestigeLevel = 5,
                     ExperienceValue = 6500,

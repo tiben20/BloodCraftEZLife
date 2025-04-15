@@ -3,10 +3,12 @@ using BloodCraftUI.Config;
 using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Controls;
 using BloodCraftUI.UI.CustomLib.Panel;
+using BloodCraftUI.UI.CustomLib.Util;
 using BloodCraftUI.UI.UniverseLib.UI;
 using BloodCraftUI.UI.UniverseLib.UI.Panels;
 using BloodCraftUI.Utils;
 using UnityEngine;
+using UnityEngine.UI;
 using UIBase = BloodCraftUI.UI.UniverseLib.UI.UIBase;
 
 namespace BloodCraftUI.UI.ModContent
@@ -29,6 +31,7 @@ namespace BloodCraftUI.UI.ModContent
         private GameObject _uiAnchor;
         private UIScaleSettingButton _scaleButtonData;
         private List<GameObject> _objectsList;
+        private Toggle _pinToggle;
         public override float Opacity => Settings.UITransparency;
 
         public ContentPanel(UIBase owner) : base(owner)
@@ -46,6 +49,26 @@ namespace BloodCraftUI.UI.ModContent
             Dragger.OnEndResize();
 
             _objectsList = new List<GameObject>();
+
+
+            if (CanDrag)
+            {
+                // Create pin button as a child of ContentRoot (panel root) instead of _uiAnchor
+                var pinButton = UIFactory.CreateToggle(_uiAnchor, "PinButton", out var pinToggle, out var pinText);
+                // Set layout element to position it correctly
+                UIFactory.SetLayoutElement(pinButton, minHeight: 15, preferredHeight: 15, flexibleHeight: 0,
+                    minWidth: 15, preferredWidth: 15, flexibleWidth: 0, ignoreLayout: false);
+                // Set RectTransform to position it at the top left
+                //RectTransform pinRect = pinButton.GetComponent<RectTransform>();
+                
+                // Set toggle properties
+                pinToggle.isOn = false;
+                pinToggle.onValueChanged.AddListener(value => IsPinned = value);
+                _pinToggle = pinToggle;
+
+                // Make the label text empty or minimal
+                pinText.text = " ";
+            }
 
             var text = UIFactory.CreateLabel(_uiAnchor, "UIAnchorText", $"BCUI {PluginInfo.PLUGIN_VERSION}");
             UIFactory.SetLayoutElement(text.gameObject, 80, 25, 1, 1);

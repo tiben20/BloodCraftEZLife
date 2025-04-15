@@ -23,7 +23,6 @@ public static class Colour
     public static Color PanelBackground = new(0.17f, 0.17f, 0.17f);
     public static Color SliderFill = new(0.3f, 0.3f, 0.3f);
     public static Color SliderHandle = new(0.5f, 0.5f, 0.5f);
-    public static Color CheckMark = new(0.6f, 0.7f, 0.6f);
     public static Color DefaultText = Color.white;
     public static Color PlaceHolderText = SliderHandle;
 
@@ -50,6 +49,9 @@ public static class Colour
     public static Color InputFieldHighlighted = new(0.95f, 0.95f, 0.95f);
     public static Color InputFieldPressed = new(0.78f, 0.78f, 0.78f);
 
+    public static Color ToggleNormal = Color.black;
+    public static Color ToggleCheckMark = new(0.6f, 0.7f, 0.6f);
+
     // TODO check if the viewport objects even need a colour or image
     public static Color ViewportBackground = new(0.07f, 0.07f, 0.07f);
     public static Color White  = Color.white;
@@ -73,7 +75,7 @@ public static class Colour
         PanelBackground = PanelBackground.GetTransparent(opacity);
         SliderFill = SliderFill.GetTransparent(opacity);
         SliderHandle = SliderHandle.GetTransparent(opacity);
-        CheckMark = CheckMark.GetTransparent(opacity);
+        ToggleCheckMark = ToggleCheckMark.GetTransparent(opacity);
         DefaultText = DefaultText.GetTransparent(opacity);
         PlaceHolderText = PlaceHolderText.GetTransparent(opacity);
 
@@ -99,6 +101,8 @@ public static class Colour
         InputFieldNormal = InputFieldNormal.GetTransparent(opacity);
         InputFieldHighlighted = InputFieldHighlighted.GetTransparent(opacity);
         InputFieldPressed = InputFieldPressed.GetTransparent(opacity);
+
+        ToggleNormal = ToggleNormal.GetTransparent(opacity);
     }
 
     /// <summary>

@@ -54,6 +54,8 @@ public class PanelDragger
 
     protected internal virtual void Update(MouseState.ButtonState state, Vector3 rawMousePos)
     {
+        if(UIPanel.IsPinned) return;
+
         if (!(AllowDrag || AllowResize > 0)) return;
 
         Vector3 resizePos = Rect.InverseTransformPoint(rawMousePos);

@@ -504,7 +504,7 @@ public static class UIFactory
 
         var checkBgObj = CreateUIObject("Background", toggleObj);
         var bgImage = checkBgObj.AddComponent<Image>();
-        bgImage.color = bgColor == default ? Colour.DarkBackground : bgColor;
+        bgImage.color = bgColor == default ? Colour.ToggleNormal: bgColor;
 
         SetLayoutGroup<HorizontalLayoutGroup>(checkBgObj, true, true, true, true, 0, 2, 2, 2, 2);
         SetLayoutElement(checkBgObj, minWidth: checkWidth, flexibleWidth: 0, minHeight: checkHeight, flexibleHeight: 0);
@@ -513,7 +513,7 @@ public static class UIFactory
 
         GameObject checkMarkObj = CreateUIObject("Checkmark", checkBgObj);
         Image checkImage = checkMarkObj.AddComponent<Image>();
-        checkImage.color = Colour.CheckMark;
+        checkImage.color = Colour.ToggleCheckMark;
 
         // Label 
 

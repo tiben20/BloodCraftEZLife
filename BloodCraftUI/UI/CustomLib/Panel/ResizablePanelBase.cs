@@ -1,31 +1,18 @@
 using System;
-using System.Runtime.CompilerServices;
 using BloodCraftUI.UI.UniverseLib.UI.Panels;
 using BloodCraftUI.Utils;
-using Panels_PanelBase = BloodCraftUI.UI.UniverseLib.UI.Panels.PanelBase;
 using UIBase = BloodCraftUI.UI.UniverseLib.UI.UIBase;
 
 namespace BloodCraftUI.UI.CustomLib.Panel;
 
 public abstract class ResizeablePanelBase : PanelBase
 {
-    private bool _isPinned;
     protected ResizeablePanelBase(UIBase owner) : base(owner) { }
 
     public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
     public virtual bool ResizeWholePanel => true;
     private string PanelConfigKey => $"{PanelType}{PanelId}".Replace("'", "").Replace("\"", "");
     private bool ApplyingSaveData { get; set; } = true;
-
-    protected bool IsPinned
-    {
-        get => _isPinned;
-        set
-        {
-            _isPinned = value;
-            CanDrag = !value;
-        }
-    }
 
     protected override void ConstructPanelContent()
     {
@@ -144,6 +131,9 @@ public abstract class ResizeablePanelBase : PanelBase
         }
 
         ApplyingSaveData = false;
+
+        if (PinPanelToggleControl != null)
+            PinPanelToggleControl.isOn = IsPinned;
 
         Dragger.OnEndResize();
     }

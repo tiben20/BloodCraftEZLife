@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using BloodCraftUI.UI.CustomLib.Util;
 using BloodCraftUI.UI.UniverseLib.UI.Models;
 using TMPro;
@@ -40,6 +41,9 @@ public abstract class PanelBase : UIBehaviourModel, IPanelBase
     public GameObject TitleBar { get; private set; }
     private TextMeshProUGUI TitleLabel { get; set; }
     public GameObject CloseButton { get; private set; }
+    protected Toggle PinPanelToggleControl;
+
+    public virtual bool IsPinned { get; protected set; }
 
     public PanelBase(UIBase owner)
     {
