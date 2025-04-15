@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>BloodCraftUI</AssemblyName>
     <Description>BloodCraft mod UI</Description>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <Authors>panthernet</Authors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
