@@ -6,8 +6,9 @@ Currently BloodCraftUI is in development and provides UI `only for Familiars`. I
 
 ## Installation
 1. Install [BepInEx](https://thunderstore.io/c/v-rising/p/BepInEx/BepInExPack_V_Rising/) mod launcher
-2. Download mod archive from [Releases](https://github.com/panthernet/BloodCraftUI/releases) and unpack its content into `VRising\BepInEx\plugins` folder
-3. Run the game
+2. Install [Bloodstone](https://thunderstore.io/c/v-rising/p/deca/Bloodstone/)
+3. Download mod archive from [Releases](https://github.com/panthernet/BloodCraftUI/releases) and unpack its content into `VRising\BepInEx\plugins` folder
+4. Run the game
 
 ## Showcase and FAQ
 You will see control panel on top of the screen and can drag it around as you like and pin with checkbox on the left.
