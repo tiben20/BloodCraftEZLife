@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using BloodCraftUI.UI.ModContent.Data;
+using UnityEngine;
 
 namespace BloodCraftUI.UI.UniverseLib.UI.Panels;
 
 public interface IPanelBase
 {
-    BCUIManager.Panels PanelType { get; }
+    PanelType PanelType { get; }
     string PanelId { get; }
     bool Enabled { get; set; }
     RectTransform Rect { get; }
@@ -14,4 +15,5 @@ public interface IPanelBase
     void Destroy();
     void EnsureValidSize();
     void EnsureValidPosition();
+    void SetActive(bool active);
 }

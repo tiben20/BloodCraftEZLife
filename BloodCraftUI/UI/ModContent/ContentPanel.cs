@@ -4,6 +4,7 @@ using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Controls;
 using BloodCraftUI.UI.CustomLib.Panel;
 using BloodCraftUI.UI.CustomLib.Util;
+using BloodCraftUI.UI.ModContent.Data;
 using BloodCraftUI.UI.UniverseLib.UI;
 using BloodCraftUI.UI.UniverseLib.UI.Panels;
 using BloodCraftUI.Utils;
@@ -27,7 +28,7 @@ namespace BloodCraftUI.UI.ModContent
         public override Vector2 DefaultPosition => new Vector2(0f, Owner.Scaler.m_ReferenceResolution.y);
         public override bool CanDrag => true;
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.None;
-        public override BCUIManager.Panels PanelType => BCUIManager.Panels.Base;
+        public override PanelType PanelType => PanelType.Base;
         private GameObject _uiAnchor;
         private UIScaleSettingButton _scaleButtonData;
         private List<GameObject> _objectsList;
@@ -79,7 +80,7 @@ namespace BloodCraftUI.UI.ModContent
                 var boxListButton = UIFactory.CreateButton(_uiAnchor, "BoxListButton", "Box List");
                 UIFactory.SetLayoutElement(boxListButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
                 _objectsList.Add(boxListButton.GameObject);
-                boxListButton.OnClick = () => { BCUIManager.AddPanel(BCUIManager.Panels.BoxList); };
+                boxListButton.OnClick = () => { Plugin.UIManager.AddPanel(PanelType.BoxList); };
             }
 
             if (Settings.IsFamStatsPanelEnabled)
@@ -87,7 +88,7 @@ namespace BloodCraftUI.UI.ModContent
                 var famStatsButton = UIFactory.CreateButton(_uiAnchor, "FamStatsButton", "Fam Stats");
                 UIFactory.SetLayoutElement(famStatsButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
                 _objectsList.Add(famStatsButton.GameObject);
-                famStatsButton.OnClick = () => { BCUIManager.AddPanel(BCUIManager.Panels.FamStats); };
+                famStatsButton.OnClick = () => { Plugin.UIManager.AddPanel(PanelType.FamStats); };
             }
 
             if (Settings.IsBindButtonEnabled)
@@ -136,7 +137,7 @@ namespace BloodCraftUI.UI.ModContent
             scaleButton.OnClick = () =>
             {
                 _scaleButtonData.PerformAction();
-                var panel = BCUIManager.GetPanel<FamStatsPanel>();
+                var panel = Plugin.UIManager.GetPanel<FamStatsPanel>();
                 if(panel != null && panel.UIRoot.active)
                     panel.RecalculateHeight();
             };
@@ -146,7 +147,7 @@ namespace BloodCraftUI.UI.ModContent
                 var b = UIFactory.CreateButton(_uiAnchor, "TestButton", "T");
                 UIFactory.SetLayoutElement(b.GameObject, ignoreLayout: false, minWidth: 25, minHeight: 25);
                 _objectsList.Add(scaleButton.GameObject);
-                b.OnClick = () => BCUIManager.AddPanel(BCUIManager.Panels.TestPanel);
+                b.OnClick = () => Plugin.UIManager.AddPanel(PanelType.TestPanel);
             }
         }
 

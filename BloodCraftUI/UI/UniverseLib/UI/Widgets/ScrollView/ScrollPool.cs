@@ -355,22 +355,12 @@ public class ScrollPool<T> : UIBehaviourModel, IEnumerable<CellInfo> where T : I
                 }
             }
 
-            RefreshCells(true, true);
+            RefreshCells(false, true);
 
-            //UniverseLib.Log("Anchor: " + Content.localPosition.y + ", prev: " + prevAnchor);
-            //UniverseLib.Log("Height: " + Content.rect.height + ", prev:" + prevHeight);
-
-            if (Content.localPosition.y != prevAnchor)
+            if (Math.Abs(Content.localPosition.y - prevAnchor) > 0.0001f)
             {
                 float diff = Content.localPosition.y - prevAnchor;
                 Content.localPosition = new Vector3(Content.localPosition.x, Content.localPosition.y - diff);
-            }
-
-            if (Content.rect.height != prevHeight)
-            {
-                float diff = Content.rect.height - prevHeight;
-                //UniverseLib.Log("Height diff: " + diff);
-                //Content.localPosition = new Vector3(Content.localPosition.x, Content.localPosition.y - diff);
             }
 
             return true;

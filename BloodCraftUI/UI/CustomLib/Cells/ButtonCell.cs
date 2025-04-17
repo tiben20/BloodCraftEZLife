@@ -31,7 +31,7 @@ namespace BloodCraftUI.UI.CustomLib.Cells
             Button = UIFactory.CreateButton(UIRoot, "NameButton", "Name", new ColorBlock
             {
                 normalColor = new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency),
-                disabledColor = new Color(1, 1, 1, 0).GetTransparent(Settings.UITransparency),
+                disabledColor = new Color(0.3f, 0.3f, 0.3f).GetTransparent(Settings.UITransparency),
                 highlightedColor = new Color(0.16f, 0.16f, 0.16f).GetTransparent(Settings.UITransparency),
                 pressedColor = new Color(0.05f, 0.05f, 0.05f).GetTransparent(Settings.UITransparency)
             });

@@ -3,60 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using BloodCraftUI.UI.CustomLib.Panel;
 using BloodCraftUI.UI.ModContent;
+using BloodCraftUI.UI.ModContent.Data;
 using BloodCraftUI.UI.UniverseLib.UI.Panels;
-using UnityEngine;
-using UIBase = BloodCraftUI.UI.UniverseLib.UI.UIBase;
-using UniversalUI = BloodCraftUI.UI.UniverseLib.UI.UniversalUI;
+using UIManagerBase = BloodCraftUI.UI.ModernLib.UIManagerBase;
 
 namespace BloodCraftUI.UI;
 
-public static class BCUIManager
+public class BCUIManager : UIManagerBase
 {
-    public enum Panels
+    private List<IPanelBase> UIPanels { get; } = new();
+    private IPanelBase ContentPanel;
+
+    public override void Reset()
     {
-        Base,
-        BoxList,
-        BoxContent,
-        FamStats,
-        TestPanel
-    }
-
-    public static UIBase UiBase { get; private set; }
-    public static GameObject UIRoot => UiBase?.RootObject;
-    public static ContentPanel ContentPanel { get; private set; }
-    public static bool IsInitialized { get; private set; }
-
-
-    private static List<IPanelBase> UIPanels { get; set; } = new();
-
-    internal static void Initialize()
-    {
-        UniversalUI.Init();
-    }
-
-    public static void SetupAndShowUI()
-    {
-        if (IsInitialized) return;
-
-        if (UiBase == null)
-        {
-            UiBase = UniversalUI.RegisterUI(PluginInfo.PLUGIN_GUID, UiUpdate);
-            AddPanel(Panels.Base);
-        }
-        SetActive(true);
-
-        IsInitialized = true;
-    }
-
-    public static void SetActive(bool active)
-    {
-        if (ContentPanel == null) return;
-        ContentPanel.SetActive(active);
-    }
-
-    public static void Reset()
-    {
-        IsInitialized = false;
+        base.Reset();
         foreach (var value in UIPanels)
         {
             if(value is ResizeablePanelBase panel)
@@ -65,25 +25,26 @@ public static class BCUIManager
         }
 
         UIPanels.Clear();
-
-        //ContentPanel.Destroy();
-        //Object.Destroy(UIRoot);
-        SetActive(false);
     }
 
-    private static void UiUpdate()
+    protected override void AddMainContentPanel()
     {
-        // Called once per frame when your UI is being displayed.
+        AddPanel(PanelType.Base);
     }
 
-    public static void AddPanel(Panels type, string param = null)
+    public override void SetActive(bool active)
+    {
+        ContentPanel?.SetActive(active);
+    }
+
+    public void AddPanel(PanelType type, string param = null)
     {
         switch (type)
         {
-            case Panels.Base:
+            case PanelType.Base:
                 ContentPanel = new ContentPanel(UiBase);
                 break;
-            case Panels.BoxList:
+            case PanelType.BoxList:
             {
                 var panel = GetPanel<BoxListPanel>();
                 if (panel == null)
@@ -108,7 +69,7 @@ public static class BCUIManager
 
                 break;
             }
-            case Panels.BoxContent:
+            case PanelType.BoxContent:
             {
                 var panel = GetBoxPanel(param);
                 if (panel == null)
@@ -119,7 +80,7 @@ public static class BCUIManager
                 }
                 break;
             }
-            case Panels.FamStats:
+            case PanelType.FamStats:
             {
                 var panel = GetPanel<FamStatsPanel>();
                 if (panel == null)
@@ -133,7 +94,7 @@ public static class BCUIManager
                 }
             }
                 break;
-            case Panels.TestPanel:
+            case PanelType.TestPanel:
             {
                 var panel = GetPanel<TestPanel>();
                 if (panel == null)
@@ -152,17 +113,16 @@ public static class BCUIManager
         }
     }
 
-
-    internal static T GetPanel<T>()
+    internal T GetPanel<T>()
         where T : class
     {
         var t = typeof(T);
         return UIPanels.FirstOrDefault(a => a.GetType() == t) as T;
     }
 
-    internal static BoxContentPanel GetBoxPanel(string currentBox)
+    internal BoxContentPanel GetBoxPanel(string currentBox)
     {
-        return UIPanels.FirstOrDefault(a => a.PanelType == Panels.BoxContent && a.PanelId.Equals(currentBox)) as
+        return UIPanels.FirstOrDefault(a => a.PanelType == PanelType.BoxContent && a.PanelId.Equals(currentBox)) as
             BoxContentPanel;
     }
 }

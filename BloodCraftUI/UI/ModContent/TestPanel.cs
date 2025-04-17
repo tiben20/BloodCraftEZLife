@@ -1,4 +1,5 @@
 ﻿using BloodCraftUI.Config;
+using BloodCraftUI.UI.ModContent.Data;
 using BloodCraftUI.UI.UniverseLib.UI;
 using BloodCraftUI.UI.UniverseLib.UI.Models;
 using BloodCraftUI.UI.UniverseLib.UI.Panels;
@@ -13,7 +14,7 @@ namespace BloodCraftUI.UI.ModContent
 
         public UIBase Owner { get; }
         public RectTransform Rect { get; private set; }
-        public BCUIManager.Panels PanelType => BCUIManager.Panels.TestPanel;
+        public PanelType PanelType => PanelType.TestPanel;
         public string PanelId => "TestPanel";
         public override GameObject UIRoot => _uiRoot;
         public PanelDragger Dragger { get; internal set; }

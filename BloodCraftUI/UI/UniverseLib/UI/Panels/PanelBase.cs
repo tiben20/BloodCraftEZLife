@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using BloodCraftUI.UI.CustomLib.Util;
+using BloodCraftUI.UI.ModContent.Data;
 using BloodCraftUI.UI.UniverseLib.UI.Models;
 using TMPro;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace BloodCraftUI.UI.UniverseLib.UI.Panels;
 public abstract class PanelBase : UIBehaviourModel, IPanelBase
 {
     public UIBase Owner { get; }
-    public abstract BCUIManager.Panels PanelType { get; }
+    public abstract PanelType PanelType { get; }
 
     public abstract string PanelId { get; }
 

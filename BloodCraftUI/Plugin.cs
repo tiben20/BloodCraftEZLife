@@ -2,15 +2,16 @@
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
-using BloodCraftUI.Behaviors;
 using BloodCraftUI.Config;
 using BloodCraftUI.Patches;
+using BloodCraftUI.Services;
 using BloodCraftUI.UI;
 using BloodCraftUI.UI.CustomLib.Util;
 using BloodCraftUI.Utils;
 using Bloodstone;
 using Bloodstone.API;
 using HarmonyLib;
+using ModernUI.Common;
 using Unity.Entities;
 using UnityEngine;
 
@@ -26,10 +27,12 @@ namespace BloodCraftUI
         public static EntityManager EntityManager => _client.EntityManager;
         public static bool IsInitialized { get; private set; }
         public static bool IsGameDataInitialized { get; set; }
+        public static BCUIManager UIManager { get; set; }
+        public static CoreUpdateBehavior CoreUpdateBehavior { get; set; }
 
         public static bool IsClientNull() => _client == null;
 
-        public const bool IS_TESTING = false;
+        public const bool IS_TESTING = true;
 
         public static void Reset()
         {
@@ -67,11 +70,11 @@ namespace BloodCraftUI
             Settings = new Settings().InitConfig();
             Colour.SetOpacity(Settings.UITransparency);
 
+            UIManager = new BCUIManager();
+            CoreUpdateBehavior = new CoreUpdateBehavior();
+            CoreUpdateBehavior.Setup();
+            CoreUpdateBehavior.ExecuteOnUpdate += MessageService.ProcessAllMessages;
 
-            BCUIManager.Initialize();
-            BCUIManager.SetActive(true);
-
-            CoreBehavior.Setup();
             IsInitialized = true;
 
             _harmonyBootPatch = Harmony.CreateAndPatchAll(typeof(GameManagerPatch));
@@ -88,6 +91,7 @@ namespace BloodCraftUI
                 AddTestUI();
         }
 
+
         public override bool Unload()
         {
             _harmonyBootPatch.UnpatchSelf();
@@ -102,7 +106,7 @@ namespace BloodCraftUI
 
         private void AddTestUI()
         {
-            BCUIManager.SetupAndShowUI();
+            UIManager.SetupAndShowUI();
         }
 
         //run on game start
@@ -127,7 +131,7 @@ namespace BloodCraftUI
 
         public static void UIOnInitialize()
         {
-            BCUIManager.SetupAndShowUI();
+            UIManager.SetupAndShowUI();
             LogUtils.LogInfo($"UI Manager initialized");
         }
     }

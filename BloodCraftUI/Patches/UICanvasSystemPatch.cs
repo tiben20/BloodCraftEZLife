@@ -17,7 +17,7 @@ public static class UICanvasSystemPatch
             UIFactory.PlayerHUDCanvas = canvas.CharacterHUDs.gameObject;
         }
 
-        if (!canvas.HUDMenuParent.gameObject.active || !BCUIManager.IsInitialized) return;
+        if (!canvas.HUDMenuParent.gameObject.active || !Plugin.UIManager.IsInitialized) return;
         var anyChildActive = false;
         for (var i = 0; i < canvas.HUDMenuParent.childCount && !anyChildActive; i++)
         {
@@ -28,6 +28,6 @@ public static class UICanvasSystemPatch
         if (anyChildActive != hudEnabled) return;
 
         hudEnabled = !anyChildActive;
-        BCUIManager.SetActive(hudEnabled);
+        Plugin.UIManager.SetActive(hudEnabled);
     }
 }

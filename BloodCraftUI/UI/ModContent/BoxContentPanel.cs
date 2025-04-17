@@ -4,6 +4,7 @@ using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Cells;
 using BloodCraftUI.UI.CustomLib.Cells.Handlers;
 using BloodCraftUI.UI.CustomLib.Panel;
+using BloodCraftUI.UI.ModContent.Data;
 using BloodCraftUI.UI.UniverseLib.UI;
 using BloodCraftUI.UI.UniverseLib.UI.Models;
 using BloodCraftUI.UI.UniverseLib.UI.Panels;
@@ -24,7 +25,7 @@ namespace BloodCraftUI.UI.ModContent
         public override Vector2 DefaultPivot => new Vector2(0.5f, 1f);
         public override bool CanDrag => true;
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
-        public override BCUIManager.Panels PanelType => BCUIManager.Panels.BoxContent;
+        public override PanelType PanelType => PanelType.BoxContent;
         public override float Opacity => Settings.UITransparency;
 
         private readonly string _boxName;

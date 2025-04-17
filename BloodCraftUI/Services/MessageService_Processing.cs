@@ -66,7 +66,7 @@ namespace BloodCraftUI.Services
                         case not null when message.StartsWith(BCCOM_LISTBOXES1):
                             ClearFlags();
                             Flags[InterceptFlag.ListBoxes] = 1;
-                            var panel = BCUIManager.GetPanel<BoxListPanel>();
+                            var panel = Plugin.UIManager.GetPanel<BoxListPanel>();
                             if (panel != null)
                             {
                                 panel.Reset();
@@ -77,7 +77,7 @@ namespace BloodCraftUI.Services
                             Flags[InterceptFlag.ListBoxContent] = 1;
                             if (_currentBox != null)
                             {
-                                var boxPanel = BCUIManager.GetBoxPanel(_currentBox);
+                                var boxPanel = Plugin.UIManager.GetBoxPanel(_currentBox);
                                 if (boxPanel != null)
                                 {
                                     boxPanel.Reset();
@@ -139,7 +139,7 @@ namespace BloodCraftUI.Services
                 case not null when message.StartsWith("Familiar Boxes"):
                     ClearFlags();
                     Flags[InterceptFlag.ListBoxes] = Settings.IsBoxPanelEnabled ? 1 : 0;
-                    BCUIManager.GetPanel<BoxListPanel>()?.Reset();
+                    Plugin.UIManager.GetPanel<BoxListPanel>()?.Reset();
 
                     if (Settings.ClearServerMessages)
                         DestroyMessage(entity);
@@ -149,7 +149,7 @@ namespace BloodCraftUI.Services
                     Flags[InterceptFlag.ListBoxContent] = Settings.IsBoxPanelEnabled ? 1 : 0;
                     if (_currentBox != null)
                     {
-                        var panel = BCUIManager.GetBoxPanel(_currentBox);
+                        var panel = Plugin.UIManager.GetBoxPanel(_currentBox);
                         if (panel != null)
                         {
                             panel.Reset();
@@ -216,7 +216,7 @@ namespace BloodCraftUI.Services
                                 var text = match.Groups["box"].Value;
                                 if (!string.IsNullOrEmpty(text))
                                 {
-                                    BCUIManager.GetPanel<BoxListPanel>()?.AddListEntry(text);
+                                    Plugin.UIManager.GetPanel<BoxListPanel>()?.AddListEntry(text);
                                 }
                             }
 
@@ -229,7 +229,7 @@ namespace BloodCraftUI.Services
 
         private static void UpdateFamStatsUI()
         {
-            BCUIManager.GetPanel<FamStatsPanel>()?.UpdateData(_currentFamStats);
+            Plugin.UIManager.GetPanel<FamStatsPanel>()?.UpdateData(_currentFamStats);
         }
 
         private static void ProcessFamStatsData(string message, int type)
@@ -317,7 +317,7 @@ namespace BloodCraftUI.Services
                 var colorName = GameHelper.GetColorNameFromSchool(spellSchool);
                 var text2 = $"{text.Substring(2).Trim()}{(spellSchool == null ? null : $" - {colorName.Name}")}";
                 var number = Convert.ToInt32(text.Substring(0, char.IsDigit(text[1]) ? 2 : 1));
-                BCUIManager.GetBoxPanel(_currentBox)?.AddListEntry(number, text2, spellSchool);
+                Plugin.UIManager.GetBoxPanel(_currentBox)?.AddListEntry(number, text2, spellSchool);
             }
             catch
             {

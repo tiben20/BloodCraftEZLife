@@ -8,6 +8,7 @@ using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Controls;
 using BloodCraftUI.UI.CustomLib.Panel;
 using BloodCraftUI.UI.CustomLib.Util;
+using BloodCraftUI.UI.ModContent.Data;
 using BloodCraftUI.UI.UniverseLib.UI;
 using BloodCraftUI.UI.UniverseLib.UI.Panels;
 using BloodCraftUI.Utils;
@@ -38,7 +39,7 @@ namespace BloodCraftUI.UI.ModContent
         // Allow vertical resizing only
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.Horizontal;
 
-        public override BCUIManager.Panels PanelType => BCUIManager.Panels.FamStats;
+        public override PanelType PanelType => PanelType.FamStats;
         private GameObject _uiAnchor;
         private Timer _queryTimer;
         private FamStats _data = new();

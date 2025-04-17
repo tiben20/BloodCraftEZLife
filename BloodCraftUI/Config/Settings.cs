@@ -42,9 +42,9 @@ namespace BloodCraftUI.Config
         }
 
         public static bool IsFamStatsPanelEnabled => (ConfigEntries[nameof(IsFamStatsPanelEnabled)] as ConfigEntry<bool>)?.Value ?? true;
-        public static bool IsBoxPanelEnabled => (ConfigEntries[nameof(IsBoxPanelEnabled)] as ConfigEntry<bool>)?.Value ?? true;
-        public static bool IsBindButtonEnabled => (ConfigEntries[nameof(IsBindButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
-        public static bool IsCombatButtonEnabled => (ConfigEntries[nameof(IsCombatButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
+        public static bool IsBoxPanelEnabled      => (ConfigEntries[nameof(IsBoxPanelEnabled)] as ConfigEntry<bool>)?.Value ?? true;
+        public static bool IsBindButtonEnabled    => (ConfigEntries[nameof(IsBindButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
+        public static bool IsCombatButtonEnabled  => (ConfigEntries[nameof(IsCombatButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
         
 
         public Settings InitConfig()

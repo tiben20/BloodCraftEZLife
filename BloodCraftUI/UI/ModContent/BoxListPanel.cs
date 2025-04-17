@@ -5,6 +5,7 @@ using BloodCraftUI.Services;
 using BloodCraftUI.UI.CustomLib.Cells;
 using BloodCraftUI.UI.CustomLib.Cells.Handlers;
 using BloodCraftUI.UI.CustomLib.Panel;
+using BloodCraftUI.UI.ModContent.Data;
 using BloodCraftUI.UI.UniverseLib.UI;
 using BloodCraftUI.UI.UniverseLib.UI.Models;
 using BloodCraftUI.UI.UniverseLib.UI.Panels;
@@ -24,7 +25,7 @@ namespace BloodCraftUI.UI.ModContent
         public override Vector2 DefaultPivot => new Vector2(0.5f, 1f);
         public override bool CanDrag => true;
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
-        public override BCUIManager.Panels PanelType => BCUIManager.Panels.BoxList;
+        public override PanelType PanelType => PanelType.BoxList;
         public override float Opacity => Settings.UITransparency;
 
         public BoxListPanel(UIBase owner) : base(owner)
@@ -109,7 +110,7 @@ namespace BloodCraftUI.UI.ModContent
         private void OnCellClicked(int dataIndex)
         {
             var famBox = _dataList[dataIndex];
-            BCUIManager.AddPanel(BCUIManager.Panels.BoxContent, famBox.Name);
+            Plugin.UIManager.AddPanel(PanelType.BoxContent, famBox.Name);
         }
 
         private bool ShouldDisplay(FamBoxData data, string filter) => true;

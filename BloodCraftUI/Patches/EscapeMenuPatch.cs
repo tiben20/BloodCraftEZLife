@@ -11,10 +11,10 @@ public class EscapeMenuPatch
     [HarmonyPrefix]
     private static void EscapeMenuViewOnDestroyPrefix()
     {
-        if (!BCUIManager.IsInitialized) return;
+        if (!Plugin.UIManager.IsInitialized) return;
 
         // User has left the server. Reset all ui as the next server might be a different one
-        BCUIManager.Reset();
+        Plugin.UIManager.Reset();
         MessageService.Destroy();
         Plugin.Reset();
     }
