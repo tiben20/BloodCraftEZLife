@@ -32,7 +32,7 @@ namespace BloodCraftUI
 
         public static bool IsClientNull() => _client == null;
 
-        public const bool IS_TESTING = true;
+        public const bool IS_TESTING = false;
 
         public static void Reset()
         {
@@ -140,6 +140,6 @@ namespace BloodCraftUI
     {
         public const string PLUGIN_GUID = "panthernet.BloodCraftUI";
         public const string PLUGIN_NAME = "BloodCraftUI";
-        public const string PLUGIN_VERSION = "1.0.4";
+        public const string PLUGIN_VERSION = "1.0.5";
     }
 }
