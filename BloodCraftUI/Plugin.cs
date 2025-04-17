@@ -7,11 +7,11 @@ using BloodCraftUI.Patches;
 using BloodCraftUI.Services;
 using BloodCraftUI.UI;
 using BloodCraftUI.UI.CustomLib.Util;
+using BloodCraftUI.UI.ModernLib;
 using BloodCraftUI.Utils;
 using Bloodstone;
 using Bloodstone.API;
 using HarmonyLib;
-using ModernUI.Common;
 using Unity.Entities;
 using UnityEngine;
 
@@ -73,7 +73,7 @@ namespace BloodCraftUI
             UIManager = new BCUIManager();
             CoreUpdateBehavior = new CoreUpdateBehavior();
             CoreUpdateBehavior.Setup();
-            CoreUpdateBehavior.ExecuteOnUpdate += MessageService.ProcessAllMessages;
+            //todo CoreUpdateBehavior.ExecuteOnUpdate = MessageService.ProcessAllMessages;
 
             IsInitialized = true;
 

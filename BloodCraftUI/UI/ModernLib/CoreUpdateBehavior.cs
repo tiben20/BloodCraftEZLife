@@ -1,8 +1,9 @@
 ﻿using System;
+using BloodCraftUI.Services;
 using Il2CppInterop.Runtime.Injection;
 using UnityEngine;
 
-namespace ModernUI.Common
+namespace BloodCraftUI.UI.ModernLib
 {
     public class CoreUpdateBehavior: MonoBehaviour, IDisposable
     {
@@ -23,7 +24,8 @@ namespace ModernUI.Common
 
         protected void Update()
         {
-            ExecuteOnUpdate?.Invoke();
+            ExecuteOnUpdate?.Invoke(); //todo why it is null?
+            MessageService.ProcessAllMessages(); 
         }
 
         public void Dispose()
