@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>BloodCraftUI</AssemblyName>
+    <AssemblyName>panthernet.BloodCraftUI.OnlyFams</AssemblyName>
     <Description>BloodCraft mod UI</Description>
     <Version>1.0.6</Version>
     <Authors>panthernet</Authors>
