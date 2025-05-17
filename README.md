@@ -1,6 +1,6 @@
-# BloodCraft UI (OnlyFams!)
+# BloodCraft UI - OnlyFams!
 
-Currently BloodCraftUI is in development and provides UI `only for Familiars`. It is coded to send Bloodcraft commands and parse chatlog response messages. Considering the 'unreliable' nature of message parsing approach it may sometimes produce errors in parsing boxes and its content if some other server messages interfere with the routine.
+Currently BloodCraftUI is in development and provides UI `only for Familiars`. It is coded to send Bloodcraft commands and parse chatlog response messages. Considering the 'unreliable' nature of message parsing approach it may produce errors in parsing boxes on `rare` occasion if some other server messages interfere with the routine.
 
 ### Supported Bloodcraft `v1.9.7`
 
