@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using BloodCraftUI.UI.CustomLib;
 using BloodCraftUI.Utils;
-using Bloodstone;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -58,7 +57,7 @@ public class PanelManager
     {
         try
         {
-            resizeCursorUIBase = UniversalUI.RegisterUI($"{MyPluginInfo.PLUGIN_GUID}.resizeCursor", null);
+            resizeCursorUIBase = UniversalUI.RegisterUI($"{PluginInfo.PLUGIN_GUID}.resizeCursor", null);
             GameObject parent = resizeCursorUIBase.RootObject;
             parent.transform.SetParent(UniversalUI.CanvasRoot.transform);
 

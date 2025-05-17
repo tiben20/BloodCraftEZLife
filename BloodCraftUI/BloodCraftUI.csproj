@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>BloodCraftUI</AssemblyName>
     <Description>BloodCraft mod UI</Description>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
     <Authors>panthernet</Authors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
@@ -14,14 +14,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="9.0.3" />
+    <PackageReference Include="System.Text.Json" Version="9.0.5" />
     <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.691" IncludeAssets="compile" />
-    <PackageReference Include="VRising.Bloodstone" Version="0.2.2" />
-    <PackageReference Include="VRising.Unhollowed.Client" Version="1.0.5.802790001" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Behaviors\" />
+    <PackageReference Include="VRising.Unhollowed.Client" Version="1.1.7.9169101" />
   </ItemGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

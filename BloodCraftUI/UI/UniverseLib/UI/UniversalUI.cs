@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BloodCraftUI.Behaviors;
 using BloodCraftUI.UI.CustomLib;
 using BloodCraftUI.UI.UniverseLib.UI.ObjectPool;
 using BloodCraftUI.UI.UniverseLib.UI.Panels;
-using Bloodstone.Hooks;
 using UnityEngine;
 using InputFieldRef = BloodCraftUI.UI.UniverseLib.UI.Models.InputFieldRef;
 using UIBehaviourModel = BloodCraftUI.UI.UniverseLib.UI.Models.UIBehaviourModel;
@@ -36,6 +36,7 @@ public static class UniversalUI
     public const int MAX_INPUTFIELD_CHARS = 16000;
 
     public static Vector2 CanvasDimensions = new Vector2(3840, 2160);
+    public static CoreUpdateBehavior UpdateBehavior;
 
     /// <summary>
     /// Create and register a <see cref="UIBase"/> with the provided ID, and optional update method.
@@ -89,8 +90,9 @@ public static class UniversalUI
         PoolHolder.transform.parent = CanvasRoot.transform;
         PoolHolder.SetActive(false);
 
-        GameFrame.Initialize();
-        GameFrame.OnUpdate += Update;
+        UpdateBehavior = new CoreUpdateBehavior();
+        UpdateBehavior.Setup();
+        CoreUpdateBehavior.Actions.Add(Update);
 
         Initializing = false;
     }

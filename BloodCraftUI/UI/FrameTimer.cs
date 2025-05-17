@@ -1,6 +1,7 @@
 using System;
+using BloodCraftUI.Behaviors;
+using BloodCraftUI.UI.UniverseLib.UI;
 using BloodCraftUI.Utils;
-using Bloodstone.Hooks;
 
 namespace BloodCraftUI.UI;
 
@@ -47,7 +48,7 @@ public class FrameTimer
             if (!_enabled)
             {
                 _lastExecution = DateTime.MinValue;
-                GameFrame.OnUpdate += GameFrame_OnUpdate;
+                CoreUpdateBehavior.Actions.Add(GameFrame_OnUpdate);
                 _enabled = true;
             }
         }
@@ -56,7 +57,7 @@ public class FrameTimer
         {
             if (_enabled)
             {
-                GameFrame.OnUpdate -= GameFrame_OnUpdate;
+                CoreUpdateBehavior.Actions.Remove(GameFrame_OnUpdate);
                 _enabled = false;
             }
         }

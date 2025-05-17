@@ -57,7 +57,7 @@ namespace BloodCraftUI.UI.ModContent
         {
             _scrollDataHandler = new ButtonListHandler<FamBoxData, ButtonCell>(_scrollPool, GetEntries, SetCell, ShouldDisplay, OnCellClicked);
             _scrollPool = UIFactory.CreateScrollPool<ButtonCell>(ContentRoot, "ContentList", out GameObject scrollObj,
-                out _, new Color(0.03f, 0.03f, 0.03f).GetTransparent(Opacity));
+                out _, new Color(0.03f, 0.03f, 0.03f, Opacity));
             _scrollPool.Initialize(_scrollDataHandler);
             UIFactory.SetLayoutElement(scrollObj, flexibleHeight: 9999);
         }

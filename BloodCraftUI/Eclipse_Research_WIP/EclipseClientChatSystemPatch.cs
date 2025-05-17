@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using BloodCraftUI.Utils;
-using Bloodstone;
 using HarmonyLib;
 using ProjectM.Network;
 using ProjectM.UI;
@@ -71,12 +70,12 @@ namespace BloodCraftUI.Eclipse_Research_WIP
                 }
                 catch (Exception ex)
                 {
-                    LogUtils.LogError($"{MyPluginInfo.PLUGIN_NAME}[{MyPluginInfo.PLUGIN_VERSION}] failed to handle message after parsing event type - {ex}");
+                    LogUtils.LogError($"{PluginInfo.PLUGIN_NAME}[{PluginInfo.PLUGIN_VERSION}] failed to handle message after parsing event type - {ex}");
                 }
             }
             else
             {
-                LogUtils.LogWarning($"{MyPluginInfo.PLUGIN_NAME}[{MyPluginInfo.PLUGIN_VERSION}] failed to parse event type after MAC verification - {message}");
+                LogUtils.LogWarning($"{PluginInfo.PLUGIN_NAME}[{PluginInfo.PLUGIN_VERSION}] failed to parse event type after MAC verification - {message}");
             }
         }
 

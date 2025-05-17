@@ -9,8 +9,6 @@ using BloodCraftUI.UI;
 using BloodCraftUI.UI.CustomLib.Util;
 using BloodCraftUI.UI.ModernLib;
 using BloodCraftUI.Utils;
-using Bloodstone;
-using Bloodstone.API;
 using HarmonyLib;
 using Unity.Entities;
 using UnityEngine;
@@ -29,6 +27,7 @@ namespace BloodCraftUI
         public static bool IsGameDataInitialized { get; set; }
         public static BCUIManager UIManager { get; set; }
         public static CoreUpdateBehavior CoreUpdateBehavior { get; set; }
+        public static bool IsClient { get; private set; }
 
         public static bool IsClientNull() => _client == null;
 
@@ -51,19 +50,14 @@ namespace BloodCraftUI
 
         public override void Load()
         {
+            IsClient = Application.productName != "VRisingServer";
             LogUtils.Init(Log);
             Instance = this;
 
 
-            if (Application.productName == "VRisingServer")
+            if (!IsClient)
             {
-                LogUtils.LogInfo($"{MyPluginInfo.PLUGIN_NAME}[{MyPluginInfo.PLUGIN_VERSION}] is a client mod! ({Application.productName})");
-                return;
-            }
-
-            if (VWorld.IsServer)
-            {
-                LogUtils.LogWarning($"Plugin {MyPluginInfo.PLUGIN_GUID} is a client plugin only. Not continuing to load on server.");
+                LogUtils.LogInfo($"{PluginInfo.PLUGIN_NAME}[{PluginInfo.PLUGIN_VERSION}] is a client mod! ({Application.productName})");
                 return;
             }
 
@@ -112,7 +106,7 @@ namespace BloodCraftUI
         //run on game start
         public static void GameDataOnInitialize(World world)
         {
-            if (!IsGameDataInitialized && VWorld.IsClient)
+            if (!IsGameDataInitialized && IsClient)
             {
                 _client = world;
                 IsGameDataInitialized = true;
@@ -140,6 +134,6 @@ namespace BloodCraftUI
     {
         public const string PLUGIN_GUID = "panthernet.BloodCraftUI";
         public const string PLUGIN_NAME = "BloodCraftUI";
-        public const string PLUGIN_VERSION = "1.0.5";
+        public const string PLUGIN_VERSION = "1.0.6";
     }
 }

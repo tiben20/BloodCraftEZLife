@@ -37,7 +37,7 @@ namespace BloodCraftUI.Patches
             if (!Plugin.UIManager.IsInitialized) return;
             Plugin.GameDataOnInitialize(__instance.World);
 
-            var entities = __instance.__query_1840110765_0.ToEntityArray(Allocator.Temp);
+            var entities = __instance.__query_1840110770_0.ToEntityArray(Allocator.Temp);
 
             try
             {
@@ -52,7 +52,7 @@ namespace BloodCraftUI.Patches
                 entities.Dispose();
             }
 
-            entities = __instance.__query_1840110765_1.ToEntityArray(Allocator.Temp);
+            entities = __instance.__query_1840110770_1.ToEntityArray(Allocator.Temp);
 
             try
             {
