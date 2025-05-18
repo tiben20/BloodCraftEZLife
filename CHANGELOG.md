@@ -1,3 +1,5 @@
+### V1.0.8
+- Latest BepInEx update
 ### V1.0.7
 - Added auto enable familiar equip emotes option (enabled by default)
 - Fixed windows to hide when escape menu is open

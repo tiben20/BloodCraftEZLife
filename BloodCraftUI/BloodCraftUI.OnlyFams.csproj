@@ -11,11 +11,12 @@
     <RootNamespace>BloodCraftUI</RootNamespace>
     <PackageId>$(Authors).$(AssemblyName)</PackageId>
     <PackageProjectUrl></PackageProjectUrl>
+    <BepInExVersion>6.0.0-be.733</BepInExVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Text.Json" Version="9.0.5" />
-    <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.691" IncludeAssets="compile" />
+    <PackageReference Include="BepInEx.Unity.IL2CPP" Version="$(BepInExVersion)" IncludeAssets="compile" />
     <PackageReference Include="VRising.Unhollowed.Client" Version="1.1.8.9179701" />
   </ItemGroup>
 
