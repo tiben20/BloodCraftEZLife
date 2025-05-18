@@ -45,6 +45,7 @@ namespace BloodCraftUI.Config
         public static bool IsBoxPanelEnabled      => (ConfigEntries[nameof(IsBoxPanelEnabled)] as ConfigEntry<bool>)?.Value ?? true;
         public static bool IsBindButtonEnabled    => (ConfigEntries[nameof(IsBindButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
         public static bool IsCombatButtonEnabled  => (ConfigEntries[nameof(IsCombatButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
+        public static bool AutoEnableFamiliarEquipment => (ConfigEntries[nameof(AutoEnableFamiliarEquipment)] as ConfigEntry<bool>)?.Value ?? true;
         
 
         public Settings InitConfig()
@@ -61,6 +62,7 @@ namespace BloodCraftUI.Config
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(UseHorizontalContentLayout), true,
                 "Use horizontal or vertical layout for main content panel");
             InitConfigEntry(FAM_SETTINGS_GROUP, nameof(LastBindCommand), "", "Last bind fam command stored");
+            InitConfigEntry(FAM_SETTINGS_GROUP, nameof(AutoEnableFamiliarEquipment), true, "Automatically enable familiar equipment management via emote wheel");
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(UITransparency), 0.6f,
                 "Set transparency for all panels between 1.0f as opaque and 0f as transparent");
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsFamStatsPanelEnabled), true, "Is fam stats panel enabled");

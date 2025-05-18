@@ -16,4 +16,5 @@ public interface IPanelBase
     void EnsureValidSize();
     void EnsureValidPosition();
     void SetActive(bool active);
+    void SetActiveOnly(bool active);
 }

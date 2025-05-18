@@ -12,7 +12,8 @@ namespace BloodCraftUI.UI;
 public class BCUIManager : UIManagerBase
 {
     private List<IPanelBase> UIPanels { get; } = new();
-    private IPanelBase ContentPanel;
+    private IPanelBase _contentPanel;
+    private readonly List<string> _visibilityAffectedPanels = new();
 
     public override void Reset()
     {
@@ -34,7 +35,24 @@ public class BCUIManager : UIManagerBase
 
     public override void SetActive(bool active)
     {
-        ContentPanel?.SetActive(active);
+        if (active && _visibilityAffectedPanels.Any())
+        {
+            foreach (var p in _visibilityAffectedPanels.Select(panel =>
+                         UIPanels.FirstOrDefault(a => a.PanelId.Equals(panel))))
+                p?.SetActiveOnly(true);
+            _visibilityAffectedPanels.Clear();
+        }
+
+        if (!active)
+        {
+            foreach (var panel in UIPanels.Where(a => a.Enabled))
+            {
+                _visibilityAffectedPanels.Add(panel.PanelId);
+                panel.SetActiveOnly(false);
+            }
+        }
+
+        _contentPanel?.SetActive(active);
     }
 
     public void AddPanel(PanelType type, string param = null)
@@ -42,7 +60,7 @@ public class BCUIManager : UIManagerBase
         switch (type)
         {
             case PanelType.Base:
-                ContentPanel = new ContentPanel(UiBase);
+                _contentPanel = new ContentPanel(UiBase);
                 break;
             case PanelType.BoxList:
             {

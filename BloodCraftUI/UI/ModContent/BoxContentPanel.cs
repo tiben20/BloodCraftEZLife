@@ -79,6 +79,7 @@ namespace BloodCraftUI.UI.ModContent
                     }
 
                     MessageService.EnqueueMessage(MessageService.BCCOM_BOXCONTENT);
+                    MessageService.BoxContentFlag = true;
                 }
                 finally
                 {

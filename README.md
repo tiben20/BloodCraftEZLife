@@ -5,10 +5,10 @@ Currently BloodCraftUI is in development and provides UI `only for Familiars`. I
 ### Supported Bloodcraft `v1.9.7`
 
 ## Installation
-1. Install [BepInExRC2](https://github.com/decaprime/VRising-Modding/releases/tag/1.733.2)
+1. Install [BepInEx](https://thunderstore.io/c/v-rising/p/BepInEx/BepInExPack_V_Rising/)
 2. Download mod archive from [Releases](https://github.com/panthernet/BloodCraftUI/releases) and unpack its content into `VRising` root folder
 3. Run the game
-NOTE: Requires [BloodCraft](https://github.com/mfoltz/Bloodcraft) mod to be installed and running.
+NOTE: Requires [BloodCraft](https://github.com/mfoltz/Bloodcraft) mod to be installed and running on server side
 
 ## Showcase and FAQ
 You will see control panel on top of the screen and can drag it around as you like and pin with checkbox on the left.

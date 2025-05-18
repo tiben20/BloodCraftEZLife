@@ -24,6 +24,7 @@ namespace BloodCraftUI.Services
         public const string BCCOM_UNBINDFAM = ".fam ub";
         public const string BCCOM_FAMSTATS = ".fam gl";
         public const string BCCOM_COMBAT = ".fam c";
+        public const string BCCOM_ENABLEEQUIP = ".fam e";
 
         private enum InterceptFlag
         {
@@ -43,6 +44,7 @@ namespace BloodCraftUI.Services
 
         private static string _currentBox;
         private static FamStats _currentFamStats;
+        public static bool BoxContentFlag { get; set; }
 
         internal static void HandleMessage(Entity entity)
         {
@@ -101,16 +103,13 @@ namespace BloodCraftUI.Services
             {
                 /////// FLAGS
                 case not null when message.StartsWith("Couldn't find familiar to unbind"):
-                    BloodCraftStateService.IsFamUnbound = true;
                     if (Settings.ClearServerMessages)
                         DestroyMessage(entity);
                     break;
                 case not null when message.Contains(">unbound</color>!"):
-                    BloodCraftStateService.IsFamUnbound = true;
                     break;
                 case not null when message.Contains(">bound</color>!"):
                 {
-                    BloodCraftStateService.IsFamUnbound = false;
                     //old version failsafe
                     var regex =
                         new Regex(@"<color=\w+>(?<name>[^<]+)</color>(?:\s*<color=(?<color>#[A-Fa-f0-9]{6})>\*</color>)?");
@@ -145,6 +144,8 @@ namespace BloodCraftUI.Services
                         DestroyMessage(entity);
                     break;
                 case not null when message.StartsWith("<color=yellow>1</color>|"):
+                    if (!BoxContentFlag) break;
+                    BoxContentFlag = false;
                     ClearFlags();
                     Flags[InterceptFlag.ListBoxContent] = Settings.IsBoxPanelEnabled ? 1 : 0;
                     if (_currentBox != null)
@@ -163,6 +164,14 @@ namespace BloodCraftUI.Services
                     var index = message.IndexOf('-');
                     var boxNameTemp = message.Substring(index, message.Length - index).Trim();
                     _currentBox = Regex.Matches(boxNameTemp, COLOR_PATTERN).FirstOrDefault()?.Groups[1].Value;
+                    break;
+                case not null when message.StartsWith("Emote actions <color=red>disabled</color>"):
+                    if(_famEquipSequenceActive)
+                        EnqueueMessage(BCCOM_ENABLEEQUIP);
+                    break;
+                case not null when message.StartsWith("Emote actions <color=green>enabled</color>"):
+                    if (_famEquipSequenceActive)
+                        FinishAutoEnableFamiliarEquipmentSequence();
                     break;
 
                 default:

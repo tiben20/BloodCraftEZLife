@@ -121,6 +121,22 @@ public abstract class PanelBase : UIBehaviourModel, IPanelBase
         }
     }
 
+    public void SetActiveOnly(bool active)
+    {
+        if (Enabled != active)
+            base.SetActive(active);
+
+        if (!active)
+        {
+            Dragger.WasDragging = false;
+        }
+        else
+        {
+            UIRoot.transform.SetAsLastSibling();
+            Owner.Panels.InvokeOnPanelsReordered();
+        }
+    }
+
     protected virtual void OnClosePanelClicked()
     {
         SetActive(false);

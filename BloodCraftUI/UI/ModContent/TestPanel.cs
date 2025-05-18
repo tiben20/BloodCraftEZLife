@@ -46,5 +46,10 @@ namespace BloodCraftUI.UI.ModContent
         {
 
         }
+
+        public void SetActiveOnly(bool active)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

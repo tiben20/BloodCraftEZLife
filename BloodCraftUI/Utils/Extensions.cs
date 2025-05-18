@@ -5,6 +5,7 @@ using Il2CppInterop.Runtime;
 using ProjectM;
 using ProjectM.Gameplay.Systems;
 using ProjectM.Network;
+using ProjectM.Scripting;
 using ProjectM.Shared;
 using Stunlock.Core;
 using TMPro;
@@ -17,9 +18,11 @@ namespace BloodCraftUI.Utils;
 internal static class Extensions
 {
     static EntityManager EntityManager => Plugin.EntityManager;
-   // static ClientGameManager ClientGameManager => Core.ClientGameManager;
+    //static ServerGameManager ServerGameManager => ;
+
+    // static ClientGameManager ClientGameManager => Core.ClientGameManager;
     //static SystemService SystemService => Core.SystemService;
-   // static PrefabCollectionSystem PrefabCollectionSystem => SystemService.PrefabCollectionSystem;
+    // static PrefabCollectionSystem PrefabCollectionSystem => SystemService.PrefabCollectionSystem;
 
     const string EMPTY_KEY = "LocalizationKey.Empty";
 
@@ -425,6 +428,17 @@ internal static class Extensions
     public static void SetValue<T>(this Dictionary<T, int> dic, T key, int value)
     {
         dic[key] = value;
+    }
+
+    public static unsafe bool TryGetBuffer<T>(this Entity entity, out DynamicBuffer<T> dynamicBuffer) where T : struct
+    {
+        /*if (ServerGameManager.TryGetBuffer(entity, out dynamicBuffer))
+        {
+            return true;
+        }*/
+
+        dynamicBuffer = default;
+        return false;
     }
 
 }

@@ -12,6 +12,7 @@ namespace BloodCraftUI.Services
 {
     internal static partial class MessageService
     {
+        private static bool _famEquipSequenceActive;
         static EntityManager EntityManager => Plugin.EntityManager;
 
         private static readonly ComponentType[] NetworkEventComponents =
@@ -99,5 +100,17 @@ namespace BloodCraftUI.Services
             if (_localCharacter != Entity.Null && _localUser != Entity.Null)
                 _isInitialized = true;
         }
+
+        public static void StartAutoEnableFamiliarEquipmentSequence()
+        {
+            _famEquipSequenceActive = true;
+            EnqueueMessage(BCCOM_ENABLEEQUIP);
+        }
+
+        public static void FinishAutoEnableFamiliarEquipmentSequence()
+        {
+            _famEquipSequenceActive = false;
+        }
+
     }
 }

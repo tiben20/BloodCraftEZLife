@@ -58,7 +58,12 @@ namespace BloodCraftUI.Patches
             {
                 foreach (Entity entity in entities)
                 {
-                    if (entity.Has<LocalCharacter>()) MessageService.SetCharacter(entity);
+                    if (entity.Has<LocalCharacter>())
+                    {
+                        MessageService.SetCharacter(entity);
+                        Plugin.LocalCharacter = entity;
+                    }
+
                     break;
                 }
             }

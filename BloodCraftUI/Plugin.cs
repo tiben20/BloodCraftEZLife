@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
@@ -10,6 +11,7 @@ using BloodCraftUI.UI.CustomLib.Util;
 using BloodCraftUI.UI.ModernLib;
 using BloodCraftUI.Utils;
 using HarmonyLib;
+using ProjectM.Scripting;
 using Unity.Entities;
 using UnityEngine;
 
@@ -24,15 +26,18 @@ namespace BloodCraftUI
         public static Settings Settings { get; private set; }
         private static World _client;
         public static EntityManager EntityManager => _client.EntityManager;
+        //public static ServerGameManager ServerGameManager => _client.GetExistingSystemManaged<ServerScriptMapper>()._ServerGameManager;
         public static bool IsInitialized { get; private set; }
         public static bool IsGameDataInitialized { get; set; }
         public static BCUIManager UIManager { get; set; }
         public static CoreUpdateBehavior CoreUpdateBehavior { get; set; }
         public static bool IsClient { get; private set; }
+        public static Entity LocalCharacter { get; set; }
 
         public static bool IsClientNull() => _client == null;
 
         public const bool IS_TESTING = false;
+
 
         public static void Reset()
         {
@@ -127,6 +132,9 @@ namespace BloodCraftUI
         public static void UIOnInitialize()
         {
             UIManager.SetupAndShowUI();
+            if(Settings.AutoEnableFamiliarEquipment)
+                MessageService.StartAutoEnableFamiliarEquipmentSequence();
+            BloodCraftStateService.Initialize();
             LogUtils.LogInfo($"UI Manager initialized");
         }
     }
@@ -135,6 +143,6 @@ namespace BloodCraftUI
     {
         public const string PLUGIN_GUID = "panthernet.BloodCraftUI";
         public const string PLUGIN_NAME = "BloodCraftUI";
-        public const string PLUGIN_VERSION = "1.0.6";
+        public const string PLUGIN_VERSION = "1.0.7";
     }
 }
