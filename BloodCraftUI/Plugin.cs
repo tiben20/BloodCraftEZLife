@@ -68,7 +68,7 @@ namespace BloodCraftUI
             }
 
             Settings = new Settings().InitConfig();
-            Colour.SetOpacity(Settings.UITransparency);
+            Theme.Opacity = Settings.UITransparency;
 
             UIManager = new BCUIManager();
             CoreUpdateBehavior = new CoreUpdateBehavior();

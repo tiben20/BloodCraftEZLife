@@ -55,25 +55,25 @@ namespace BloodCraftUI.UI.ModContent
             if (CanDrag)
             {
                 // Create pin button as a child of ContentRoot (panel root) instead of _uiAnchor
-                var pinButton = UIFactory.CreateToggle(_uiAnchor, "PinButton", out var pinToggle, out var pinText);
+                var pinButton = UIFactory.CreateToggle(_uiAnchor, "PinButton");
                 // Set layout element to position it correctly
-                UIFactory.SetLayoutElement(pinButton, minHeight: 15, preferredHeight: 15, flexibleHeight: 0,
+                UIFactory.SetLayoutElement(pinButton.GameObject, minHeight: 15, preferredHeight: 15, flexibleHeight: 0,
                     minWidth: 15, preferredWidth: 15, flexibleWidth: 0, ignoreLayout: false);
                 // Set RectTransform to position it at the top left
                 //RectTransform pinRect = pinButton.GetComponent<RectTransform>();
                 
                 // Set toggle properties
-                pinToggle.isOn = false;
-                pinToggle.onValueChanged.AddListener(value => IsPinned = value);
-                _pinToggle = pinToggle;
+                pinButton.Toggle.isOn = false;
+                pinButton.OnValueChanged += (value) => IsPinned = value;
+                _pinToggle = pinButton.Toggle;
 
                 // Make the label text empty or minimal
-                pinText.text = " ";
+                pinButton.Text.text = " ";
             }
 
             var text = UIFactory.CreateLabel(_uiAnchor, "UIAnchorText", $"BCUI {PluginInfo.PLUGIN_VERSION}");
-            UIFactory.SetLayoutElement(text.gameObject, 80, 25, 1, 1);
-            _objectsList.Add(text.gameObject);
+            UIFactory.SetLayoutElement(text.GameObject, 80, 25, 1, 1);
+            _objectsList.Add(text.GameObject);
 
             if (Settings.IsBoxPanelEnabled)
             {
@@ -128,16 +128,16 @@ namespace BloodCraftUI.UI.ModContent
 
             if (Settings.IsCombatButtonEnabled)
             {
-                var combatToggle = UIFactory.CreateToggle(_uiAnchor, "FamToggleCombatButton", out var toggle, out var combatText);
-                combatText.text = "Combat Mode";
-                combatText.fontSize = 12;
-                toggle.onValueChanged.AddListener(value =>
+                var combatToggle = UIFactory.CreateToggle(_uiAnchor, "FamToggleCombatButton");
+                combatToggle.Text.text = "Combat Mode";
+                combatToggle.Text.fontSize = 12;
+                combatToggle.OnValueChanged += value =>
                 {
-                    toggle.interactable = false;
+                    combatToggle.Toggle.interactable = false;
                     MessageService.EnqueueMessage(MessageService.BCCOM_COMBAT);
-                    TimerHelper.OneTickTimer(2000, () => toggle.interactable = true);
-                });
-                UIFactory.SetLayoutElement(combatToggle, ignoreLayout: false, minWidth: 110, minHeight: 25);
+                    TimerHelper.OneTickTimer(2000, () => combatToggle.Toggle.interactable = true);
+                };
+                UIFactory.SetLayoutElement(combatToggle.GameObject, ignoreLayout: false, minWidth: 110, minHeight: 25);
             }
 
             var scaleButton = UIFactory.CreateButton(_uiAnchor, "ScaleButton", "*");

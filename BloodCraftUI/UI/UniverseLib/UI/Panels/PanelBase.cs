@@ -40,7 +40,7 @@ public abstract class PanelBase : UIBehaviourModel, IPanelBase
     public GameObject ContentRoot { get; protected set; }
 
     public GameObject TitleBar { get; private set; }
-    private TextMeshProUGUI TitleLabel { get; set; }
+    private LabelRef TitleLabel { get; set; }
     public GameObject CloseButton { get; private set; }
     protected Toggle PinPanelToggleControl;
 
@@ -88,7 +88,7 @@ public abstract class PanelBase : UIBehaviourModel, IPanelBase
 
     public void SetTitle(string label)
     {
-        TitleLabel.SetText(label);
+        TitleLabel.TextMesh.SetText(label);
     }
 
     public override void Destroy()
@@ -214,12 +214,12 @@ public abstract class PanelBase : UIBehaviourModel, IPanelBase
 
         // Title bar
         TitleBar = UIFactory.CreateHorizontalGroup(ContentRoot, "TitleBar", false, true, true, true, 2,
-            new Vector4(2, 2, 2, 2), Colour.PanelBackground);
+            new Vector4(2, 2, 2, 2), Theme.PanelBackground);
         UIFactory.SetLayoutElement(TitleBar, minHeight: 25, flexibleHeight: 0);
 
         // Title text
         TitleLabel = UIFactory.CreateLabel(TitleBar, "TitleBar", PanelId, TextAlignmentOptions.Center);
-        UIFactory.SetLayoutElement(TitleLabel.gameObject, 50, 25, 9999, 0);
+        UIFactory.SetLayoutElement(TitleLabel.GameObject, 50, 25, 9999, 0);
 
         // close button
 
@@ -232,7 +232,7 @@ public abstract class PanelBase : UIBehaviourModel, IPanelBase
         UIFactory.SetLayoutElement(closeBtn.Component.gameObject, minHeight: 25, minWidth: 25, flexibleWidth: 0);
         closeBtn.Component.colors = new ColorBlock()
         {
-            normalColor = Colour.SliderHandle,
+            normalColor = Theme.SliderHandle,
             colorMultiplier = 1
         };
 

@@ -35,7 +35,7 @@ namespace BloodCraftUI.Services
             if(Plugin.IsClientNull() || Plugin.LocalCharacter == Entity.Null)
                 return;
 
-            if(_skipCounter < 10)
+            if(_skipCounter < 3)
             {
                 Interlocked.Increment(ref _skipCounter);
                 return;

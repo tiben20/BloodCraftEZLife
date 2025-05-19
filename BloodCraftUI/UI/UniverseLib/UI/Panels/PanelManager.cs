@@ -61,10 +61,10 @@ public class PanelManager
             GameObject parent = resizeCursorUIBase.RootObject;
             parent.transform.SetParent(UniversalUI.CanvasRoot.transform);
 
-            TextMeshProUGUI text = UIFactory.CreateLabel(parent, "ResizeCursor", "↔", TextAlignmentOptions.Center, Color.white, 35);
-            resizeCursor = text.gameObject;
+            var text = UIFactory.CreateLabel(parent, "ResizeCursor", "↔", TextAlignmentOptions.Center, Color.white, 35);
+            resizeCursor = text.GameObject;
 
-            Outline outline = text.gameObject.AddComponent<Outline>();
+            Outline outline = text.GameObject.AddComponent<Outline>();
             outline.effectColor = Color.black;
             outline.effectDistance = new(1, 1);
 

@@ -152,7 +152,7 @@ public class ProgressBar
         _fillImage.color = colour;
         _tooltipText.text = tooltip;
         _changeText.text = changeText;
-        _changeText.color = changeText.StartsWith("-") ? Colour.NegativeChange : Colour.PositiveChange;
+        _changeText.color = changeText.StartsWith("-") ? Theme.NegativeChange : Theme.PositiveChange;
 
         // Handle active state
         switch (activeState)
@@ -233,15 +233,15 @@ public class ProgressBar
                 {
                     case > FlashPulseInEnds:
                         // Fade in to full colour
-                        _highlight.effectColor = Color.Lerp(Colour.Highlight, Color.black, Math.Max((float)(flashPulseTimeMs - FlashPulseInEnds) / FlashInLengthMs, 0));
+                        _highlight.effectColor = Color.Lerp(Theme.Highlight, Color.black, Math.Max((float)(flashPulseTimeMs - FlashPulseInEnds) / FlashInLengthMs, 0));
                         break;
                     case > FlashOutLengthMs:
                         // Stay at full visibility
-                        _highlight.effectColor = Colour.Highlight;
+                        _highlight.effectColor = Theme.Highlight;
                         break;
                     case > 0:
                         // Start fading highlight out
-                        _highlight.effectColor = Color.Lerp(Color.black, Colour.Highlight, Math.Max((float)flashPulseTimeMs / FlashLengthMs, 0));
+                        _highlight.effectColor = Color.Lerp(Color.black, Theme.Highlight, Math.Max((float)flashPulseTimeMs / FlashLengthMs, 0));
                         break;
                 }
                 // Show change text

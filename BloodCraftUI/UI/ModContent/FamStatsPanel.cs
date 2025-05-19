@@ -10,6 +10,7 @@ using BloodCraftUI.UI.CustomLib.Panel;
 using BloodCraftUI.UI.CustomLib.Util;
 using BloodCraftUI.UI.ModContent.Data;
 using BloodCraftUI.UI.UniverseLib.UI;
+using BloodCraftUI.UI.UniverseLib.UI.Models;
 using BloodCraftUI.UI.UniverseLib.UI.Panels;
 using BloodCraftUI.Utils;
 using ProjectM;
@@ -45,9 +46,9 @@ namespace BloodCraftUI.UI.ModContent
         private FamStats _data = new();
 
         // Controls for an update
-        private TextMeshProUGUI _nameLabel;
-        private TextMeshProUGUI _schoolLabel;
-        private TextMeshProUGUI _levelLabel;
+        private LabelRef _nameLabel;
+        private LabelRef _schoolLabel;
+        private LabelRef _levelLabel;
         private GameObject _statsContainer;
         private GameObject _headerContainer;
         private GameObject _progressBarContainer;
@@ -113,32 +114,32 @@ namespace BloodCraftUI.UI.ModContent
             // Ensure we have a name to display
             string nameToShow = !string.IsNullOrEmpty(data.Name) ? data.Name : "Unknown Familiar";
             if (_nameLabel != null)
-                _nameLabel.text = nameToShow;
+                _nameLabel.TextMesh.text = nameToShow;
 
             // Update school if available
             if (_schoolLabel != null)
             {
                 if (!string.IsNullOrEmpty(data.School))
                 {
-                    _schoolLabel.text = data.School;
+                    _schoolLabel.TextMesh.text = data.School;
                     var color = Color.white;
                     if (Enum.TryParse<AbilitySchoolType>(data.School, out var type))
                     {
                         var colorData = GameHelper.GetColorNameFromSchool(type);
                         color = colorData.Color;
                     }
-                    _schoolLabel.color = color;
-                    _schoolLabel.gameObject.SetActive(true);
+                    _schoolLabel.TextMesh.color = color;
+                    _schoolLabel.GameObject.SetActive(true);
                 }
                 else
-                    _schoolLabel.gameObject.SetActive(false);
+                    _schoolLabel.GameObject.SetActive(false);
 
                 //UIFactory.SetLayoutElement(_headerContainer, preferredHeight: _schoolLabel.IsActive() ? 75 : 50);
             }
 
             // Update level info
             if (_levelLabel != null)
-                _levelLabel.text =
+                _levelLabel.TextMesh.text =
                     $"Level: {data.Level}{(data.PrestigeLevel == 0 ? null : $"   Prestige: {data.PrestigeLevel}")}";
 
             // Track which rows we've used in this update
@@ -217,7 +218,8 @@ namespace BloodCraftUI.UI.ModContent
             else
             {
                 // Create new row
-                CreateStatRow(_statsContainer, label, out row, out valueText);
+                CreateStatRow(_statsContainer, label, out row, out var labelRef);
+                valueText = labelRef.TextMesh;
                 _statRowPool[label] = row;
             }
 
@@ -252,7 +254,7 @@ namespace BloodCraftUI.UI.ModContent
             // Set ContentRoot layout element to fill available space
             UIFactory.SetLayoutElement(ContentRoot, flexibleWidth: 9999, flexibleHeight: 9999);
 
-            var color = Colour.PanelBackground;
+            var color = Theme.PanelBackground;
 
             // Create main container with explicit settings to eliminate bottom space
             _uiAnchor = UIFactory.CreateUIObject("UIAnchor", ContentRoot);
@@ -300,9 +302,9 @@ namespace BloodCraftUI.UI.ModContent
 
             // Familiar name with larger font
             _nameLabel = UIFactory.CreateLabel(_headerContainer, "FamNameText", BloodCraftStateService.FamStats.Name ?? "Unknown",
-                TextAlignmentOptions.Center, null, 18);
-            UIFactory.SetLayoutElement(_nameLabel.gameObject, minHeight: 25, preferredHeight: 25, flexibleHeight: 0, flexibleWidth: 9999);
-            _nameLabel.fontStyle = FontStyles.Bold;
+                TextAlignmentOptions.Center, Theme.DefaultText, 18, outlineWidth: 0.05f);
+            UIFactory.SetLayoutElement(_nameLabel.GameObject, minHeight: 25, preferredHeight: 25, flexibleHeight: 0, flexibleWidth: 9999);
+            _nameLabel.TextMesh.fontStyle = FontStyles.Bold;
 
             var horGroup = UIFactory.CreateHorizontalGroup(_headerContainer, "txtContainer", false, false, true, true,2,
                 childAlignment: TextAnchor.MiddleCenter);
@@ -310,38 +312,38 @@ namespace BloodCraftUI.UI.ModContent
 
             // Familiar school with larger font
             _schoolLabel = UIFactory.CreateLabel(horGroup, "FamSchoolText", "Unknown",
-                TextAlignmentOptions.Center, null, 16);
-            UIFactory.SetLayoutElement(_schoolLabel.gameObject, minWidth: 60, flexibleWidth: 0, minHeight: 28, flexibleHeight: 0);
-            _schoolLabel.fontStyle = FontStyles.Bold;
+                TextAlignmentOptions.Center, Theme.DefaultText, 16, outlineWidth: 0f);
+            UIFactory.SetLayoutElement(_schoolLabel.GameObject, minWidth: 60, flexibleWidth: 0, minHeight: 28, flexibleHeight: 0);
+            _schoolLabel.TextMesh.fontStyle = FontStyles.Bold;
 
             // Level info - reduced height
             _levelLabel = UIFactory.CreateLabel(horGroup, "FamLevelText", "Level: Unknown   Prestige: Unknown",
-                TextAlignmentOptions.Center, null, 16);
-            UIFactory.SetLayoutElement(_levelLabel.gameObject, minWidth: 90, flexibleWidth: 0, minHeight: 28, flexibleHeight: 0);
+                TextAlignmentOptions.Center, Theme.DefaultText, 16, outlineWidth: 0f);
+            UIFactory.SetLayoutElement(_levelLabel.GameObject, minWidth: 90, flexibleWidth: 0, minHeight: 28, flexibleHeight: 0);
 
             if (CanDrag)
             {
                 // Create pin button as a child of ContentRoot (panel root) instead of _uiAnchor
-                var pinButton = UIFactory.CreateToggle(ContentRoot, "PinButton", out var pinToggle, out var pinText);
+                var pinButton = UIFactory.CreateToggle(ContentRoot, "PinButton");
 
                 // Set layout element to position it correctly
-                UIFactory.SetLayoutElement(pinButton, minHeight: 15, preferredHeight: 15, flexibleHeight: 0,
+                UIFactory.SetLayoutElement(pinButton.GameObject, minHeight: 15, preferredHeight: 15, flexibleHeight: 0,
                     minWidth: 15, preferredWidth: 15, flexibleWidth: 0, ignoreLayout: true);
 
                 // Set RectTransform to position it at the top left
-                RectTransform pinRect = pinButton.GetComponent<RectTransform>();
+                RectTransform pinRect = pinButton.GameObject.GetComponent<RectTransform>();
                 pinRect.anchorMin = new Vector2(0, 1);
                 pinRect.anchorMax = new Vector2(0, 1);
                 pinRect.pivot = new Vector2(0, 1);
                 pinRect.anchoredPosition = new Vector2(5, -5); // Offset from top left corner
 
                 // Set toggle properties
-                pinToggle.isOn = false;
-                pinToggle.onValueChanged.AddListener(value => IsPinned = value);
-                PinPanelToggleControl = pinToggle;
+                pinButton.Toggle.isOn = false;
+                pinButton.OnValueChanged += value => IsPinned = value;
+                PinPanelToggleControl = pinButton.Toggle;
 
                 // Make the label text empty or minimal
-                pinText.text = "";
+                pinButton.Text.text = "";
             }
         }
 
@@ -353,7 +355,7 @@ namespace BloodCraftUI.UI.ModContent
             UIFactory.SetLayoutElement(_statsContainer, minHeight: 20, preferredHeight: 0, flexibleHeight: 9999, flexibleWidth: 9999);
         }
 
-        private void CreateStatRow(GameObject parent, string label, out GameObject rowObj, out TextMeshProUGUI valueText)
+        private void CreateStatRow(GameObject parent, string label, out GameObject rowObj, out LabelRef valueText)
         {
             // Create a horizontal row with reduced height
             rowObj = UIFactory.CreateHorizontalGroup(parent, $"{label}Row", false, false, true, true, 5,
@@ -361,13 +363,13 @@ namespace BloodCraftUI.UI.ModContent
             UIFactory.SetLayoutElement(rowObj, minHeight: 28, preferredHeight: 28, flexibleHeight: 0, flexibleWidth: 9999);
 
             // Stat label - reduced height
-            var statLabel = UIFactory.CreateLabel(rowObj, $"{label}Label", label, TextAlignmentOptions.Left, null, 15);
-            UIFactory.SetLayoutElement(statLabel.gameObject, minWidth: 90, flexibleWidth: 0, minHeight: 28, flexibleHeight: 0);
+            var statLabel = UIFactory.CreateLabel(rowObj, $"{label}Label", label, TextAlignmentOptions.Left, Theme.DefaultText, 15, outlineWidth: 0f);
+            UIFactory.SetLayoutElement(statLabel.GameObject, minWidth: 90, flexibleWidth: 0, minHeight: 28, flexibleHeight: 0);
 
             // Value display - reduced height
-            valueText = UIFactory.CreateLabel(rowObj, $"{label}Value", "0", TextAlignmentOptions.Right, Color.white, 15);
-            UIFactory.SetLayoutElement(valueText.gameObject, minWidth: 90, flexibleWidth: 9999, minHeight: 28, flexibleHeight: 0);
-            valueText.fontStyle = FontStyles.Bold;
+            valueText = UIFactory.CreateLabel(rowObj, $"{label}Value", "0", TextAlignmentOptions.Right, Theme.DefaultText, 15, outlineWidth: 0f);
+            UIFactory.SetLayoutElement(valueText.GameObject, minWidth: 90, flexibleWidth: 9999, minHeight: 28, flexibleHeight: 0);
+            valueText.TextMesh.fontStyle = FontStyles.Bold;
         }
 
         private void CreateProgressBarSection()
@@ -380,10 +382,10 @@ namespace BloodCraftUI.UI.ModContent
                 flexibleHeight: 0, flexibleWidth: 9999);
 
             // Create the progress bar
-            _progressBar = new ProgressBar(_uiAnchor, Colour.DefaultBar, Color.black.GetTransparent(Opacity));
+            _progressBar = new ProgressBar(_uiAnchor, Theme.DefaultBar, Color.black.GetTransparent(Opacity));
 
             // Set initial progress
-            _progressBar.SetProgress(0f, "", "XP: 0 (0%)", ActiveState.Active, Colour.DefaultBar, "", false);
+            _progressBar.SetProgress(0f, "", "XP: 0 (0%)", ActiveState.Active, Theme.DefaultBar, "", false);
         }
 
         internal override void Reset()
@@ -504,16 +506,6 @@ namespace BloodCraftUI.UI.ModContent
         private void SendUpdateStatsCommand()
         {
             MessageService.EnqueueMessage(MessageService.BCCOM_FAMSTATS);
-        }
-
-        public override void ConstructUI()
-        {
-            base.ConstructUI();
-
-            // Make panel background semi-transparent
-            //var images = UIRoot.GetComponentsInChildren<Image>(true);
-            //foreach (var img in images)
-            //    img.color = img.color.GetTransparent(Opacity);
         }
     }
 }
