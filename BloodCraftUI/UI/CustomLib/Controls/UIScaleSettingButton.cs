@@ -27,13 +27,16 @@ public class UIScaleSettingButton : SettingsButtonBase
             _ => 2
         };
 
-        ApplyScale(scales[scaleIndex].Item2);
+        ApplyScale();
     }
 
     public override string PerformAction()
     {
-        scaleIndex = (scaleIndex + 1) % scales.Count;
-        ApplyScale(scales[scaleIndex].Item2);
+        //scaleIndex = (scaleIndex + 1) % scales.Count;
+        _scaleFactor++;
+        if(_scaleFactor > 3f)
+            _scaleFactor = 1f;
+        ApplyScale();
 
         Setting.Value = scales[scaleIndex].Item1;
         return scales[scaleIndex].Item1;
@@ -44,12 +47,14 @@ public class UIScaleSettingButton : SettingsButtonBase
         return $"Toggle screen size [{scales[scaleIndex].Item1}]";
     }
 
-    private void ApplyScale(Vector2 newScale)
+    private float _scaleFactor = 1f;
+
+    private void ApplyScale()
     {
-        UniversalUI.CanvasDimensions = newScale;
         foreach (var uiBase in UniversalUI.uiBases)
         {
-            uiBase.Scaler.referenceResolution = newScale;
+            //uiBase.Scaler.referenceResolution = newScale;
+            //uiBase.Scaler.scaleFactor = _scaleFactor;
             uiBase.Panels.ValidatePanels();
         }
     }

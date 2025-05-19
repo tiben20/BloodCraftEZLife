@@ -1,7 +1,9 @@
 ### V1.0.9
+!!! Panel scaling is off atm while I investigate issues
 - Added familiar current health
 - Added familiar Toggle button control
 - Added additional familiar stats
+- Fixed very nasty issue with screen resolution spawning main panel offscreen at the start
 - Improved fam stats panel font visibility
 - Improved text localization
 - Code refactoring

@@ -143,6 +143,6 @@ namespace BloodCraftUI
     {
         public const string PLUGIN_GUID = "panthernet.BloodCraftUI";
         public const string PLUGIN_NAME = "BloodCraftUI";
-        public const string PLUGIN_VERSION = "1.0.8";
+        public const string PLUGIN_VERSION = "1.0.9";
     }
 }

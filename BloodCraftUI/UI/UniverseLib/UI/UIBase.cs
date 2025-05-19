@@ -54,7 +54,9 @@ public class UIBase
         Canvas.overrideSorting = true;
 
         Scaler = RootObject.AddComponent<CanvasScaler>();
-        Scaler.referenceResolution = UniversalUI.CanvasDimensions;
+        var scaler = GameObject.Find("MainMenuCanvas(Clone)").GetComponentInChildren<CanvasScaler>();
+        LogUtils.LogInfo($"Scaler ref: {scaler.referenceResolution.x}x{scaler.referenceResolution.y}");
+        Scaler.referenceResolution = scaler.referenceResolution;
         Scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         Scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
 
