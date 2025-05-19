@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using BloodCraftUI.Config;
-using BloodCraftUI.UI;
 using BloodCraftUI.UI.ModContent;
 using Unity.Entities;
 using BloodCraftUI.Utils;
@@ -25,6 +24,7 @@ namespace BloodCraftUI.Services
         public const string BCCOM_FAMSTATS = ".fam gl";
         public const string BCCOM_COMBAT = ".fam c";
         public const string BCCOM_ENABLEEQUIP = ".fam e";
+        public const string BCCOM_TOGGLEFAM = ".fam toggle";
 
         private enum InterceptFlag
         {
@@ -358,5 +358,7 @@ namespace BloodCraftUI.Services
         public string Name { get; set; }
         public string School { get; set; }
         public Dictionary<string, string> Stats { get; set; } = new();
+
+        public string CurrentHealth { get; set; }
     }
 }

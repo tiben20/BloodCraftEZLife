@@ -116,6 +116,16 @@ namespace BloodCraftUI.UI.ModContent
                 };
             }
 
+            var toggleButton = UIFactory.CreateButton(_uiAnchor, "ToggleButton", "Toggle");
+            UIFactory.SetLayoutElement(toggleButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
+            _objectsList.Add(toggleButton.GameObject);
+            toggleButton.OnClick = () =>
+            {
+                toggleButton.Component.interactable = false;
+                MessageService.EnqueueMessage(MessageService.BCCOM_TOGGLEFAM);
+                TimerHelper.OneTickTimer(2000, () => toggleButton.Component.interactable = true);
+            };
+
             if (Settings.IsCombatButtonEnabled)
             {
                 var combatToggle = UIFactory.CreateToggle(_uiAnchor, "FamToggleCombatButton", out var toggle, out var combatText);

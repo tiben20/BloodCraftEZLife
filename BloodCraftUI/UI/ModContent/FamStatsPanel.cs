@@ -104,6 +104,8 @@ namespace BloodCraftUI.UI.ModContent
         public void UpdateData(FamStats data)
         {
             if (data == null) return;
+            data.CurrentHealth = BloodCraftStateService.FamStats.CurrentHealth;
+            data.Stats = BloodCraftStateService.FamStats.Stats;
 
             var doFlash = _data != null && _data.ExperiencePercent != data.ExperiencePercent;
             _data = data;
@@ -143,7 +145,7 @@ namespace BloodCraftUI.UI.ModContent
             var usedKeys = new HashSet<string>();
 
             // First, update the fixed stats
-            UpdateStatRow("Health", data.MaxHealth, usedKeys);
+            UpdateStatRow("Health", $"{data.CurrentHealth}/{data.MaxHealth}", usedKeys);
             UpdateStatRow("Physical Power", data.PhysicalPower, usedKeys);
             UpdateStatRow("Spell Power", data.SpellPower, usedKeys);
 
@@ -297,7 +299,7 @@ namespace BloodCraftUI.UI.ModContent
             UIFactory.SetLayoutElement(_headerContainer, minHeight: 60, preferredHeight: 50, flexibleHeight: 0, flexibleWidth: 9999);
 
             // Familiar name with larger font
-            _nameLabel = UIFactory.CreateLabel(_headerContainer, "FamNameText", BloodCraftStateService.CurrentFamName ?? "Unknown",
+            _nameLabel = UIFactory.CreateLabel(_headerContainer, "FamNameText", BloodCraftStateService.FamStats.Name ?? "Unknown",
                 TextAlignmentOptions.Center, null, 18);
             UIFactory.SetLayoutElement(_nameLabel.gameObject, minHeight: 25, preferredHeight: 25, flexibleHeight: 0, flexibleWidth: 9999);
             _nameLabel.fontStyle = FontStyles.Bold;

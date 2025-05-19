@@ -1,3 +1,7 @@
+### V1.0.9
+- Added familiar current health
+- Added familiar Toggle button control
+- Added additional familiar stats
 ### V1.0.8
 - Latest BepInEx update
 ### V1.0.7

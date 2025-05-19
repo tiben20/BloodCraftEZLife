@@ -5,14 +5,17 @@ namespace BloodCraftUI.Utils
 {
     internal static class FamHelper
     {
+        //static readonly PrefabGUID _dominateBuff = new(-1447419822);
+        
         public static Entity FindActiveFamiliar(Entity playerCharacter)
         {
             if (playerCharacter.TryGetBuffer<FollowerBuffer>(out var followers) && !followers.IsEmpty)
             {
-                foreach (FollowerBuffer follower in followers)
+                foreach (var follower in followers)
                 {
+                    //TODO find some fam check if any
                     Entity familiar = follower.Entity._Entity;
-                    if (familiar.Has<BlockFeedBuff>()) return familiar;
+                    return familiar;
                 }
             }
 

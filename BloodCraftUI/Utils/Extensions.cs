@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using BloodCraftUI.Services;
 using Il2CppInterop.Runtime;
 using ProjectM;
 using ProjectM.Gameplay.Systems;
@@ -8,6 +9,7 @@ using ProjectM.Network;
 using ProjectM.Scripting;
 using ProjectM.Shared;
 using Stunlock.Core;
+using Stunlock.Localization;
 using TMPro;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -243,6 +245,32 @@ internal static class Extensions
 
         return false;
     }
+
+    public static string GetLocalizedName(this PrefabGUID prefabGuid)
+    {
+        if (PrefabNames.LocalizedNameKeys.TryGetValue(prefabGuid, out var guid))
+        {
+            if (Localization.LocalizedStrings.TryGetValue(AssetGuid.FromString(guid), out var localizedName))
+            {
+                if (!string.IsNullOrEmpty(localizedName))
+                    return localizedName;
+            }
+        }
+
+        return EMPTY_KEY;
+    }
+
+
+    public static int GetUnitLevel(this Entity entity)
+    {
+        if (entity.TryGetComponent(out UnitLevel unitLevel))
+        {
+            return unitLevel.Level._Value;
+        }
+
+        return 0;
+    }
+
     public static Entity GetBuffTarget(this Entity entity)
     {
         return CreateGameplayEventServerUtility.GetBuffTarget(EntityManager, entity);
@@ -272,7 +300,7 @@ internal static class Extensions
     }
     public static bool Exists(this Entity entity)
     {
-        return EntityManager.Exists(entity);
+        return entity.HasValue() && entity.IndexWithinCapacity() && EntityManager.Exists(entity);
     }
     public static bool IsDisabled(this Entity entity)
     {
@@ -432,13 +460,52 @@ internal static class Extensions
 
     public static unsafe bool TryGetBuffer<T>(this Entity entity, out DynamicBuffer<T> dynamicBuffer) where T : struct
     {
-        /*if (ServerGameManager.TryGetBuffer(entity, out dynamicBuffer))
+        if (Plugin.EntityManager.TryGetBuffer(entity, out dynamicBuffer))
         {
             return true;
-        }*/
+        }
 
         dynamicBuffer = default;
         return false;
+    }
+
+    public static bool HasValue(this Entity entity)
+    {
+        return entity != Entity.Null;
+    }
+
+    const string PREFIX = "Entity(";
+    const int LENGTH = 7;
+    public static bool IndexWithinCapacity(this Entity entity)
+    {
+        string entityStr = entity.ToString();
+        ReadOnlySpan<char> span = entityStr.AsSpan();
+
+        if (!span.StartsWith(PREFIX)) return false;
+        span = span[LENGTH..];
+
+        int colon = span.IndexOf(':');
+        if (colon <= 0) return false;
+
+        ReadOnlySpan<char> tail = span[(colon + 1)..];
+
+        int closeRel = tail.IndexOf(')');
+        if (closeRel <= 0) return false;
+
+        // Parse numbers
+        if (!int.TryParse(span[..colon], out int index)) return false;
+        if (!int.TryParse(tail[..closeRel], out _)) return false;
+
+        // Single unsigned capacity check
+        int capacity = EntityManager.EntityCapacity;
+        bool isValid = (uint)index < (uint)capacity;
+
+        if (!isValid)
+        {
+            // Core.Log.LogWarning($"Entity index out of range! ({index}>{capacity})");
+        }
+
+        return isValid;
     }
 
 }

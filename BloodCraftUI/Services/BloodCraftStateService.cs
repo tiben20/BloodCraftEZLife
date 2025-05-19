@@ -1,7 +1,14 @@
 ﻿using System;
+using System.Globalization;
+using System.Reflection;
+using System.Threading;
 using BloodCraftUI.Behaviors;
+using BloodCraftUI.UI;
+using BloodCraftUI.UI.ModContent;
+using BloodCraftUI.UI.UniverseLib.UI.Panels;
 using BloodCraftUI.Utils;
 using ProjectM;
+using Stunlock.Core;
 using Unity.Entities;
 
 namespace BloodCraftUI.Services
@@ -13,41 +20,86 @@ namespace BloodCraftUI.Services
         //// FLAG PROPERTIES
         public static bool IsFamUnbound { get; private set; }
         public static bool IsFamBound => !IsFamUnbound;
-        public static string CurrentFamName { get; private set; }
-        public static float CurrentFamiliarHP { get; private set; }
 
+        public static FamStats FamStats { get; private set; } = new();
 
         public static void Initialize()
         {
             CoreUpdateBehavior.Actions.Add(OnUpdate);
         }
 
+        private static volatile int _skipCounter;
+
         private static void OnUpdate()
         {
-            return;
             if(Plugin.IsClientNull() || Plugin.LocalCharacter == Entity.Null)
                 return;
 
-            if(_familiar == Entity.Null)
-                _familiar = FamHelper.FindActiveFamiliar(Plugin.LocalCharacter);
-
-            if(_familiar == Entity.Null)
+            if(_skipCounter < 10)
             {
-                IsFamUnbound = true;
-                CurrentFamName = string.Empty;
+                Interlocked.Increment(ref _skipCounter);
+                return;
+            }
+            _skipCounter = 0;
+
+            if (!_familiar.Exists())
+            {
+                _familiar = FamHelper.FindActiveFamiliar(Plugin.LocalCharacter);
+            }
+            
+            if (_familiar == Entity.Null)
+            {
+                if (!IsFamUnbound)
+                {
+                    IsFamUnbound = true;
+                    FamStats = new();
+                    Plugin.UIManager.GetPanel<FamStatsPanel>()?.UpdateData(FamStats);
+                }
             }
             else
             {
-                var hp = _familiar.Read<Health>();
-                if (hp.IsDead)
+                var isFirst = FamStats.Level == 0;
+                FamStats.Level = _familiar.GetUnitLevel();
+
+                if (_familiar.TryGetComponent(out UnitStats unitStats))
                 {
-                    _familiar = Entity.Null;
-                    return;
+                    FamStats.PhysicalPower = unitStats.PhysicalPower.Value.ToString(CultureInfo.InvariantCulture);
+                    FamStats.SpellPower = unitStats.SpellPower.Value.ToString(CultureInfo.InvariantCulture);
+                    FamStats.Stats.Clear();
+                    foreach (var property in unitStats.GetType().GetFields())
+                    {
+                        if(property.Name is nameof(unitStats.PhysicalPower) or nameof(unitStats.SpellPower) or "CorruptionDamageReduction")
+                            continue;
+                        var value = property.GetValue(unitStats);
+
+                        if (value is ModifiableFloat mFloat)
+                        {
+                            if(mFloat.Value is 0f or 1f)
+                                continue;
+                            FamStats.Stats.Add(property.Name, mFloat.Value.ToString(CultureInfo.InvariantCulture));
+                        }
+                    } 
                 }
+                if (_familiar.TryGetComponent(out Health health))
+                {
+                    if (health.IsDead)
+                    {
+                        _familiar = Entity.Null;
+                        LogUtils.LogError("DEAD");
+                        return;
+                    }
+                    FamStats.MaxHealth = health.MaxHealth.Value.ToString(CultureInfo.InvariantCulture);
+                    FamStats.CurrentHealth = Math.Floor(health.Value).ToString(CultureInfo.InvariantCulture);
+                }
+                if (_familiar.TryGetComponent(out PrefabGUID targetPrefabGuid))
+                {
+                    FamStats.Name = targetPrefabGuid.GetLocalizedName();
+                }
+
                 IsFamUnbound = false;
-                if(CurrentFamiliarHP != hp.Value)
-                    LogUtils.LogWarning($" FAMILIAR HP DEBUG: {hp.Value}");
-                CurrentFamiliarHP = hp.Value;
+                if(isFirst)
+                    Plugin.UIManager.GetPanel<FamStatsPanel>()?.UpdateData(FamStats);
+
             }
         }
     }
