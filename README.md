@@ -4,6 +4,10 @@ Currently BloodCraftUI is in development and provides UI `only for Familiars`. I
 
 ### Supported Bloodcraft `v1.9.7`
 
+## Sponsor this project
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/panthernet)
+
 ## Installation
 1. Install [BepInEx](https://thunderstore.io/c/v-rising/p/BepInEx/BepInExPack_V_Rising/)
 2. Download mod archive from [Releases](https://github.com/panthernet/BloodCraftUI/releases) and unpack its content into `VRising` root folder
