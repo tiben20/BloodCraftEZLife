@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace BloodCraftUI.UI.CustomLib.Cells
 {
-    public class ButtonCell : CellBase
+    public class ButtonCell : CellBase, IFormedCell
     {
         public ButtonRef Button { get; set; }
         public int CurrentDataIndex { get; set; }

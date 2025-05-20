@@ -116,15 +116,29 @@ namespace BloodCraftUI.UI.ModContent
                 };
             }
 
-            var toggleButton = UIFactory.CreateButton(_uiAnchor, "ToggleButton", "Toggle");
-            UIFactory.SetLayoutElement(toggleButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
-            _objectsList.Add(toggleButton.GameObject);
-            toggleButton.OnClick = () =>
+            if (Settings.IsToggleButtonEnabled)
             {
-                toggleButton.Component.interactable = false;
-                MessageService.EnqueueMessage(MessageService.BCCOM_TOGGLEFAM);
-                TimerHelper.OneTickTimer(2000, () => toggleButton.Component.interactable = true);
-            };
+                var toggleButton = UIFactory.CreateButton(_uiAnchor, "ToggleButton", "Toggle");
+                UIFactory.SetLayoutElement(toggleButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
+                _objectsList.Add(toggleButton.GameObject);
+                toggleButton.OnClick = () =>
+                {
+                    MessageService.EnqueueMessage(MessageService.BCCOM_TOGGLEFAM);
+                    toggleButton.DisableWithTimer(2000);
+                };
+            }
+
+            if (Settings.IsPrestigeButtonEnabled)
+            {
+                var prestigeButton = UIFactory.CreateButton(_uiAnchor, "PrestigeButton", "Prestige!");
+                UIFactory.SetLayoutElement(prestigeButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
+                _objectsList.Add(prestigeButton.GameObject);
+                prestigeButton.OnClick = () =>
+                {
+                    MessageService.EnqueueMessage(MessageService.BCCOM_PRESTIGEFAM);
+                    prestigeButton.DisableWithTimer(2000);
+                };
+            }
 
             if (Settings.IsCombatButtonEnabled)
             {
@@ -133,9 +147,8 @@ namespace BloodCraftUI.UI.ModContent
                 combatToggle.Text.fontSize = 12;
                 combatToggle.OnValueChanged += value =>
                 {
-                    combatToggle.Toggle.interactable = false;
                     MessageService.EnqueueMessage(MessageService.BCCOM_COMBAT);
-                    TimerHelper.OneTickTimer(2000, () => combatToggle.Toggle.interactable = true);
+                    combatToggle.DisableWithTimer(2000);
                 };
                 UIFactory.SetLayoutElement(combatToggle.GameObject, ignoreLayout: false, minWidth: 110, minHeight: 25);
             }

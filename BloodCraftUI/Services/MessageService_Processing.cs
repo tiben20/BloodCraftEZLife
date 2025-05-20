@@ -25,6 +25,8 @@ namespace BloodCraftUI.Services
         public const string BCCOM_COMBAT = ".fam c";
         public const string BCCOM_ENABLEEQUIP = ".fam e";
         public const string BCCOM_TOGGLEFAM = ".fam toggle";
+        public const string BCCOM_DELETEFAM = ".fam r {0}";
+        public const string BCCOM_PRESTIGEFAM = ".fam pr";
 
         private enum InterceptFlag
         {

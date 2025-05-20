@@ -76,7 +76,7 @@ namespace BloodCraftUI.Services
                         {
                             if(mFloat.Value is 0f or 1f)
                                 continue;
-                            FamStats.Stats.Add(property.Name, mFloat.Value.ToString(CultureInfo.InvariantCulture));
+                            FamStats.Stats.Add(property.Name, mFloat.Value.ToString("N1",CultureInfo.InvariantCulture));
                         }
                     } 
                 }

@@ -159,6 +159,11 @@ public class PanelManager
         transformIDToUIPanel.Remove(panel.UIRoot.transform.GetInstanceID());
     }
 
+    public void UpdatePanelsPlacement()
+    {
+        panelInstances.ForEach(a=> a.EnsureValidPosition());
+    }
+
     // invoked from UIPanel.Enable
     protected internal virtual void InvokeOnPanelsReordered()
     {

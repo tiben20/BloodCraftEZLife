@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using BloodCraftUI.UI.UniverseLib.UI.Widgets.ScrollView;
 
-namespace BloodCraftUI.UI.CustomLib.Cells.Handlers
+namespace BloodCraftUI.UI.ModContent.CustomElements
 {
     /// <summary>
     /// A helper to create and handle a simple <see cref="ScrollPool{T}"/> of Buttons, which can be backed by any data.
     /// </summary>
-    public class ButtonListHandler<TData, TCell> : ICellPoolDataSource<TCell> where TCell : IFormedCell
+    public class BoxContentListHandler<TData, TCell> : ICellPoolDataSource<TCell> where TCell : BoxContentCell
     {
         public ScrollPool<TCell> ScrollPool { get; private set; }
 
@@ -18,6 +18,7 @@ namespace BloodCraftUI.UI.CustomLib.Cells.Handlers
         protected readonly Action<TCell, int> SetICell;
         protected readonly Func<TData, string, bool> ShouldDisplay;
         protected readonly Action<int> OnCellClicked;
+        protected readonly Action<int> OnDeleteClicked;
 
         public string CurrentFilter
         {
@@ -34,9 +35,9 @@ namespace BloodCraftUI.UI.CustomLib.Cells.Handlers
         /// <param name="setICellMethod">A method which should set the data at the int index to the cell.</param>
         /// <param name="shouldDisplayMethod">A method which should determine if the data at the index should be displayed, with an optional string filter from CurrentFilter.</param>
         /// <param name="onCellClickedMethod">A method invoked when a cell is clicked, containing the data index assigned to the cell.</param>
-        public ButtonListHandler(ScrollPool<TCell> scrollPool, Func<List<TData>> getEntriesMethod,
+        public BoxContentListHandler(ScrollPool<TCell> scrollPool, Func<List<TData>> getEntriesMethod,
             Action<TCell, int> setICellMethod, Func<TData, string, bool> shouldDisplayMethod,
-            Action<int> onCellClickedMethod)
+            Action<int> onCellClickedMethod, Action<int> onDeleteClicked)
         {
             ScrollPool = scrollPool;
 
@@ -44,6 +45,7 @@ namespace BloodCraftUI.UI.CustomLib.Cells.Handlers
             SetICell = setICellMethod;
             ShouldDisplay = shouldDisplayMethod;
             OnCellClicked = onCellClickedMethod;
+            OnDeleteClicked = onDeleteClicked;
         }
 
         public void RefreshData()
@@ -66,6 +68,7 @@ namespace BloodCraftUI.UI.CustomLib.Cells.Handlers
         public virtual void OnCellBorrowed(TCell cell)
         {
             cell.OnClick += OnCellClicked;
+            cell.OnDeleteClick += OnDeleteClicked;
         }
 
         public virtual void SetCell(TCell cell, int index)

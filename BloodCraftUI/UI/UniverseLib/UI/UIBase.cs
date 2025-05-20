@@ -54,9 +54,10 @@ public class UIBase
         Canvas.overrideSorting = true;
 
         Scaler = RootObject.AddComponent<CanvasScaler>();
-        var scaler = GameObject.Find("MainMenuCanvas(Clone)").GetComponentInChildren<CanvasScaler>();
-        LogUtils.LogInfo($"Scaler ref: {scaler.referenceResolution.x}x{scaler.referenceResolution.y}");
-        Scaler.referenceResolution = scaler.referenceResolution;
+        //var scaler = GameObject.Find("MainMenuCanvas(Clone)").GetComponentInChildren<CanvasScaler>();
+        var resolution = new Vector2(Screen.width, Screen.height);
+        LogUtils.LogInfo($"Scaler ref: {resolution.x}x{resolution.y}");
+        Scaler.referenceResolution = resolution;
         Scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         Scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
 

@@ -303,7 +303,7 @@ public static class UIFactory
     /// <param name="text">The default button text</param>
     /// <param name="normalColor">The base color for your button, with the highlighted and pressed colors generated from this.</param>
     /// <returns>A ButtonRef wrapper for your Button component.</returns>
-    public static ButtonRef CreateButton(GameObject parent, string name, string text, Color? normalColor = null, float opacity = 1.0f)
+    public static ButtonRef CreateButton(GameObject parent, string name, string text, Color? normalColor = null)
     {
         var baseColour = normalColor ?? Theme.SliderFill;
         var colourBlock = new ColorBlock()
@@ -330,7 +330,7 @@ public static class UIFactory
     /// <param name="text">The default button text</param>
     /// <param name="colors">The ColorBlock used for your Button component</param>
     /// <returns>A ButtonRef wrapper for your Button component.</returns>
-    public static ButtonRef CreateButton(GameObject parent, string name, string text, ColorBlock colors, float opacity = 1.0f)
+    public static ButtonRef CreateButton(GameObject parent, string name, string text, ColorBlock colors)
     {
         GameObject buttonObj = CreateUIObject(name, parent, smallElementSize);
 
@@ -489,14 +489,13 @@ public static class UIFactory
     /// </summary>
     /// <param name="parent">The parent object to build onto</param>
     /// <param name="name">The GameObject name of your toggle</param>
-    /// <param name="toggle">Returns the created Toggle component</param>
     /// <param name="text">Returns the Text component for your Toggle</param>
     /// <param name="bgColor">The background color of the checkbox</param>
     /// <param name="checkWidth">The width of your checkbox</param>
     /// <param name="checkHeight">The height of your checkbox</param>
     /// <returns>The root GameObject for your Toggle control</returns>
     public static ToggleRef CreateToggle(GameObject parent, string name, Color bgColor = default,
-        int checkWidth = 20, int checkHeight = 20)
+        int checkWidth = 20, int checkHeight = 20, string text = "")
     {
         var result = new ToggleRef();
         // Main obj
@@ -528,7 +527,7 @@ public static class UIFactory
 
         GameObject labelObj = CreateUIObject("Label", result.GameObject);
         result.Text = labelObj.AddComponent<TextMeshProUGUI>();
-        result.Text.text = "";
+        result.Text.text = text;
         result.Text.alignment = TextAlignmentOptions.MidlineLeft;
         SetDefaultTextValues(result.Text);
 

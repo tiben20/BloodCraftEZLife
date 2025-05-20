@@ -1,3 +1,10 @@
+### V1.1.0
+- Added delete familiar buttons to the box content list
+- Added Prestige! button for current familiar, works only if server conditions are met
+- Fixed screen size calculations so panel should be always visible
+- Reenabled UI scaling using (*) button
+- Misc UI improvements
+
 ### V1.0.9
 !!! Panel scaling is off atm while I investigate issues
 - Added familiar current health

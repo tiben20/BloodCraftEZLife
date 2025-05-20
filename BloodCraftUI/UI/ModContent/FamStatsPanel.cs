@@ -16,6 +16,8 @@ using BloodCraftUI.Utils;
 using ProjectM;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using static Unity.Entities.Conversion.SceneHierarchy;
 using Object = UnityEngine.Object;
@@ -232,6 +234,30 @@ namespace BloodCraftUI.UI.ModContent
 
         protected override void ConstructPanelContent()
         {
+            /*var source = UnityHelper.FindInHierarchy("BloodOrbParent|BloodOrb");
+            var blood = Object.Instantiate(source, Plugin.UIManager.UIRoot.transform);
+            blood.GetComponent<RectTransform>().localScale = new Vector3(2f, 2f, 2f);
+            var c1 = blood.transform.FindChild("BlackBackground");
+            var c2 = c1.transform.FindChild("Blood");
+            var trash = blood.GetComponent<BloodOrbComponent>();
+            if(trash != null)
+            {
+                Object.Destroy(trash);
+            }
+
+            var t = c2.gameObject.GetComponent<ValidUiRaycastTarget>();
+            Object.Destroy(t);
+            var t2 = c2.gameObject.GetComponent<EventTrigger>();
+            Object.Destroy(t2);
+
+            var img = c2.gameObject.GetComponent<Image>();
+
+            var material = new Material(img.material.shader);
+            material.CopyPropertiesFromMaterial(img.material);
+            img.material = material;
+            img.SetMaterialDirty();
+            img.material.SetFloat("_LiquidLevel", 1f);*/
+
             // Hide the title bar and set up the panel
             TitleBar.SetActive(false);
             Dragger.DraggableArea = Rect;

@@ -35,14 +35,6 @@ public class ButtonRef
     /// </summary>
     public RectTransform Transform { get; }
 
-    /// <summary>
-    /// Helper for <c>Button.enabled</c>.
-    /// </summary>
-    public bool Enabled
-    {
-        get => Component.enabled;
-        set => Component.enabled = value;
-    }
 
     public ButtonRef(Button button)
     {
@@ -51,5 +43,30 @@ public class ButtonRef
         Transform = button.GetComponent<RectTransform>();
 
         button.onClick.AddListener(new Action(() => { OnClick?.Invoke(); }));
+    }
+
+    /// <summary>
+    /// Enable or disable the button's interaction.
+    /// </summary>
+    /// <param name="value"></param>
+    public void SetEnabled(bool value)
+    {
+        Component.interactable = value;
+    }
+
+    public void DisableWithTimer(int interval)
+    {
+        Component.interactable = false;
+
+        var timer = new System.Timers.Timer(interval);
+        timer.Elapsed += (sender, e) =>
+        {
+            Component.interactable = true;
+            timer.Stop();
+            timer.Dispose();
+        };
+        timer.AutoReset = false;
+        timer.Enabled = true;
+        timer.Start();
     }
 }

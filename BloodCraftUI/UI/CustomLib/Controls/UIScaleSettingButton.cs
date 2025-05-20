@@ -6,25 +6,23 @@ namespace BloodCraftUI.UI.CustomLib.Controls;
 
 public class UIScaleSettingButton : SettingsButtonBase
 {
-    private readonly List<(string, Vector2)> scales = new()
-    {
-        ("tiny", new(3840, 2160)),
-        ("small", new(2560, 1440)),
-        ("normal", new(1920, 1080)),
-        ("medium", new(1600, 900))
-    };
+    private readonly List<(string, float)> _scales =
+    [
+        ("small", 1f),
+        ("normal", 1.5f),
+        ("medium", 2f)
+    ];
 
-    private int scaleIndex;
+    private int _scaleIndex;
 
     public UIScaleSettingButton() : base("UIScale", "normal")
     {
-        scaleIndex = State switch
+        _scaleIndex = State switch
         {
-            "tiny" => 0,
-            "small" => 1,
-            "normal" => 2,
-            "medium" => 3,
-            _ => 2
+            "small" => 0,
+            "normal" => 1,
+            "medium" => 2,
+            _ => 1
         };
 
         ApplyScale();
@@ -32,29 +30,23 @@ public class UIScaleSettingButton : SettingsButtonBase
 
     public override string PerformAction()
     {
-        //scaleIndex = (scaleIndex + 1) % scales.Count;
-        _scaleFactor++;
-        if(_scaleFactor > 3f)
-            _scaleFactor = 1f;
+        _scaleIndex = (_scaleIndex + 1) % _scales.Count;
         ApplyScale();
-
-        Setting.Value = scales[scaleIndex].Item1;
-        return scales[scaleIndex].Item1;
+        Setting.Value = _scales[_scaleIndex].Item1;
+        return _scales[_scaleIndex].Item1;
     }
 
     protected override string Label()
     {
-        return $"Toggle screen size [{scales[scaleIndex].Item1}]";
+        return $"Toggle screen size [{_scales[_scaleIndex].Item1}]";
     }
-
-    private float _scaleFactor = 1f;
 
     private void ApplyScale()
     {
         foreach (var uiBase in UniversalUI.uiBases)
         {
-            //uiBase.Scaler.referenceResolution = newScale;
-            //uiBase.Scaler.scaleFactor = _scaleFactor;
+            uiBase.Panels.PanelHolder.GetComponent<RectTransform>().localScale = new Vector3(_scales[_scaleIndex].Item2, _scales[_scaleIndex].Item2, 1f);
+            //uiBase.Panels.UpdatePanelsPlacement();
             uiBase.Panels.ValidatePanels();
         }
     }

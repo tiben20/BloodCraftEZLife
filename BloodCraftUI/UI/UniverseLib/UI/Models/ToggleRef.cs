@@ -43,5 +43,26 @@ namespace BloodCraftUI.UI.UniverseLib.UI.Models
             // Call your custom action
             OnValueChanged?.Invoke(value);
         }
+
+        public void SetEnabled(bool value)
+        {
+            Toggle.interactable = value;
+        }
+
+        public void DisableWithTimer(int interval)
+        {
+            Toggle.interactable = false;
+
+            var timer = new System.Timers.Timer(interval);
+            timer.Elapsed += (sender, e) =>
+            {
+                Toggle.interactable = true;
+                timer.Stop();
+                timer.Dispose();
+            };
+            timer.AutoReset = false;
+            timer.Enabled = true;
+            timer.Start();
+        }
     }
 }

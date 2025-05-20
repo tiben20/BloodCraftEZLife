@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using BloodCraftUI.UI.CustomLib.Util;
 using BloodCraftUI.UI.ModContent.Data;
@@ -175,25 +176,26 @@ public abstract class PanelBase : UIBehaviourModel, IPanelBase
 
     public virtual void EnsureValidPosition()
     {
+        var scale = UniversalUI.uiBases.First().Panels.PanelHolder.GetComponent<RectTransform>().localScale.x;
         // Prevent panel going outside screen bounds
-
         Vector2 pos = Rect.anchoredPosition;
-        Vector2 dimensions = Owner.Scaler.referenceResolution;
-
+        Vector2 dimensions = Owner.Scaler.referenceResolution / scale;
         float halfW = dimensions.x * 0.5f;
         float halfH = dimensions.y * 0.5f;
 
-        float minPosX = -halfW + Rect.rect.width * 0.5f;
-        float maxPosX = halfW - Rect.rect.width * 0.5f;
-        float minPosY = -halfH + Rect.rect.height * 0.5f;
-        float maxPosY = halfH - Rect.rect.height * 0.5f;
+        // Account for localScale by multiplying width and height
+        float scaledWidth = Rect.rect.width;
+        float scaledHeight = Rect.rect.height;
 
+        // Calculate min/max positions accounting for scaled dimensions
+        float minPosX = -halfW + scaledWidth * 0.5f;
+        float maxPosX = halfW - scaledWidth * 0.5f;
+        float minPosY = -halfH + scaledHeight * 0.5f;
+        float maxPosY = halfH - scaledHeight * 0.5f;
+
+        // Apply clamping to keep the panel within screen bounds
         pos.x = Math.Clamp(pos.x, minPosX, maxPosX);
         pos.y = Math.Clamp(pos.y, minPosY, maxPosY);
-        //pos.x = Math.Clamp(pos.x, minPosX > maxPosX ? maxPosX : minPosX, maxPosX > minPosX ? minPosX : maxPosX);
-        //pos.y = Math.Clamp(pos.y, minPosY > maxPosY ? maxPosY : minPosY, maxPosY > minPosY ? minPosY : maxPosY);
-
-
         Rect.anchoredPosition = pos;
     }
 
@@ -218,7 +220,7 @@ public abstract class PanelBase : UIBehaviourModel, IPanelBase
         UIFactory.SetLayoutElement(TitleBar, minHeight: 25, flexibleHeight: 0);
 
         // Title text
-        TitleLabel = UIFactory.CreateLabel(TitleBar, "TitleBar", PanelId, TextAlignmentOptions.Center);
+        TitleLabel = UIFactory.CreateLabel(TitleBar, "TitleBar", PanelId, TextAlignmentOptions.Center, Theme.DefaultText, outlineWidth: 0.05f, fontSize: 16);
         UIFactory.SetLayoutElement(TitleLabel.GameObject, 50, 25, 9999, 0);
 
         // close button
@@ -226,7 +228,7 @@ public abstract class PanelBase : UIBehaviourModel, IPanelBase
         CloseButton = UIFactory.CreateUIObject("CloseHolder", TitleBar);
         UIFactory.SetLayoutElement(CloseButton, minHeight: 25, flexibleHeight: 0, minWidth: 30, flexibleWidth: 9999);
         UIFactory.SetLayoutGroup<HorizontalLayoutGroup>(CloseButton, false, false, true, true, 3, childAlignment: TextAnchor.MiddleRight);
-        ButtonRef closeBtn = UIFactory.CreateButton(CloseButton, "CloseButton", "—", opacity: Opacity);
+        ButtonRef closeBtn = UIFactory.CreateButton(CloseButton, "CloseButton", "—");
         // Remove the button outline
         Object.Destroy(closeBtn.Component.gameObject.GetComponent<Outline>());
         UIFactory.SetLayoutElement(closeBtn.Component.gameObject, minHeight: 25, minWidth: 25, flexibleWidth: 0);

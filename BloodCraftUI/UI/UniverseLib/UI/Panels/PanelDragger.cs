@@ -99,7 +99,7 @@ public class PanelDragger
                 OnResize();
             }
         }
-        else if (state.HasFlag(MouseState.ButtonState.Released))
+        else if (state.HasFlag(MouseState.ButtonState.Released) || state.HasFlag(MouseState.ButtonState.Up))
         {
             if (WasDragging)
             {

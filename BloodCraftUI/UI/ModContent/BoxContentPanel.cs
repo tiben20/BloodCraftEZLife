@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using BloodCraftUI.Config;
 using BloodCraftUI.Services;
-using BloodCraftUI.UI.CustomLib.Cells;
 using BloodCraftUI.UI.CustomLib.Cells.Handlers;
 using BloodCraftUI.UI.CustomLib.Panel;
+using BloodCraftUI.UI.CustomLib.Util;
+using BloodCraftUI.UI.ModContent.CustomElements;
 using BloodCraftUI.UI.ModContent.Data;
 using BloodCraftUI.UI.UniverseLib.UI;
 using BloodCraftUI.UI.UniverseLib.UI.Models;
@@ -30,11 +31,12 @@ namespace BloodCraftUI.UI.ModContent
 
         private readonly string _boxName;
         private bool _isInitialized;
+        private ToggleRef _deleteToggle;
 
         public BoxContentPanel(UIBase owner, string name) : base(owner)
         {
             PanelId = name;
-            SetTitle($"Box '{name}' content");
+            SetTitle(name);
             _boxName = name;
         }
 
@@ -106,20 +108,41 @@ namespace BloodCraftUI.UI.ModContent
                 }
             });
         }
+
+        private void SendDeleteCommand(int number)
+        {
+            EnableAllButtons(false);
+            MessageService.EnqueueMessage(string.Format(MessageService.BCCOM_DELETEFAM, number));
+            TimerHelper.OneTickTimer(2000, () => EnableAllButtons(true));
+        }
+
         #endregion
 
         public void AddListEntry(int number, string name, AbilitySchoolType? schoolType)
         {
-            _dataList.Add(new FamData { Number = number, Name = name, SpellSchool = schoolType });
+            _dataList.Add(new FamDataListItem { Number = number, Name = name, SpellSchool = schoolType });
             _scrollDataHandler.RefreshData();
             _scrollPool.Refresh(true);
         }
 
         protected override void ConstructPanelContent()
         {
-            _scrollDataHandler = new ButtonListHandler<FamData, ButtonCell>(_scrollPool, GetEntries, SetCell, ShouldDisplay, OnCellClicked);
-            _scrollPool = UIFactory.CreateScrollPool<ButtonCell>(ContentRoot, "ContentList", out GameObject scrollObj,
-                out _, new Color(0.03f, 0.03f, 0.03f).GetTransparent(Opacity));
+            var horGroup = UIFactory.CreateHorizontalGroup(ContentRoot, "CheckGroup", true, false, true, false, 3,
+                default, new Color(1, 1, 1, 0), TextAnchor.MiddleLeft);
+            _deleteToggle = UIFactory.CreateToggle(horGroup, "ToggleDelete", text: "Enable delete buttons");
+            UIFactory.SetLayoutElement(_deleteToggle.GameObject, minWidth: 250, minHeight: 25, flexibleWidth: 9999);
+            _deleteToggle.Toggle.isOn = false;
+            _deleteToggle.OnValueChanged += (value) =>
+            {
+                foreach (var a in _scrollPool.CellPool)
+                {
+                    a.DeleteButton.SetEnabled(value);
+                }
+            };
+
+            _scrollDataHandler = new BoxContentListHandler<FamDataListItem, BoxContentCell>(_scrollPool, GetEntries, SetCell, ShouldDisplay, OnCellClicked, OnDeleteClicked);
+            _scrollPool = UIFactory.CreateScrollPool<BoxContentCell>(ContentRoot, "ContentList", out GameObject scrollObj,
+                out _, new Color(0.03f, 0.03f, 0.03f, Theme.Opacity));
             _scrollPool.Initialize(_scrollDataHandler);
             UIFactory.SetLayoutElement(scrollObj, flexibleHeight: 9999);
         }
@@ -131,18 +154,24 @@ namespace BloodCraftUI.UI.ModContent
 
         private void EnableAllButtons(bool value)
         {
+            _deleteToggle.SetEnabled(value);
+
             foreach (var a in _scrollPool.CellPool)
-                a.Button.Component.interactable = value;
+            {
+                a.ContentButton.SetEnabled(value);
+                if(!value || _deleteToggle.Toggle.isOn)
+                    a.DeleteButton.SetEnabled(value);
+            }
         }
 
         #region ScrollPool handling
 
-        private static ScrollPool<ButtonCell> _scrollPool;
-        private static ButtonListHandler<FamData, ButtonCell> _scrollDataHandler;
+        private static ScrollPool<BoxContentCell> _scrollPool;
+        private static BoxContentListHandler<FamDataListItem, BoxContentCell> _scrollDataHandler;
 
-        private List<FamData> GetEntries() => _dataList;
+        private List<FamDataListItem> GetEntries() => _dataList;
 
-        private bool ShouldDisplay(FamData data, string filter) => true;
+        private bool ShouldDisplay(FamDataListItem data, string filter) => true;
 
         private void OnCellClicked(int dataIndex)
         {
@@ -150,7 +179,16 @@ namespace BloodCraftUI.UI.ModContent
             SendBindCommand(fam.Number);
         }
 
-        private void SetCell(ButtonCell cell, int index)
+        private void OnDeleteClicked(int dataIndex)
+        {
+            var fam = _dataList[dataIndex];
+            SendDeleteCommand(fam.Number);
+            _dataList.RemoveAt(dataIndex);
+            _scrollDataHandler.RefreshData();
+            _scrollPool.Refresh(true);
+        }
+
+        private void SetCell(BoxContentCell cell, int index)
         {
             if (index < 0 || index >= _dataList.Count)
             {
@@ -159,12 +197,12 @@ namespace BloodCraftUI.UI.ModContent
             }
 
             var data = _dataList[index];
-            cell.Button.ButtonText.text = data.Name;
+            cell.ContentButton.ButtonText.text = data.Name;
         }
 
-        private readonly List<FamData> _dataList = new();
+        private readonly List<FamDataListItem> _dataList = new();
 
-        public class FamData
+        public class FamDataListItem
         {
             public int Number { get; set; }
             public string Name { get; set; }
