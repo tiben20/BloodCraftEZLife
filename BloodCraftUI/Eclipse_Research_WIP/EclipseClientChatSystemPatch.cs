@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using BloodCraftUI.Utils;
+using BloodmoonPluginsUI.Utils;
 using HarmonyLib;
 using ProjectM.Network;
 using ProjectM.UI;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace BloodCraftUI.Eclipse_Research_WIP
+namespace BloodmoonPluginsUI.Eclipse_Research_WIP
 {
     [HarmonyPatch]
     internal class EclipseClientChatSystemPatch

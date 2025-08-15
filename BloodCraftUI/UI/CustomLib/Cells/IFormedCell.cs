@@ -1,7 +1,7 @@
 ﻿using System;
-using BloodCraftUI.UI.UniverseLib.UI.Widgets.ScrollView;
+using BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView;
 
-namespace BloodCraftUI.UI.CustomLib.Cells;
+namespace BloodmoonPluginsUI.UI.CustomLib.Cells;
 
 public interface IFormedCell : ICell
 {

@@ -3,7 +3,7 @@ using BepInEx.Unity.IL2CPP.Utils.Collections;
 using ProjectM.Physics;
 using UnityEngine;
 
-namespace BloodCraftUI.Eclipse_Research_WIP
+namespace BloodmoonPluginsUI.Eclipse_Research_WIP
 {
     internal static class Extensions
     {

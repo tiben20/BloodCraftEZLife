@@ -1,9 +1,9 @@
 using System;
-using BloodCraftUI.Behaviors;
-using BloodCraftUI.UI.UniverseLib.UI;
-using BloodCraftUI.Utils;
+using BloodmoonPluginsUI.Behaviors;
+using BloodmoonPluginsUI.UI.UniverseLib.UI;
+using BloodmoonPluginsUI.Utils;
 
-namespace BloodCraftUI.UI;
+namespace BloodmoonPluginsUI.UI;
 
 public class FrameTimer
     {

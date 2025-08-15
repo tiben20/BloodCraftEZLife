@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BloodCraftUI.UI.UniverseLib.UI.Models
+namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Models
 {
     public class ToggleRef
     {

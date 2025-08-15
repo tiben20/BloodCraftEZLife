@@ -1,7 +1,7 @@
-﻿using BloodCraftUI.UI.UniverseLib.UI;
+﻿using BloodmoonPluginsUI.UI.UniverseLib.UI;
 using UnityEngine;
 
-namespace BloodCraftUI.UI.ModernLib;
+namespace BloodmoonPluginsUI.UI.ModernLib;
 
 public abstract class UIManagerBase
 {

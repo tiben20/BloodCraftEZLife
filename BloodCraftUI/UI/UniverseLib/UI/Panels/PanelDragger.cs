@@ -2,10 +2,10 @@
 
 using System;
 using System.Collections.Generic;
-using BloodCraftUI.UI.CustomLib;
+using BloodmoonPluginsUI.UI.CustomLib;
 using UnityEngine;
 
-namespace BloodCraftUI.UI.UniverseLib.UI.Panels;
+namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Panels;
 
 public class PanelDragger
 {

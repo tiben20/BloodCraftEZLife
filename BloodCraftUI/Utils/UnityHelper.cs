@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace BloodCraftUI.Utils;
+namespace BloodmoonPluginsUI.Utils;
 
 public static class UnityHelper
 {

@@ -1,9 +1,9 @@
 ﻿using System;
-using BloodCraftUI.UI.UniverseLib.UI.Models;
+using BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BloodCraftUI.UI.UniverseLib.UI.Widgets;
+namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets;
 
 /// <summary>
 /// A scrollbar which automatically resizes itself (and its handle) depending on the size of the content and viewport.

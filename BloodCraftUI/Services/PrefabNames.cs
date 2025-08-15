@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Stunlock.Core;
 
-namespace BloodCraftUI.Services;
+namespace BloodmoonPluginsUI.Services;
 internal static class PrefabNames
 {
     public static IReadOnlyDictionary<PrefabGUID, string> LocalizedNameKeys => _localizedNameKeys;

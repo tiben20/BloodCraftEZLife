@@ -1,9 +1,11 @@
 ﻿using System;
-using BloodCraftUI.Services;
+using BloodmoonPluginsUI.Services;
+using BloodmoonPluginsUI.Utils;
 using Il2CppInterop.Runtime.Injection;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
-namespace BloodCraftUI.UI.ModernLib
+namespace BloodmoonPluginsUI.UI.ModernLib
 {
     public class CoreUpdateBehavior: MonoBehaviour, IDisposable
     {
@@ -28,8 +30,16 @@ namespace BloodCraftUI.UI.ModernLib
             MessageService.ProcessAllMessages(); 
         }
 
+        public void Unload()
+        {
+            LogUtils.LogError("Unloading CoreUpdateBehavior");
+            if (_obj)
+                Destroy(_obj);
+        }
+
         public void Dispose()
         {
+            LogUtils.LogError("Disposing CoreUpdateBehavior");
             if(_obj)
                 Destroy(_obj);
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using BepInEx.Logging;
 
-namespace BloodCraftUI.Utils
+namespace BloodmoonPluginsUI.Utils
 {
     public static class LogUtils
     {
@@ -19,7 +19,7 @@ namespace BloodCraftUI.Utils
 
         public static void LogInfo(string text)
         {
-            Log?.LogInfo(text);
+            Log?.LogInfo($"{PluginInfo.PLUGIN_NAME}: " + text);
         }
 
         public static void LogError(string text)

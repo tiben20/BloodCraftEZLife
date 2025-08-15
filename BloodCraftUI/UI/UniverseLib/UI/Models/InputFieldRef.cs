@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BloodCraftUI.UI.UniverseLib.UI.Models;
+namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
 
 /// <summary>
 /// A simple wrapper class for working with InputFields, with some helpers and performance improvements.

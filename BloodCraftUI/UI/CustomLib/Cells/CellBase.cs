@@ -1,7 +1,7 @@
-﻿using BloodCraftUI.UI.UniverseLib.UI.Widgets.ScrollView;
+﻿using BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView;
 using UnityEngine;
 
-namespace BloodCraftUI.UI.CustomLib.Cells
+namespace BloodmoonPluginsUI.UI.CustomLib.Cells
 {
     public abstract class CellBase : ICell
     {

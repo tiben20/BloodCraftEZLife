@@ -1,13 +1,13 @@
 ﻿using System;
-using BloodCraftUI.UI.CustomLib.Cells;
-using BloodCraftUI.UI.CustomLib.Util;
-using BloodCraftUI.UI.UniverseLib.UI;
-using BloodCraftUI.UI.UniverseLib.UI.Models;
+using BloodmoonPluginsUI.UI.CustomLib.Cells;
+using BloodmoonPluginsUI.UI.CustomLib.Util;
+using BloodmoonPluginsUI.UI.UniverseLib.UI;
+using BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BloodCraftUI.UI.ModContent.CustomElements
+namespace BloodmoonPluginsUI.UI.ModContent.CustomElements
 {
     public class BoxContentCell : CellBase, IFormedCell
     {
@@ -46,12 +46,12 @@ namespace BloodCraftUI.UI.ModContent.CustomElements
             DeleteButton = UIFactory.CreateButton(UIRoot, "DeleteButton", "x");
             UIFactory.SetLayoutElement(DeleteButton.GameObject, 25, 25, preferredWidth: 25, preferredHeight: 25);
             DeleteButton.SetEnabled(false);
-            DeleteButton.OnClick += () => { OnDeleteClick?.Invoke(CurrentDataIndex); };
+            DeleteButton.OnClick += () => { OnToggleClick?.Invoke(CurrentDataIndex); };
 
             return UIRoot;
         }
 
         public Action<int> OnClick { get; set; }
-        public Action<int> OnDeleteClick { get; set; }
+        public Action<int> OnToggleClick { get; set; }
     }
 }

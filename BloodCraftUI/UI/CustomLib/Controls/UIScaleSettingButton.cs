@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using BloodCraftUI.UI.UniverseLib.UI;
+using BloodmoonPluginsUI.UI.UniverseLib.UI;
 using UnityEngine;
 
-namespace BloodCraftUI.UI.CustomLib.Controls;
+namespace BloodmoonPluginsUI.UI.CustomLib.Controls;
 
 public class UIScaleSettingButton : SettingsButtonBase
 {

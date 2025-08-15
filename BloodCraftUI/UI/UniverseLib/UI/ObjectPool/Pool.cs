@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BloodCraftUI.UI.UniverseLib.UI.Widgets.ScrollView;
-using BloodCraftUI.Utils;
+using BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView;
+using BloodmoonPluginsUI.Utils;
 using UnityEngine;
 
-namespace BloodCraftUI.UI.UniverseLib.UI.ObjectPool;
+namespace BloodmoonPluginsUI.UI.UniverseLib.UI.ObjectPool;
 
 /// <summary>
 /// Abstract base class to handle interfacing with a generic <see cref="Pool{T}"/>, without the generic parameter at compile time.

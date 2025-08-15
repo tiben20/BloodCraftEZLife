@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BloodCraftUI.UI.CustomLib.Panel;
-using BloodCraftUI.UI.ModContent;
-using BloodCraftUI.UI.ModContent.Data;
-using BloodCraftUI.UI.UniverseLib.UI.Panels;
-using UIManagerBase = BloodCraftUI.UI.ModernLib.UIManagerBase;
+using BloodmoonPluginsUI.UI.CustomLib.Panel;
+using BloodmoonPluginsUI.UI.ModContent;
+using BloodmoonPluginsUI.UI.ModContent.Data;
+using BloodmoonPluginsUI.UI.UniverseLib.UI.Panels;
+using UIManagerBase = BloodmoonPluginsUI.UI.ModernLib.UIManagerBase;
 
-namespace BloodCraftUI.UI;
+namespace BloodmoonPluginsUI.UI;
 
 public class BCUIManager : UIManagerBase
 {
     private List<IPanelBase> UIPanels { get; } = new();
-    private IPanelBase _contentPanel;
+    public IPanelBase _contentPanel;
     private readonly List<string> _visibilityAffectedPanels = new();
 
     public override void Reset()
@@ -62,23 +62,13 @@ public class BCUIManager : UIManagerBase
             case PanelType.Base:
                 _contentPanel = new ContentPanel(UiBase);
                 break;
-            case PanelType.BoxList:
+            case PanelType.TeleportList:
             {
-                var panel = GetPanel<BoxListPanel>();
+                var panel = GetPanel<TeleportListPanel>();
                 if (panel == null)
                 {
-                    var item = new BoxListPanel(UiBase);
+                    var item = new TeleportListPanel(UiBase);
                     UIPanels.Add(item);
-                    if (Plugin.IS_TESTING)
-                    {
-                        item.AddListEntry("Test 1 ");
-                        item.AddListEntry("My sweet box1");
-                        item.AddListEntry("My sweet box2");
-                        item.AddListEntry("My sweet box3");
-                        item.AddListEntry("My sweet box4");
-                        item.AddListEntry("My sweet box5");
-                        item.AddListEntry("My sweet box6");
-                    }
                 }
                 else
                 {
@@ -87,30 +77,34 @@ public class BCUIManager : UIManagerBase
 
                 break;
             }
-            case PanelType.BoxContent:
-            {
-                var panel = GetBoxPanel(param);
-                if (panel == null)
-                    UIPanels.Add(new BoxContentPanel(UiBase, param));
-                else
+            case PanelType.SettingsPanel:
                 {
-                    panel.SetActive(true);
+                    var panel = GetPanel<SettingsPanel>();
+                    if (panel == null)
+                    {
+                        var item = new SettingsPanel(UiBase);
+                        UIPanels.Add(item);
+                    }
+                    else
+                    {
+                        panel.SetActive(true);
+                    }
+
+                    break;
                 }
-                break;
-            }
-            case PanelType.FamStats:
-            {
-                var panel = GetPanel<FamStatsPanel>();
-                if (panel == null)
+            case PanelType.PullPanel:
                 {
-                    var item = new FamStatsPanel(UiBase);
-                    UIPanels.Add(item);
+                    var panel = GetPanel<PullItemsPanel>();
+                    if (panel == null)
+                    {
+                        var item = new PullItemsPanel(UiBase);
+                        UIPanels.Add(item);
+                    }
+                    else
+                    {
+                        panel.SetActive(!panel.Enabled);
+                    }
                 }
-                else
-                {
-                    panel.SetActive(!panel.Enabled);
-                }
-            }
                 break;
             case PanelType.TestPanel:
             {
@@ -131,16 +125,11 @@ public class BCUIManager : UIManagerBase
         }
     }
 
+
     internal T GetPanel<T>()
         where T : class
     {
         var t = typeof(T);
         return UIPanels.FirstOrDefault(a => a.GetType() == t) as T;
-    }
-
-    internal BoxContentPanel GetBoxPanel(string currentBox)
-    {
-        return UIPanels.FirstOrDefault(a => a.PanelType == PanelType.BoxContent && a.PanelId.Equals(currentBox)) as
-            BoxContentPanel;
     }
 }

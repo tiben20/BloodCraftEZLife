@@ -1,22 +1,30 @@
 ﻿using System.Collections.Generic;
-using BloodCraftUI.Config;
-using BloodCraftUI.Services;
-using BloodCraftUI.UI.CustomLib.Controls;
-using BloodCraftUI.UI.CustomLib.Panel;
-using BloodCraftUI.UI.CustomLib.Util;
-using BloodCraftUI.UI.ModContent.Data;
-using BloodCraftUI.UI.UniverseLib.UI;
-using BloodCraftUI.UI.UniverseLib.UI.Panels;
-using BloodCraftUI.Utils;
+using BloodmoonPluginsUI.Config;
+using BloodmoonPluginsUI.Services;
+using BloodmoonPluginsUI.UI.CustomLib.Controls;
+using BloodmoonPluginsUI.UI.CustomLib.Panel;
+using BloodmoonPluginsUI.UI.CustomLib.Util;
+using BloodmoonPluginsUI.UI.ModContent.Data;
+using BloodmoonPluginsUI.UI.UniverseLib.UI;
+using BloodmoonPluginsUI.UI.UniverseLib.UI.Panels;
+using BloodmoonPluginsUI.Utils;
+using ProjectM;
+using TMPro;
+using Unity.Collections;
+using Unity.Entities;
+using Unity.Mathematics;
+using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.UI;
-using UIBase = BloodCraftUI.UI.UniverseLib.UI.UIBase;
+using UnityEngine.UIElements;
+using static BloodmoonPluginsUI.Services.MessageService;
+using UIBase = BloodmoonPluginsUI.UI.UniverseLib.UI.UIBase;
 
-namespace BloodCraftUI.UI.ModContent
+namespace BloodmoonPluginsUI.UI.ModContent
 {
     public class ContentPanel : ResizeablePanelBase
     {
-        public override string PanelId => "CorePanel";
+        public override string PanelId => "BloodmoonCorePanel";
 
         public override int MinWidth => Settings.UseHorizontalContentLayout ? 340 : 100;
         //public override int MaxWidth => 150;
@@ -32,15 +40,34 @@ namespace BloodCraftUI.UI.ModContent
         private GameObject _uiAnchor;
         private UIScaleSettingButton _scaleButtonData;
         private List<GameObject> _objectsList;
-        private Toggle _pinToggle;
+        private UniverseLib.UI.Models.LabelRef _anchorLabel;
+        private UnityEngine.UI.Toggle _pinToggle;
         public override float Opacity => Settings.UITransparency;
+
+        private float timer = 0f;
+        public float interval = 5f; // seconds
+        private List<TeleportRequest> _teleportRequest = new();
 
         public ContentPanel(UIBase owner) : base(owner)
         {
         }
 
+        public void ToggleGameObject(bool newValue, string objectName)
+        {
+            if (objectName == "header")
+            {
+                _anchorLabel.GameObject.SetActive(newValue);
+                return;
+            }
+            GameObject btn = _objectsList.Find(n => n.name == objectName);
+            if (btn != null)
+            {
+                btn.SetActive(newValue);
+            }
+        }
         protected override void ConstructPanelContent()
         {
+            
             TitleBar.SetActive(false);
             _uiAnchor = Settings.UseHorizontalContentLayout
                 ? UIFactory.CreateHorizontalGroup(ContentRoot, "UIAnchor", true, true, true, true)
@@ -71,87 +98,78 @@ namespace BloodCraftUI.UI.ModContent
                 pinButton.Text.text = " ";
             }
 
-            var text = UIFactory.CreateLabel(_uiAnchor, "UIAnchorText", $"BCUI {PluginInfo.PLUGIN_VERSION}");
-            UIFactory.SetLayoutElement(text.GameObject, 80, 25, 1, 1);
-            _objectsList.Add(text.GameObject);
 
-            if (Settings.IsBoxPanelEnabled)
+            _anchorLabel = UIFactory.CreateLabel(_uiAnchor, "UIAnchorText", $"BMOON {PluginInfo.PLUGIN_VERSION}");
+            UIFactory.SetLayoutElement(_anchorLabel.GameObject, 80, 25, 1, 1);
+            _objectsList.Add(_anchorLabel.GameObject);
+            _anchorLabel.GameObject.SetActive(Settings.IsHeaderVisible);
+
+            if (Settings.IsTeleportPanelEnabled)
             {
-                var boxListButton = UIFactory.CreateButton(_uiAnchor, "BoxListButton", "Box List");
+                var boxListButton = UIFactory.CreateButton(_uiAnchor, "TeleportListButton", "Teleport List");
                 UIFactory.SetLayoutElement(boxListButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
                 _objectsList.Add(boxListButton.GameObject);
-                boxListButton.OnClick = () => { Plugin.UIManager.AddPanel(PanelType.BoxList); };
-            }
-
-            if (Settings.IsFamStatsPanelEnabled)
-            {
-                var famStatsButton = UIFactory.CreateButton(_uiAnchor, "FamStatsButton", "Fam Stats");
-                UIFactory.SetLayoutElement(famStatsButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
-                _objectsList.Add(famStatsButton.GameObject);
-                famStatsButton.OnClick = () => { Plugin.UIManager.AddPanel(PanelType.FamStats); };
-            }
-
-            if (Settings.IsBindButtonEnabled)
-            {
-                var unbindButton = UIFactory.CreateButton(_uiAnchor, "FamStatsButton", "Unbind");
-                UIFactory.SetLayoutElement(unbindButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
-                _objectsList.Add(unbindButton.GameObject);
-                unbindButton.OnClick = () =>
+                boxListButton.OnClick = () => 
                 {
-                    unbindButton.Component.interactable = false;
-                    MessageService.EnqueueMessage(MessageService.BCCOM_UNBINDFAM);
-                    TimerHelper.OneTickTimer(2000, () => unbindButton.Component.interactable = true);
-                };
-
-                var bindLastButton = UIFactory.CreateButton(_uiAnchor, "FamBindLastButton", "Bind Last");
-                UIFactory.SetLayoutElement(bindLastButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
-                _objectsList.Add(bindLastButton.GameObject);
-                bindLastButton.OnClick = () =>
-                {
-                    if (string.IsNullOrEmpty(Settings.LastBindCommand))
+                    var panel = Plugin.UIManager.GetPanel<TeleportListPanel>();
+                    if (panel != null)
+                    {
+                        panel.Toggle();
                         return;
-                    bindLastButton.Component.interactable = false;
-                    MessageService.EnqueueMessage(Settings.LastBindCommand);
-                    TimerHelper.OneTickTimer(2000, () => bindLastButton.Component.interactable = true);
+
+                    }
+                    Plugin.UIManager.AddPanel(PanelType.TeleportList); 
                 };
             }
 
-            if (Settings.IsToggleButtonEnabled)
+            var pullButton = UIFactory.CreateButton(_uiAnchor, "PullButton", "Pull");
+            UIFactory.SetLayoutElement(pullButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
+            _objectsList.Add(pullButton.GameObject);
+            pullButton.OnClick = () =>
             {
-                var toggleButton = UIFactory.CreateButton(_uiAnchor, "ToggleButton", "Toggle");
-                UIFactory.SetLayoutElement(toggleButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
-                _objectsList.Add(toggleButton.GameObject);
-                toggleButton.OnClick = () =>
+                PullItemsPanel panel;
+                panel = Plugin.UIManager.GetPanel<PullItemsPanel>();
+                if (panel != null)
                 {
-                    MessageService.EnqueueMessage(MessageService.BCCOM_TOGGLEFAM);
-                    toggleButton.DisableWithTimer(2000);
-                };
-            }
+                    panel.Toggle();
+                    return;
 
-            if (Settings.IsPrestigeButtonEnabled)
-            {
-                var prestigeButton = UIFactory.CreateButton(_uiAnchor, "PrestigeButton", "Prestige!");
-                UIFactory.SetLayoutElement(prestigeButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
-                _objectsList.Add(prestigeButton.GameObject);
-                prestigeButton.OnClick = () =>
-                {
-                    MessageService.EnqueueMessage(MessageService.BCCOM_PRESTIGEFAM);
-                    prestigeButton.DisableWithTimer(2000);
-                };
-            }
+                }
+                Plugin.UIManager.AddPanel(PanelType.PullPanel);
 
-            if (Settings.IsCombatButtonEnabled)
-            {
-                var combatToggle = UIFactory.CreateToggle(_uiAnchor, "FamToggleCombatButton");
-                combatToggle.Text.text = "Combat Mode";
-                combatToggle.Text.fontSize = 12;
-                combatToggle.OnValueChanged += value =>
+
+                panel = Plugin.UIManager.GetPanel<PullItemsPanel>();
+                if (panel != null)
                 {
-                    MessageService.EnqueueMessage(MessageService.BCCOM_COMBAT);
-                    combatToggle.DisableWithTimer(2000);
-                };
-                UIFactory.SetLayoutElement(combatToggle.GameObject, ignoreLayout: false, minWidth: 110, minHeight: 25);
-            }
+                    panel.RefreshData();
+                }
+
+            };
+
+            var settingsButton = UIFactory.CreateButton(_uiAnchor, "SettingsButton", "S");
+            UIFactory.SetLayoutElement(settingsButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
+            _objectsList.Add(settingsButton.GameObject);
+            settingsButton.OnClick = () => 
+            {
+                SettingsPanel panel;
+                panel = Plugin.UIManager.GetPanel<SettingsPanel>();
+                if (panel != null)
+                {
+                    panel.Toggle();
+                    return;
+
+                }
+                Plugin.UIManager.AddPanel(PanelType.SettingsPanel);
+
+ 
+                panel = Plugin.UIManager.GetPanel<SettingsPanel>();
+                if (panel != null)
+                {
+                    panel.RefreshData();
+                }
+
+            };
+
 
             var scaleButton = UIFactory.CreateButton(_uiAnchor, "ScaleButton", "*");
             UIFactory.SetLayoutElement(scaleButton.GameObject, ignoreLayout: false, minWidth: 25, minHeight: 25);
@@ -160,18 +178,7 @@ namespace BloodCraftUI.UI.ModContent
             scaleButton.OnClick = () =>
             {
                 _scaleButtonData.PerformAction();
-                var panel = Plugin.UIManager.GetPanel<FamStatsPanel>();
-                if(panel != null && panel.UIRoot.active)
-                    panel.RecalculateHeight();
             };
-
-            if (Plugin.IS_TESTING)
-            {
-                var b = UIFactory.CreateButton(_uiAnchor, "TestButton", "T");
-                UIFactory.SetLayoutElement(b.GameObject, ignoreLayout: false, minWidth: 25, minHeight: 25);
-                _objectsList.Add(scaleButton.GameObject);
-                b.OnClick = () => Plugin.UIManager.AddPanel(PanelType.TestPanel);
-            }
         }
 
         protected override void LateConstructUI()
@@ -188,8 +195,94 @@ namespace BloodCraftUI.UI.ModContent
 
         public override void Update()
         {
+            
+            timer += Time.deltaTime;
+            if (timer >= interval)
+            {
+                timer = 0f;
+                TimerTick();
+            }
             base.Update();
             // Call update on the panels that need it
         }
+        private void TimerTick()
+        {
+            if (_teleportRequest.Count == 0)
+                return;
+
+
+            List<string> playersAtProx = PlayerAtProximity();
+            for (int x = _teleportRequest.Count - 1; x >= 0; x--)
+            {
+                var tp = _teleportRequest[x];
+
+                tp.Acceptcount += 1;
+                if (tp.Acceptcount == 5 || playersAtProx.Contains(_teleportRequest[x].Username))
+                {
+                    _teleportRequest.RemoveAt(x);
+                }
+                else
+                {
+                    MessageService.EnqueueMessage(".stp tpa " + _teleportRequest[x].Username);
+                    _teleportRequest[x] = tp;
+                }
+            }
+        }
+
+        public void AddTeleportRequest(string teleportname)
+        {
+            var result = _teleportRequest.Find(u => u.Username == teleportname);
+            if (string.IsNullOrEmpty(result.Username))
+            {
+                _teleportRequest.Add(new TeleportRequest(teleportname));
+                MessageService.EnqueueMessage(".stp tpa " + teleportname);
+            }
+        }
+
+        public void RemoveTeleportRequest(string teleportname)
+        {
+            var result = _teleportRequest.Find(u => u.Username == teleportname);
+            if (string.IsNullOrEmpty(result.Username))
+            {
+                _teleportRequest.RemoveAll(u => u.Username == teleportname);
+                LogUtils.LogInfo("Removing request: "+ teleportname);
+            }
+        }
+
+        public List<string> PlayerAtProximity()
+        {
+            var playerQuery = Plugin.EntityManager.CreateEntityQuery(
+                ComponentType.ReadOnly<PlayerCharacter>());
+            List<string> results = new List<string>();
+            var players = playerQuery.ToEntityArray(Unity.Collections.Allocator.Temp);
+            foreach (var p in players)
+            {
+                if (p == Plugin.LocalCharacter) continue;
+
+                PlayerCharacter pp;
+                if (p.Has<PlayerCharacter>())
+                {
+                    pp = p.Read<PlayerCharacter>();
+                    float3 pos1 = p.GetPosition();
+
+                    float3 pos2 = Plugin.LocalCharacter.GetPosition();
+
+                    // Ignore height by forcing Y to be the same
+                    pos1.y = 0;
+                    pos2.y = 0;
+
+                    float dist = math.distance(pos1, pos2);
+                    if (dist < 30.0f)
+                    {
+                        results.Add(pp.Name.Value);
+                        LogUtils.LogInfo($"{pp.Name.Value} is close to you at {dist.ToString()}");
+                    }
+
+                }
+            }
+            playerQuery.Dispose();
+            return results;
+        }
+
     }
 }

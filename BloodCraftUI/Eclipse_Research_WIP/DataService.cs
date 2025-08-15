@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using BloodCraftUI.Utils;
+using BloodmoonPluginsUI.Utils;
 using Stunlock.Core;
 using UnityEngine;
 
-namespace BloodCraftUI.Eclipse_Research_WIP;
+namespace BloodmoonPluginsUI.Eclipse_Research_WIP;
 internal static class DataService
 {
     public enum TargetType

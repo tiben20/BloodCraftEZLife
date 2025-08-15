@@ -1,7 +1,7 @@
-﻿using BloodCraftUI.UI.ModContent.Data;
+﻿using BloodmoonPluginsUI.UI.ModContent.Data;
 using UnityEngine;
 
-namespace BloodCraftUI.UI.UniverseLib.UI.Panels;
+namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Panels;
 
 public interface IPanelBase
 {

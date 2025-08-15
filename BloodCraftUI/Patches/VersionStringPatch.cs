@@ -1,8 +1,8 @@
-using BloodCraftUI.UI.UniverseLib.UI;
+using BloodmoonPluginsUI.UI.UniverseLib.UI;
 using HarmonyLib;
 using TMPro;
 
-namespace BloodCraftUI.Patches;
+namespace BloodmoonPluginsUI.Patches;
 
 public class VersionStringPatch
 {

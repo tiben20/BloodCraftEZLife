@@ -2,13 +2,13 @@
 
 using System;
 using System.Collections.Generic;
-using BloodCraftUI.UI.CustomLib;
-using BloodCraftUI.Utils;
+using BloodmoonPluginsUI.UI.CustomLib;
+using BloodmoonPluginsUI.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BloodCraftUI.UI.UniverseLib.UI.Panels;
+namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Panels;
 
 /// <summary>
 /// Handles updating, dragging and resizing all <see cref="PanelBase"/>s for the parent <see cref="UIBase"/>.

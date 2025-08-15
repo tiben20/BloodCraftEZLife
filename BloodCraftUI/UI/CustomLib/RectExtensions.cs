@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using UnityEngine;
 
-namespace BloodCraftUI.UI.CustomLib;
+namespace BloodmoonPluginsUI.UI.CustomLib;
 
 public static class RectExtensions
 {

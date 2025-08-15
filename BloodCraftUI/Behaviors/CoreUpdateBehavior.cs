@@ -4,7 +4,7 @@ using System.Linq;
 using Il2CppInterop.Runtime.Injection;
 using UnityEngine;
 
-namespace BloodCraftUI.Behaviors;
+namespace BloodmoonPluginsUI.Behaviors;
 
 public class CoreUpdateBehavior : MonoBehaviour
 {

@@ -1,21 +1,23 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
-using BloodCraftUI.Config;
-using BloodCraftUI.Patches;
-using BloodCraftUI.Services;
-using BloodCraftUI.UI;
-using BloodCraftUI.UI.CustomLib.Util;
-using BloodCraftUI.UI.ModernLib;
-using BloodCraftUI.Utils;
+using BloodmoonPluginsUI.Config;
+using BloodmoonPluginsUI.Patches;
+using BloodmoonPluginsUI.Services;
+using BloodmoonPluginsUI.UI;
+using BloodmoonPluginsUI.UI.CustomLib.Util;
+using BloodmoonPluginsUI.UI.ModernLib;
+using BloodmoonPluginsUI.Utils;
 using HarmonyLib;
 using ProjectM.Scripting;
+using ProjectM.UI;
 using Unity.Entities;
 using UnityEngine;
 
-namespace BloodCraftUI
+namespace BloodmoonPluginsUI
 {
     [BepInProcess("VRising.exe")]
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
@@ -26,7 +28,6 @@ namespace BloodCraftUI
         public static Settings Settings { get; private set; }
         private static World _client;
         public static EntityManager EntityManager => _client.EntityManager;
-        //public static ServerGameManager ServerGameManager => _client.GetExistingSystemManaged<ServerScriptMapper>()._ServerGameManager;
         public static bool IsInitialized { get; private set; }
         public static bool IsGameDataInitialized { get; set; }
         public static BCUIManager UIManager { get; set; }
@@ -46,11 +47,12 @@ namespace BloodCraftUI
             IsGameDataInitialized = false;
         }
 
-        private static Harmony _harmonyBootPatch;
+        
         private static Harmony _harmonyChatPatch;
+        private static Harmony _harmonyPlayerlistPatch;
         private static Harmony _harmonyInitPatch;
-        private static Harmony _harmonyCanvasPatch;
-        private static Harmony _harmonyMenuPatch;
+        
+        
         internal static Harmony HarmonyVersionStringPatch;
         private static FrameTimer _uiInitializedTimer;
 
@@ -69,37 +71,38 @@ namespace BloodCraftUI
 
             Settings = new Settings().InitConfig();
             Theme.Opacity = Settings.UITransparency;
-
+  
             UIManager = new BCUIManager();
             CoreUpdateBehavior = new CoreUpdateBehavior();
+      
             CoreUpdateBehavior.Setup();
-            //todo CoreUpdateBehavior.ExecuteOnUpdate = MessageService.ProcessAllMessages;
+            
 
             IsInitialized = true;
-
-            _harmonyBootPatch = Harmony.CreateAndPatchAll(typeof(GameManagerPatch));
-            _harmonyMenuPatch = Harmony.CreateAndPatchAll(typeof(EscapeMenuPatch));
-            _harmonyCanvasPatch = Harmony.CreateAndPatchAll(typeof(UICanvasSystemPatch));
             HarmonyVersionStringPatch = Harmony.CreateAndPatchAll(typeof(VersionStringPatch));
             _harmonyChatPatch = Harmony.CreateAndPatchAll(typeof(ClientChatPatch));
+            
+            _harmonyPlayerlistPatch = Harmony.CreateAndPatchAll(typeof(PlayerListPatch));
             _harmonyInitPatch = Harmony.CreateAndPatchAll(typeof(InitializationPatch));
+            
+            Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} version {PluginInfo.PLUGIN_VERSION} is loaded!");
+
             //_eclipsePatch = Harmony.CreateAndPatchAll(typeof(EclipseClientChatSystemPatch));
 
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} version {PluginInfo.PLUGIN_VERSION} is loaded!");
-
-            if(IS_TESTING)
-                AddTestUI();
         }
 
-
+        
         public override bool Unload()
         {
-            _harmonyBootPatch.UnpatchSelf();
-            _harmonyCanvasPatch.UnpatchSelf();
-            _harmonyMenuPatch.UnpatchSelf();
+            Log.LogError("CoreUpdateBehavior.Unload()");
+            CoreUpdateBehavior.Unload();
+            Log.LogError("Unloading");
             HarmonyVersionStringPatch.UnpatchSelf();
             _harmonyChatPatch.UnpatchSelf();
+            _harmonyPlayerlistPatch.UnpatchSelf();
             _harmonyInitPatch.UnpatchSelf();
+            
             //_eclipsePatch.UnpatchSelf();
             return true;
         }
@@ -117,7 +120,6 @@ namespace BloodCraftUI
                 _client = world;
                 IsGameDataInitialized = true;
                 // We only want to run this once, so unpatch the hook that initiates this callback.
-                _harmonyBootPatch.UnpatchSelf();
                 _uiInitializedTimer = new FrameTimer();
 
                 _uiInitializedTimer.Initialise(() =>
@@ -132,8 +134,6 @@ namespace BloodCraftUI
         public static void UIOnInitialize()
         {
             UIManager.SetupAndShowUI();
-            if(Settings.AutoEnableFamiliarEquipment)
-                MessageService.StartAutoEnableFamiliarEquipmentSequence();
             BloodCraftStateService.Initialize();
             LogUtils.LogInfo($"UI Manager initialized");
         }
@@ -141,8 +141,8 @@ namespace BloodCraftUI
 
     public static class PluginInfo
     {
-        public const string PLUGIN_GUID = "panthernet.BloodCraftUI";
-        public const string PLUGIN_NAME = "BloodCraftUI";
-        public const string PLUGIN_VERSION = "1.1.0";
+        public const string PLUGIN_GUID = "BloodCraftEZLife.PluginsUI";
+        public const string PLUGIN_NAME = "BloodCraftEZLife";
+        public const string PLUGIN_VERSION = "1.00";
     }
 }

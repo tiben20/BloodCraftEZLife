@@ -1,10 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using BepInEx;
 using BepInEx.Configuration;
+using BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView;
 
-namespace BloodCraftUI.Config
+namespace BloodmoonPluginsUI.Config
 {
+    public class Setting
+    {
+        public string Name { get; set; }
+        public bool Value { get; set; }
+    }
+
+    public class TeleportBoxData
+    {
+        public string Name { get; set; }
+    }
     public class Settings
     {
         private static string CONFIG_PATH = Path.Combine(Paths.ConfigPath, PluginInfo.PLUGIN_NAME);
@@ -14,18 +26,28 @@ namespace BloodCraftUI.Config
         public const string GENERAL_SETTINGS_GROUP = "GeneralOptions";
 
 
-        public static bool ClearServerMessages =>
-            (ConfigEntries[nameof(ClearServerMessages)] as ConfigEntry<bool>)?.Value ?? false;
 
-        public static int FamStatsQueryIntervalInSeconds
+        #region "TELEPORT"
+        public static readonly List<TeleportBoxData> _dataList = new();
+        public static List<TeleportBoxData> GetTeleportEntries() => _dataList;
+        public static void AddListEntry(string name)
         {
-            get
-            {
-                var value = (ConfigEntries[nameof(FamStatsQueryIntervalInSeconds)] as ConfigEntry<int>)?.Value ?? 10;
-                if (value < 5) value = 5;
-                return value;
-            }
+            if (_dataList.Any(a => a.Name.Equals(name)))
+                return;
+            _dataList.Add(new TeleportBoxData { Name = name });
+            
         }
+        #endregion
+        #region "Settings"
+        public static readonly List<Setting> _settingList = new();
+        public static List<Setting> GetSettingsEntries() => _settingList;
+        public static void AddSettingEntry(string name,bool settingValue)
+        {
+            if (_settingList.Any(a => a.Name.Equals(name)))
+                return;
+            _settingList.Add(new Setting { Name = name, Value = settingValue });
+        }
+        #endregion
 
         public static bool UseHorizontalContentLayout =>
             (ConfigEntries[nameof(UseHorizontalContentLayout)] as ConfigEntry<bool>)?.Value ?? true;
@@ -35,20 +57,30 @@ namespace BloodCraftUI.Config
         public static float UITransparency =>
             (ConfigEntries[nameof(UITransparency)] as ConfigEntry<float>)?.Value ?? 0.6f;
 
-        public static string LastBindCommand
+        public static bool IsTeleportPanelEnabled
         {
-            get => (ConfigEntries[nameof(LastBindCommand)] as ConfigEntry<string>)?.Value ?? "";
-            set => ConfigEntries[nameof(LastBindCommand)].BoxedValue = value;
+            get => (ConfigEntries[nameof(IsTeleportPanelEnabled)] as ConfigEntry<bool>)?.Value ?? true;
+            set => ConfigEntries[nameof(IsTeleportPanelEnabled)].BoxedValue = value;
         }
 
-        public static bool IsFamStatsPanelEnabled => (ConfigEntries[nameof(IsFamStatsPanelEnabled)] as ConfigEntry<bool>)?.Value ?? true;
+        public static bool IsHeaderVisible
+        {
+            get => (ConfigEntries[nameof(IsHeaderVisible)] as ConfigEntry<bool>)?.Value ?? true;
+            set => ConfigEntries[nameof(IsHeaderVisible)].BoxedValue = value;
+        }
+
+        /*public static bool IsFamStatsPanelEnabled => (ConfigEntries[nameof(IsFamStatsPanelEnabled)] as ConfigEntry<bool>)?.Value ?? true;
         public static bool IsBoxPanelEnabled      => (ConfigEntries[nameof(IsBoxPanelEnabled)] as ConfigEntry<bool>)?.Value ?? true;
         public static bool IsBindButtonEnabled    => (ConfigEntries[nameof(IsBindButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
         public static bool IsCombatButtonEnabled  => (ConfigEntries[nameof(IsCombatButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
         public static bool AutoEnableFamiliarEquipment => (ConfigEntries[nameof(AutoEnableFamiliarEquipment)] as ConfigEntry<bool>)?.Value ?? true;
         public static bool IsPrestigeButtonEnabled => (ConfigEntries[nameof(IsPrestigeButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
-        public static bool IsToggleButtonEnabled => (ConfigEntries[nameof(IsToggleButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
-
+        public static bool IsToggleButtonEnabled => (ConfigEntries[nameof(IsToggleButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;*/
+        public static bool IsAutoTeleportEnabled
+        {
+            get => (ConfigEntries[nameof(IsAutoTeleportEnabled)] as ConfigEntry<bool>)?.Value ?? true;
+            set => ConfigEntries[nameof(IsAutoTeleportEnabled)].BoxedValue = value;
+        }
 
         public Settings InitConfig()
         {
@@ -56,23 +88,16 @@ namespace BloodCraftUI.Config
             {
                 Directory.CreateDirectory(CONFIG_PATH);
             }
-
-            InitConfigEntry(GENERAL_SETTINGS_GROUP, nameof(ClearServerMessages), true,
-                "Clear server and command messages from chat");
-            InitConfigEntry(GENERAL_SETTINGS_GROUP, nameof(FamStatsQueryIntervalInSeconds), 10,
-                "Query interval for familiar stats update (no less than 10 sec)");
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(UseHorizontalContentLayout), true,
                 "Use horizontal or vertical layout for main content panel");
-            InitConfigEntry(FAM_SETTINGS_GROUP, nameof(LastBindCommand), "", "Last bind fam command stored");
-            InitConfigEntry(FAM_SETTINGS_GROUP, nameof(AutoEnableFamiliarEquipment), true, "Automatically enable familiar equipment management via emote wheel");
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(UITransparency), 0.6f,
                 "Set transparency for all panels between 1.0f as opaque and 0f as transparent");
-            InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsFamStatsPanelEnabled), true, "Is fam stats panel enabled");
-            InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsBoxPanelEnabled), true, "Is box panel enabled");
-            InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsBindButtonEnabled), true, "Is bind button enabled");
-            InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsCombatButtonEnabled), true, "Is combat button enabled");
-            InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsPrestigeButtonEnabled), true, "Is prestige button enabled");
-            InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsToggleButtonEnabled), true, "Is toggle button enabled");
+            InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsTeleportPanelEnabled), true, "Is teleport box panel enabled");
+            InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsAutoTeleportEnabled), true, "Is auto teleport enabled");
+            InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsHeaderVisible), true, "Is title of plugin visible");
+            AddSettingEntry("Teleport panel", Settings.IsTeleportPanelEnabled);
+            AddSettingEntry("Autoteleport", Settings.IsAutoTeleportEnabled);
+            AddSettingEntry("Header visible", Settings.IsHeaderVisible);
             return this;
         }
 

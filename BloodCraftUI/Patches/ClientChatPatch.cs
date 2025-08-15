@@ -1,11 +1,15 @@
-﻿using BloodCraftUI.Services;
-using BloodCraftUI.Utils;
+﻿using BloodmoonPluginsUI.Services;
+using BloodmoonPluginsUI.Utils;
 using HarmonyLib;
+using ProjectM;
 using ProjectM.Network;
 using ProjectM.UI;
+using System;
 using Unity.Collections;
+using Unity.Entities;
+using static ProjectM.Roofs.RoofTestSceneBootstrapNew;
 
-namespace BloodCraftUI.Patches;
+namespace BloodmoonPluginsUI.Patches;
 
 [HarmonyPatch]
 internal static class ClientChatPatch
@@ -43,8 +47,11 @@ internal static class ClientChatPatch
         if (Plugin.IsClientNull())
             return;
 
-        var entities = __instance._ReceiveChatMessagesQuery.ToEntityArray(Allocator.Temp);
+        if (__instance == null)
+            return;
 
+        var entities = __instance._ReceiveChatMessagesQuery.ToEntityArray(Allocator.Temp);
+        
         try
         {
             foreach (var entity in entities)

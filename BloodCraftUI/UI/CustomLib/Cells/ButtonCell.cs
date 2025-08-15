@@ -1,13 +1,13 @@
 ﻿using System;
-using BloodCraftUI.Config;
-using BloodCraftUI.UI.UniverseLib.UI;
-using BloodCraftUI.UI.UniverseLib.UI.Models;
-using BloodCraftUI.Utils;
+using BloodmoonPluginsUI.Config;
+using BloodmoonPluginsUI.UI.UniverseLib.UI;
+using BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
+using BloodmoonPluginsUI.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BloodCraftUI.UI.CustomLib.Cells
+namespace BloodmoonPluginsUI.UI.CustomLib.Cells
 {
     public class ButtonCell : CellBase, IFormedCell
     {

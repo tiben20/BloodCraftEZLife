@@ -1,8 +1,8 @@
 using System;
-using BloodCraftUI.Utils;
+using BloodmoonPluginsUI.Utils;
 using UnityEngine;
 
-namespace BloodCraftUI.UI.CustomLib.Util;
+namespace BloodmoonPluginsUI.UI.CustomLib.Util;
 
 public static class Theme
 {

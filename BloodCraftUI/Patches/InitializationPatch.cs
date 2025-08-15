@@ -1,7 +1,7 @@
 using System;
-using BloodCraftUI.Services;
-using BloodCraftUI.UI;
-using BloodCraftUI.Utils;
+using BloodmoonPluginsUI.Services;
+using BloodmoonPluginsUI.UI;
+using BloodmoonPluginsUI.Utils;
 using HarmonyLib;
 using ProjectM;
 using ProjectM.Network;
@@ -9,7 +9,7 @@ using ProjectM.UI;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace BloodCraftUI.Patches
+namespace BloodmoonPluginsUI.Patches
 {
     [HarmonyPatch]
     public static class InitializationPatch

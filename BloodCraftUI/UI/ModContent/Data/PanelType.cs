@@ -1,10 +1,11 @@
-﻿namespace BloodCraftUI.UI.ModContent.Data;
+﻿namespace BloodmoonPluginsUI.UI.ModContent.Data;
 
 public enum PanelType
 {
     Base,
+    TeleportList,
     BoxList,
-    BoxContent,
-    FamStats,
+    SettingsPanel,
+    PullPanel,
     TestPanel
 }

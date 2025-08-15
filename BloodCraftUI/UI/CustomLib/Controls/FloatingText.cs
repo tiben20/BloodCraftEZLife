@@ -4,9 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = System.Random;
-using UIFactory = BloodCraftUI.UI.UniverseLib.UI.UIFactory;
+using UIFactory = BloodmoonPluginsUI.UI.UniverseLib.UI.UIFactory;
 
-namespace BloodCraftUI.UI.CustomLib.Controls;
+namespace BloodmoonPluginsUI.UI.CustomLib.Controls;
 
 public class FloatingText : IEquatable<FloatingText>
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BloodCraftUI.Utils
+namespace BloodmoonPluginsUI.Utils
 {
     internal static class TimerHelper
     {

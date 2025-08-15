@@ -2,16 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <AssemblyName>panthernet.BloodCraftUI.OnlyFams</AssemblyName>
+    <AssemblyName>BloodmoonUI.Plugins</AssemblyName>
     <Description>BloodCraft mod UI</Description>
     <Version>1.1.0</Version>
     <Authors>panthernet</Authors>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
-    <RootNamespace>BloodCraftUI</RootNamespace>
+    <RootNamespace>BloodmoonUI</RootNamespace>
     <PackageId>$(Authors).$(AssemblyName)</PackageId>
     <PackageProjectUrl></PackageProjectUrl>
     <BepInExVersion>6.0.0-be.733</BepInExVersion>
+    <BaseOutputPath>D:\Steam\steamapps\common\VRising\BepInEx\Plugins</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,8 +21,25 @@
     <PackageReference Include="VRising.Unhollowed.Client" Version="1.1.8.9179701" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugType>Full</DebugType>
+<OutputPath>D:\Steam\steamapps\common\VRising\BepInEx\plugins</OutputPath>
+<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
 </Project>

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using BloodCraftUI.UI.UniverseLib.UI.Widgets.ScrollView;
+using BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView;
 
-namespace BloodCraftUI.UI.CustomLib.Cells.Handlers
+namespace BloodmoonPluginsUI.UI.CustomLib.Cells.Handlers
 {
     /// <summary>
     /// A helper to create and handle a simple <see cref="ScrollPool{T}"/> of Buttons, which can be backed by any data.

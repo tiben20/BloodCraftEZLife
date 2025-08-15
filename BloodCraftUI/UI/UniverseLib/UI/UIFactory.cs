@@ -1,17 +1,17 @@
 ﻿using System;
-using BloodCraftUI.UI.CustomLib.Util;
-using BloodCraftUI.UI.UniverseLib.UI.Models;
-using BloodCraftUI.UI.UniverseLib.UI.Panels;
-using BloodCraftUI.Utils;
+using BloodmoonPluginsUI.UI.CustomLib.Util;
+using BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
+using BloodmoonPluginsUI.UI.UniverseLib.UI.Panels;
+using BloodmoonPluginsUI.Utils;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using AutoSliderScrollbar = BloodCraftUI.UI.UniverseLib.UI.Widgets.AutoSliderScrollbar;
-using ButtonRef = BloodCraftUI.UI.UniverseLib.UI.Models.ButtonRef;
-using ICell = BloodCraftUI.UI.UniverseLib.UI.Widgets.ScrollView.ICell;
-using InputFieldRef = BloodCraftUI.UI.UniverseLib.UI.Models.InputFieldRef;
+using AutoSliderScrollbar = BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.AutoSliderScrollbar;
+using ButtonRef = BloodmoonPluginsUI.UI.UniverseLib.UI.Models.ButtonRef;
+using ICell = BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView.ICell;
+using InputFieldRef = BloodmoonPluginsUI.UI.UniverseLib.UI.Models.InputFieldRef;
 
-namespace BloodCraftUI.UI.UniverseLib.UI;
+namespace BloodmoonPluginsUI.UI.UniverseLib.UI;
 
 /// <summary>
 /// Helper class to create Unity uGUI UI objects at runtime, as well as use some custom UniverseLib UI classes such as ScrollPool, InputFieldScroller and AutoSliderScrollbar.

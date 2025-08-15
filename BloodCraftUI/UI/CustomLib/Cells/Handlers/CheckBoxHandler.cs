@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView;
 
-namespace BloodmoonPluginsUI.UI.ModContent.CustomElements
+namespace BloodmoonPluginsUI.UI.CustomLib.Cells.Handlers
 {
     /// <summary>
     /// A helper to create and handle a simple <see cref="ScrollPool{T}"/> of Buttons, which can be backed by any data.
     /// </summary>
-    public class BoxContentListHandler<TData, TCell> : ICellPoolDataSource<TCell> where TCell : BoxContentCell
+    public class CheckBoxHandler<TData, TCell> : ICellPoolDataSource<TCell> where TCell : IFormedCheckbox
     {
         public ScrollPool<TCell> ScrollPool { get; private set; }
 
@@ -17,8 +17,7 @@ namespace BloodmoonPluginsUI.UI.ModContent.CustomElements
         protected readonly Func<List<TData>> GetEntries;
         protected readonly Action<TCell, int> SetICell;
         protected readonly Func<TData, string, bool> ShouldDisplay;
-        protected readonly Action<int> OnCellClicked;
-        protected readonly Action<int> OnToggleClicked;
+        protected readonly Action<int,bool> OnCellChanged;
 
         public string CurrentFilter
         {
@@ -35,17 +34,16 @@ namespace BloodmoonPluginsUI.UI.ModContent.CustomElements
         /// <param name="setICellMethod">A method which should set the data at the int index to the cell.</param>
         /// <param name="shouldDisplayMethod">A method which should determine if the data at the index should be displayed, with an optional string filter from CurrentFilter.</param>
         /// <param name="onCellClickedMethod">A method invoked when a cell is clicked, containing the data index assigned to the cell.</param>
-        public BoxContentListHandler(ScrollPool<TCell> scrollPool, Func<List<TData>> getEntriesMethod,
+        public CheckBoxHandler(ScrollPool<TCell> scrollPool, Func<List<TData>> getEntriesMethod,
             Action<TCell, int> setICellMethod, Func<TData, string, bool> shouldDisplayMethod,
-            Action<int> onCellClickedMethod, Action<int> onDeleteClicked)
+            Action<int, bool> onCellChangedMethod)
         {
             ScrollPool = scrollPool;
 
             GetEntries = getEntriesMethod;
             SetICell = setICellMethod;
             ShouldDisplay = shouldDisplayMethod;
-            OnCellClicked = onCellClickedMethod;
-            OnToggleClicked = onDeleteClicked;
+            OnCellChanged = onCellChangedMethod;
         }
 
         public void RefreshData()
@@ -67,8 +65,7 @@ namespace BloodmoonPluginsUI.UI.ModContent.CustomElements
 
         public virtual void OnCellBorrowed(TCell cell)
         {
-            cell.OnClick += OnCellClicked;
-            cell.OnToggleClick += OnToggleClicked;
+            cell.OnValueChanged += OnCellChanged;
         }
 
         public virtual void SetCell(TCell cell, int index)
@@ -81,6 +78,7 @@ namespace BloodmoonPluginsUI.UI.ModContent.CustomElements
             else
             {
                 cell.Enable();
+             
                 cell.CurrentDataIndex = index;
                 SetICell(cell, index);
             }

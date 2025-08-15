@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BloodCraftUI.Config;
-using BloodCraftUI.Utils;
+using BloodmoonPluginsUI.Config;
+using BloodmoonPluginsUI.Utils;
 using Il2CppInterop.Runtime;
 using ProjectM.Network;
 using Unity.Entities;
 using DateTime = System.DateTime;
 
-namespace BloodCraftUI.Services
+namespace BloodmoonPluginsUI.Services
 {
     internal static partial class MessageService
     {
@@ -99,17 +99,6 @@ namespace BloodCraftUI.Services
             _localUser = entity;
             if (_localCharacter != Entity.Null && _localUser != Entity.Null)
                 _isInitialized = true;
-        }
-
-        public static void StartAutoEnableFamiliarEquipmentSequence()
-        {
-            _famEquipSequenceActive = true;
-            EnqueueMessage(BCCOM_ENABLEEQUIP);
-        }
-
-        public static void FinishAutoEnableFamiliarEquipmentSequence()
-        {
-            _famEquipSequenceActive = false;
         }
 
     }

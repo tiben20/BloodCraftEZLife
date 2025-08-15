@@ -1,11 +1,11 @@
 using System;
-using BloodCraftUI.UI.CustomLib.Util;
+using BloodmoonPluginsUI.UI.CustomLib.Util;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UIFactory = BloodCraftUI.UI.UniverseLib.UI.UIFactory;
+using UIFactory = BloodmoonPluginsUI.UI.UniverseLib.UI.UIFactory;
 
-namespace BloodCraftUI.UI.CustomLib.Controls;
+namespace BloodmoonPluginsUI.UI.CustomLib.Controls;
 
 public class ProgressBar
 {
