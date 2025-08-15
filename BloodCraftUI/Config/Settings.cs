@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using BepInEx;
 using BepInEx.Configuration;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView;
+using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 
-namespace BloodmoonPluginsUI.Config
+namespace BloodCraftEZLife.Config
 {
     public class Setting
     {

@@ -1,9 +1,9 @@
 using System;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Panels;
-using BloodmoonPluginsUI.Utils;
-using UIBase = BloodmoonPluginsUI.UI.UniverseLib.UI.UIBase;
+using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
+using BloodCraftEZLife.Utils;
+using UIBase = BloodCraftEZLife.UI.UniverseLib.UI.UIBase;
 
-namespace BloodmoonPluginsUI.UI.CustomLib.Panel;
+namespace BloodCraftEZLife.UI.CustomLib.Panel;
 
 public abstract class ResizeablePanelBase : PanelBase
 {

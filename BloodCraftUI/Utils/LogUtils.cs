@@ -1,7 +1,7 @@
 ﻿using System;
 using BepInEx.Logging;
 
-namespace BloodmoonPluginsUI.Utils
+namespace BloodCraftEZLife.Utils
 {
     public static class LogUtils
     {

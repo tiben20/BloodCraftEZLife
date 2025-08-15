@@ -2,14 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using BloodmoonPluginsUI.UI.CustomLib;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.ObjectPool;
+using BloodCraftEZLife.UI.CustomLib;
+using BloodCraftEZLife.UI.UniverseLib.UI.Models;
+using BloodCraftEZLife.UI.UniverseLib.UI.ObjectPool;
 using UnityEngine;
 using UnityEngine.UI;
-using PanelManager = BloodmoonPluginsUI.UI.UniverseLib.UI.Panels.PanelManager;
+using PanelManager = BloodCraftEZLife.UI.UniverseLib.UI.Panels.PanelManager;
 
-namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView;
+namespace BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 
 public struct CellInfo
 {

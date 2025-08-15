@@ -1,6 +1,6 @@
 using BepInEx.Configuration;
 
-namespace BloodmoonPluginsUI.UI.CustomLib.Controls;
+namespace BloodCraftEZLife.UI.CustomLib.Controls;
 
 public abstract class SettingsButtonBase
 {

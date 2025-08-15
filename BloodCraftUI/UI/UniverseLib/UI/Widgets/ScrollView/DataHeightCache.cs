@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView;
+namespace BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 
 /// <summary>
 /// Used to handle the underlying height data for a scroll pool, tracking which data values are at which position and how far they span.<br/><br/>

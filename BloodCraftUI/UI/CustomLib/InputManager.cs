@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BloodmoonPluginsUI.UI.CustomLib;
+namespace BloodCraftEZLife.UI.CustomLib;
 
 public static class InputManager
 {

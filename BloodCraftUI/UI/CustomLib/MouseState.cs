@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace BloodmoonPluginsUI.UI.CustomLib;
+namespace BloodCraftEZLife.UI.CustomLib;
 
 public struct MouseState
 {

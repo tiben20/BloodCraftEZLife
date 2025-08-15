@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BloodmoonPluginsUI.UI.CustomLib.Panel;
-using BloodmoonPluginsUI.UI.ModContent;
-using BloodmoonPluginsUI.UI.ModContent.Data;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Panels;
-using UIManagerBase = BloodmoonPluginsUI.UI.ModernLib.UIManagerBase;
+using BloodCraftEZLife.UI.CustomLib.Panel;
+using BloodCraftEZLife.UI.ModContent;
+using BloodCraftEZLife.UI.ModContent.Data;
+using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
+using UIManagerBase = BloodCraftEZLife.UI.ModernLib.UIManagerBase;
 
-namespace BloodmoonPluginsUI.UI;
+namespace BloodCraftEZLife.UI;
 
 public class BCUIManager : UIManagerBase
 {

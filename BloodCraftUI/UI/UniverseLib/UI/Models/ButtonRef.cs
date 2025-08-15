@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
+namespace BloodCraftEZLife.UI.UniverseLib.UI.Models;
 
 /// <summary>
 /// A simple helper class to handle a button's OnClick more effectively, along with some helpers.

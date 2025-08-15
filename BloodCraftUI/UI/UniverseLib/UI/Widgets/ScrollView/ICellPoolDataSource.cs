@@ -1,4 +1,4 @@
-﻿namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView
+﻿namespace BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView
 {
     /// <summary>
     /// A data source for a ScrollPool.

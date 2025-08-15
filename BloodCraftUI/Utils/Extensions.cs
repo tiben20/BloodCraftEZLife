@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using BloodmoonPluginsUI.Services;
+using BloodCraftEZLife.Services;
 using Il2CppInterop.Runtime;
 using ProjectM;
 using ProjectM.Gameplay.Systems;
@@ -16,7 +16,7 @@ using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
 
-namespace BloodmoonPluginsUI.Utils;
+namespace BloodCraftEZLife.Utils;
 internal static class Extensions
 {
     static EntityManager EntityManager => Plugin.EntityManager;

@@ -1,5 +1,5 @@
-﻿using BloodmoonPluginsUI.Services;
-using BloodmoonPluginsUI.Utils;
+﻿using BloodCraftEZLife.Services;
+using BloodCraftEZLife.Utils;
 using HarmonyLib;
 using ProjectM;
 using ProjectM.Network;
@@ -9,7 +9,7 @@ using Unity.Collections;
 using Unity.Entities;
 using static ProjectM.Roofs.RoofTestSceneBootstrapNew;
 
-namespace BloodmoonPluginsUI.Patches;
+namespace BloodCraftEZLife.Patches;
 
 [HarmonyPatch]
 internal static class ClientChatPatch

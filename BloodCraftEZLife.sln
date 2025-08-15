@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35728.132
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodmoonUI.Plugins", "BloodCraftUI\BloodmoonUI.Plugins.csproj", "{C1FFEC26-C61C-4313-8518-3055A70B084E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodCraftEZLife.Plugins", "BloodCraftUI\BloodCraftEZLife.Plugins.csproj", "{C1FFEC26-C61C-4313-8518-3055A70B084E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModernUI", "ModernUI\ModernUI.csproj", "{4F88EDBC-D75F-4058-9558-B254544FE73B}"
 EndProject

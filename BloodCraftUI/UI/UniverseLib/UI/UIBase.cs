@@ -1,10 +1,10 @@
 ﻿using System;
-using BloodmoonPluginsUI.Utils;
+using BloodCraftEZLife.Utils;
 using UnityEngine;
 using UnityEngine.UI;
-using PanelManager = BloodmoonPluginsUI.UI.UniverseLib.UI.Panels.PanelManager;
+using PanelManager = BloodCraftEZLife.UI.UniverseLib.UI.Panels.PanelManager;
 
-namespace BloodmoonPluginsUI.UI.UniverseLib.UI;
+namespace BloodCraftEZLife.UI.UniverseLib.UI;
 
 /// <summary>
 /// A simple wrapper to handle a UI created with <see cref="UniversalUI.RegisterUI"/>.

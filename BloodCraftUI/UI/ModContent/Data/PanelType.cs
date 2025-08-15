@@ -1,4 +1,4 @@
-﻿namespace BloodmoonPluginsUI.UI.ModContent.Data;
+﻿namespace BloodCraftEZLife.UI.ModContent.Data;
 
 public enum PanelType
 {
@@ -7,5 +7,7 @@ public enum PanelType
     BoxList,
     SettingsPanel,
     PullPanel,
+    BossPanel,
+    BossTrackerPanel,
     TestPanel
 }

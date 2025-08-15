@@ -1,4 +1,4 @@
-namespace BloodmoonPluginsUI.UI.CustomLib.Controls;
+namespace BloodCraftEZLife.UI.CustomLib.Controls;
 
 public enum ActiveState
 {

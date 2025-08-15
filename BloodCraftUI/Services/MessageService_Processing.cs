@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using BloodmoonPluginsUI.Config;
-using BloodmoonPluginsUI.UI.ModContent;
+using BloodCraftEZLife.Config;
+using BloodCraftEZLife.UI.ModContent;
 using Unity.Entities;
-using BloodmoonPluginsUI.Utils;
+using BloodCraftEZLife.Utils;
 using ProjectM;
 using System.Timers;
 using BepInEx.Logging;
@@ -15,7 +15,7 @@ using static ProjectM.Metrics;
 using Unity.Mathematics;
 using Unity.Transforms;
 
-namespace BloodmoonPluginsUI.Services
+namespace BloodCraftEZLife.Services
 {
     internal static partial class MessageService
     {

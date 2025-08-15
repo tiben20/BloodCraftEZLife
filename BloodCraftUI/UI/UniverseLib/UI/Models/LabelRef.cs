@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Models
+namespace BloodCraftEZLife.UI.UniverseLib.UI.Models
 {
     public class LabelRef
     {

@@ -1,11 +1,11 @@
 ﻿using System;
-using BloodmoonPluginsUI.Services;
-using BloodmoonPluginsUI.Utils;
+using BloodCraftEZLife.Services;
+using BloodCraftEZLife.Utils;
 using Il2CppInterop.Runtime.Injection;
 using UnityEngine;
 using static Unity.Burst.Intrinsics.X86.Avx;
 
-namespace BloodmoonPluginsUI.UI.ModernLib
+namespace BloodCraftEZLife.UI.ModernLib
 {
     public class CoreUpdateBehavior: MonoBehaviour, IDisposable
     {

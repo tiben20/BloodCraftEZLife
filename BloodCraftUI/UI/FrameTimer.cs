@@ -1,9 +1,9 @@
 using System;
-using BloodmoonPluginsUI.Behaviors;
-using BloodmoonPluginsUI.UI.UniverseLib.UI;
-using BloodmoonPluginsUI.Utils;
+using BloodCraftEZLife.Behaviors;
+using BloodCraftEZLife.UI.UniverseLib.UI;
+using BloodCraftEZLife.Utils;
 
-namespace BloodmoonPluginsUI.UI;
+namespace BloodCraftEZLife.UI;
 
 public class FrameTimer
     {

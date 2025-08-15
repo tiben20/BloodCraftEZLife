@@ -2,16 +2,16 @@
 using System.Globalization;
 using System.Reflection;
 using System.Threading;
-using BloodmoonPluginsUI.Behaviors;
-using BloodmoonPluginsUI.UI;
-using BloodmoonPluginsUI.UI.ModContent;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Panels;
-using BloodmoonPluginsUI.Utils;
+using BloodCraftEZLife.Behaviors;
+using BloodCraftEZLife.UI;
+using BloodCraftEZLife.UI.ModContent;
+using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
+using BloodCraftEZLife.Utils;
 using ProjectM;
 using Stunlock.Core;
 using Unity.Entities;
 
-namespace BloodmoonPluginsUI.Services
+namespace BloodCraftEZLife.Services
 {
     internal static class BloodCraftStateService
     {

@@ -1,7 +1,7 @@
 ﻿using ProjectM;
 using Unity.Entities;
 
-namespace BloodmoonPluginsUI.Utils
+namespace BloodCraftEZLife.Utils
 {
     internal static class FamHelper
     {

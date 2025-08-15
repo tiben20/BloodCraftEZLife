@@ -1,5 +1,5 @@
-﻿using BloodmoonPluginsUI.Services;
-using BloodmoonPluginsUI.Utils;
+﻿using BloodCraftEZLife.Services;
+using BloodCraftEZLife.Utils;
 using HarmonyLib;
 using ProjectM;
 using ProjectM.Network;
@@ -11,9 +11,9 @@ using static ProjectM.UI.SocialMenu;
 using System;
 using System.Collections.Generic;
 using Unity.Entities.CodeGeneratedJobForEach;
-using BloodmoonPluginsUI.UI.ModContent;
+using BloodCraftEZLife.UI.ModContent;
 
-namespace BloodmoonPluginsUI.Patches;
+namespace BloodCraftEZLife.Patches;
 
 [HarmonyPatch]
 internal static class PlayerListPatch

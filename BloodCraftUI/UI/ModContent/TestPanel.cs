@@ -1,12 +1,12 @@
-﻿using BloodmoonPluginsUI.Config;
-using BloodmoonPluginsUI.UI.ModContent.Data;
-using BloodmoonPluginsUI.UI.UniverseLib.UI;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Panels;
+﻿using BloodCraftEZLife.Config;
+using BloodCraftEZLife.UI.ModContent.Data;
+using BloodCraftEZLife.UI.UniverseLib.UI;
+using BloodCraftEZLife.UI.UniverseLib.UI.Models;
+using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using UnityEngine;
-using UIBase = BloodmoonPluginsUI.UI.UniverseLib.UI.UIBase;
+using UIBase = BloodCraftEZLife.UI.UniverseLib.UI.UIBase;
 
-namespace BloodmoonPluginsUI.UI.ModContent
+namespace BloodCraftEZLife.UI.ModContent
 {
     internal class TestPanel : UIBehaviourModel, IPanelBase
     {

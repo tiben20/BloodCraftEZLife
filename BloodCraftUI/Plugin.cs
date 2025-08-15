@@ -4,20 +4,20 @@ using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
-using BloodmoonPluginsUI.Config;
-using BloodmoonPluginsUI.Patches;
-using BloodmoonPluginsUI.Services;
-using BloodmoonPluginsUI.UI;
-using BloodmoonPluginsUI.UI.CustomLib.Util;
-using BloodmoonPluginsUI.UI.ModernLib;
-using BloodmoonPluginsUI.Utils;
+using BloodCraftEZLife.Config;
+using BloodCraftEZLife.Patches;
+using BloodCraftEZLife.Services;
+using BloodCraftEZLife.UI;
+using BloodCraftEZLife.UI.CustomLib.Util;
+using BloodCraftEZLife.UI.ModernLib;
+using BloodCraftEZLife.Utils;
 using HarmonyLib;
 using ProjectM.Scripting;
 using ProjectM.UI;
 using Unity.Entities;
 using UnityEngine;
 
-namespace BloodmoonPluginsUI
+namespace BloodCraftEZLife
 {
     [BepInProcess("VRising.exe")]
     [BepInPlugin(PluginInfo.PLUGIN_GUID, PluginInfo.PLUGIN_NAME, PluginInfo.PLUGIN_VERSION)]
@@ -95,21 +95,12 @@ namespace BloodmoonPluginsUI
         
         public override bool Unload()
         {
-            Log.LogError("CoreUpdateBehavior.Unload()");
-            CoreUpdateBehavior.Unload();
-            Log.LogError("Unloading");
             HarmonyVersionStringPatch.UnpatchSelf();
             _harmonyChatPatch.UnpatchSelf();
             _harmonyPlayerlistPatch.UnpatchSelf();
             _harmonyInitPatch.UnpatchSelf();
-            
-            //_eclipsePatch.UnpatchSelf();
-            return true;
-        }
 
-        private void AddTestUI()
-        {
-            UIManager.SetupAndShowUI();
+            return true;
         }
 
         //run on game start

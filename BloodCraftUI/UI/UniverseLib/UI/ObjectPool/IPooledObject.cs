@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace BloodmoonPluginsUI.UI.UniverseLib.UI.ObjectPool
+namespace BloodCraftEZLife.UI.UniverseLib.UI.ObjectPool
 {
     /// <summary>
     /// An object which can be pooled by a <see cref="Pool"/>.

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView;
+using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 
-namespace BloodmoonPluginsUI.UI.ModContent.CustomElements
+namespace BloodCraftEZLife.UI.ModContent.CustomElements
 {
     /// <summary>
     /// A helper to create and handle a simple <see cref="ScrollPool{T}"/> of Buttons, which can be backed by any data.

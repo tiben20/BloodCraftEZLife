@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BloodmoonPluginsUI.Utils;
+using BloodCraftEZLife.Utils;
 
-namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
+namespace BloodCraftEZLife.UI.UniverseLib.UI.Models;
 
 /// <summary>
 /// A class which can be used as an abstract UI object, which does not exist as a Component but which can receive Update calls.

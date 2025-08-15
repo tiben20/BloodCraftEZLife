@@ -1,19 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using BloodmoonPluginsUI.Services;
-using BloodmoonPluginsUI.UI.CustomLib.Cells;
-using BloodmoonPluginsUI.UI.CustomLib.Cells.Handlers;
-using BloodmoonPluginsUI.UI.CustomLib.Panel;
-using BloodmoonPluginsUI.UI.ModContent.Data;
-using BloodmoonPluginsUI.UI.UniverseLib.UI;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Panels;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView;
+using BloodCraftEZLife.Services;
+using BloodCraftEZLife.UI.CustomLib.Cells;
+using BloodCraftEZLife.UI.CustomLib.Cells.Handlers;
+using BloodCraftEZLife.UI.CustomLib.Panel;
+using BloodCraftEZLife.UI.ModContent.Data;
+using BloodCraftEZLife.UI.UniverseLib.UI;
+using BloodCraftEZLife.UI.UniverseLib.UI.Models;
+using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
+using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 using UnityEngine;
 using UnityEngine.UI;
-using static BloodmoonPluginsUI.UI.ModContent.TeleportListPanel;
+using static BloodCraftEZLife.UI.ModContent.TeleportListPanel;
 
-namespace BloodmoonPluginsUI.UI.ModContent
+namespace BloodCraftEZLife.UI.ModContent
 {
     internal class PullItemsPanel : ResizeablePanelBase
     {

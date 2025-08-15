@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BloodmoonPluginsUI.Config;
-using BloodmoonPluginsUI.Utils;
+using BloodCraftEZLife.Config;
+using BloodCraftEZLife.Utils;
 using Il2CppInterop.Runtime;
 using ProjectM.Network;
 using Unity.Entities;
 using DateTime = System.DateTime;
 
-namespace BloodmoonPluginsUI.Services
+namespace BloodCraftEZLife.Services
 {
     internal static partial class MessageService
     {

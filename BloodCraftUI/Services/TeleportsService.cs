@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BloodmoonPluginsUI.Config;
-using BloodmoonPluginsUI.UI.ModContent;
-using BloodmoonPluginsUI.Utils;
+using BloodCraftEZLife.Config;
+using BloodCraftEZLife.UI.ModContent;
+using BloodCraftEZLife.Utils;
 using Il2CppInterop.Runtime;
 using ProjectM;
 using ProjectM.Network;
@@ -15,7 +15,7 @@ using UnityEngine.PlayerLoop;
 using static ProjectM.Roofs.RoofTestSceneBootstrapNew;
 using DateTime = System.DateTime;
 
-namespace BloodmoonPluginsUI.Services
+namespace BloodCraftEZLife.Services
 {
     internal static class TeleportsService
     {

@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using BloodmoonPluginsUI.UI.CustomLib.Util;
-using BloodmoonPluginsUI.UI.ModContent.Data;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
+using BloodCraftEZLife.UI.CustomLib.Util;
+using BloodCraftEZLife.UI.ModContent.Data;
+using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using ButtonRef = BloodmoonPluginsUI.UI.UniverseLib.UI.Models.ButtonRef;
+using ButtonRef = BloodCraftEZLife.UI.UniverseLib.UI.Models.ButtonRef;
 using Object = UnityEngine.Object;
 
-namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Panels;
+namespace BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 
 public abstract class PanelBase : UIBehaviourModel, IPanelBase
 {

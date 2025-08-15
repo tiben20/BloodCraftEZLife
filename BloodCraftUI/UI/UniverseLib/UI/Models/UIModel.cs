@@ -2,7 +2,7 @@
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
+namespace BloodCraftEZLife.UI.UniverseLib.UI.Models;
 
 /// <summary>
 /// An abstract UI object which does not exist as an actual UI Component, but which may be a reference to one.

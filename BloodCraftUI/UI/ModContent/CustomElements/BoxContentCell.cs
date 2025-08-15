@@ -1,13 +1,13 @@
 ﻿using System;
-using BloodmoonPluginsUI.UI.CustomLib.Cells;
-using BloodmoonPluginsUI.UI.CustomLib.Util;
-using BloodmoonPluginsUI.UI.UniverseLib.UI;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
+using BloodCraftEZLife.UI.CustomLib.Cells;
+using BloodCraftEZLife.UI.CustomLib.Util;
+using BloodCraftEZLife.UI.UniverseLib.UI;
+using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BloodmoonPluginsUI.UI.ModContent.CustomElements
+namespace BloodCraftEZLife.UI.ModContent.CustomElements
 {
     public class BoxContentCell : CellBase, IFormedCell
     {

@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
-using BloodmoonPluginsUI.Config;
-using BloodmoonPluginsUI.Services;
-using BloodmoonPluginsUI.UI.CustomLib.Controls;
-using BloodmoonPluginsUI.UI.CustomLib.Panel;
-using BloodmoonPluginsUI.UI.CustomLib.Util;
-using BloodmoonPluginsUI.UI.ModContent.Data;
-using BloodmoonPluginsUI.UI.UniverseLib.UI;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Panels;
-using BloodmoonPluginsUI.Utils;
+using BloodCraftEZLife.Config;
+using BloodCraftEZLife.Services;
+using BloodCraftEZLife.UI.CustomLib.Controls;
+using BloodCraftEZLife.UI.CustomLib.Panel;
+using BloodCraftEZLife.UI.CustomLib.Util;
+using BloodCraftEZLife.UI.ModContent.Data;
+using BloodCraftEZLife.UI.UniverseLib.UI;
+using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
+using BloodCraftEZLife.Utils;
 using ProjectM;
 using TMPro;
 using Unity.Collections;
@@ -17,10 +17,10 @@ using Unity.Transforms;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
-using static BloodmoonPluginsUI.Services.MessageService;
-using UIBase = BloodmoonPluginsUI.UI.UniverseLib.UI.UIBase;
+using static BloodCraftEZLife.Services.MessageService;
+using UIBase = BloodCraftEZLife.UI.UniverseLib.UI.UIBase;
 
-namespace BloodmoonPluginsUI.UI.ModContent
+namespace BloodCraftEZLife.UI.ModContent
 {
     public class ContentPanel : ResizeablePanelBase
     {

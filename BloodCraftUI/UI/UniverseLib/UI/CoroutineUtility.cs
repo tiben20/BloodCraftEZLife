@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Concurrent;
 
-namespace BloodmoonPluginsUI.UI.UniverseLib.UI;
+namespace BloodCraftEZLife.UI.UniverseLib.UI;
 
 public static class CoroutineUtility
 {

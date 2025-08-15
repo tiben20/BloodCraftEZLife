@@ -1,15 +1,15 @@
 ﻿using System;
-using BloodmoonPluginsUI.Config;
-using BloodmoonPluginsUI.UI.UniverseLib.UI;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Models;
-using BloodmoonPluginsUI.UI.UniverseLib.UI.Widgets.ScrollView;
-using BloodmoonPluginsUI.Utils;
+using BloodCraftEZLife.Config;
+using BloodCraftEZLife.UI.UniverseLib.UI;
+using BloodCraftEZLife.UI.UniverseLib.UI.Models;
+using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
+using BloodCraftEZLife.Utils;
 using TMPro;
 using Unity.Entities.DebugProxies;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BloodmoonPluginsUI.UI.CustomLib.Cells
+namespace BloodCraftEZLife.UI.CustomLib.Cells
 {
     public interface IFormedCheckbox : ICell
     {

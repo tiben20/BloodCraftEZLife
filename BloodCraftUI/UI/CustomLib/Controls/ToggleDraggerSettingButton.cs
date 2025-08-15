@@ -1,6 +1,6 @@
 using System;
 
-namespace BloodmoonPluginsUI.UI.CustomLib.Controls;
+namespace BloodCraftEZLife.UI.CustomLib.Controls;
 
 public class ToggleDraggerSettingButton : SettingsButtonBase
 {

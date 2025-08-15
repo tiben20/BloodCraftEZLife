@@ -2,7 +2,7 @@
 using ProjectM;
 using UnityEngine;
 
-namespace BloodmoonPluginsUI.Utils
+namespace BloodCraftEZLife.Utils
 {
     internal static class GameHelper
     {

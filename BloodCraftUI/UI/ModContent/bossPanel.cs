@@ -12,12 +12,13 @@ using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 using BloodCraftEZLife.Utils;
 using UnityEngine;
+using static BloodCraftEZLife.UI.ModContent.PullItemsPanel;
 
 namespace BloodCraftEZLife.UI.ModContent
 {
-    internal class TeleportListPanel : ResizeablePanelBase
+    internal class BossPanel : ResizeablePanelBase
     {
-        public override string PanelId => "TeleportList";
+        public override string PanelId => "BossPanel";
         public override int MinWidth => 340;
         public override int MinHeight => 180;
         public override Vector2 DefaultAnchorMin => new Vector2(0.5f, 0.5f);
@@ -25,15 +26,20 @@ namespace BloodCraftEZLife.UI.ModContent
         public override Vector2 DefaultPivot => new Vector2(0.5f, 1f);
         public override bool CanDrag => true;
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
-        public override PanelType PanelType => PanelType.TeleportList;
+        public override PanelType PanelType => PanelType.BossPanel;
         public override float Opacity => Settings.UITransparency;
-        
-        public TeleportListPanel(UIBase owner) : base(owner)
+
+        private readonly List<PullItemData> _items = new List<PullItemData>();
+        private List<PullItemData> GetBossEntries() => _items;
+
+
+
+        public BossPanel(UIBase owner) : base(owner)
         {
-            SetTitle("Teleport List");
+            SetTitle("Boss List");
         }
 
-        
+
 
         protected override void LateConstructUI()
         {
@@ -49,7 +55,7 @@ namespace BloodCraftEZLife.UI.ModContent
         protected override void ConstructPanelContent()
         {
             _scrollDataHandler = new ButtonListHandler<TeleportBoxData, ButtonCell>(_scrollPool, Settings.GetTeleportEntries, SetCell, ShouldDisplay, OnCellClicked);
-            _scrollPool = UIFactory.CreateScrollPool<ButtonCell>(ContentRoot, "TeleportList", out GameObject scrollObj,
+            _scrollPool = UIFactory.CreateScrollPool<ButtonCell>(ContentRoot, "BossList", out GameObject scrollObj,
                 out _, new Color(0.03f, 0.03f, 0.03f, Opacity));
             _scrollPool.Initialize(_scrollDataHandler);
             UIFactory.SetLayoutElement(scrollObj, flexibleHeight: 9999);
@@ -72,7 +78,7 @@ namespace BloodCraftEZLife.UI.ModContent
 
         private void RunUpdateCommand()
         {
-            
+
         }
 
         private void EnableAllButtons(bool value)
@@ -94,9 +100,9 @@ namespace BloodCraftEZLife.UI.ModContent
 
         private ScrollPool<ButtonCell> _scrollPool;
         private ButtonListHandler<TeleportBoxData, ButtonCell> _scrollDataHandler;
-        
+
         private bool _isInitialized;
-        
+
 
         private void OnCellClicked(int dataIndex)
         {
@@ -106,7 +112,7 @@ namespace BloodCraftEZLife.UI.ModContent
         }
 
         private bool ShouldDisplay(TeleportBoxData data, string filter) => true;
-        
+
 
         private void SetCell(ButtonCell cell, int index)
         {
