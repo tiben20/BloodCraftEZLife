@@ -18,13 +18,15 @@ namespace BloodCraftEZLife.UI.ModContent
     internal class SettingsPanel : ResizeablePanelBase
     {
         public override string PanelId => "SettingsList";
-        public override int MinWidth => 180;
-        public override int MinHeight => 120;
+        public override int MinWidth => 275;
+        public override int MinHeight => 134;
+        public override int MaxWidth => 275;
+        
         public override Vector2 DefaultAnchorMin => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultAnchorMax => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultPivot => new Vector2(0.5f, 0.5f);
         public override bool CanDrag => true;
-        public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
+        public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.None;
         public override PanelType PanelType => PanelType.SettingsPanel;
 
         private ScrollPool<ConfigboxCell> _scrollPool;
@@ -36,14 +38,6 @@ namespace BloodCraftEZLife.UI.ModContent
             SetTitle("Settings");
         }
 
-        public void AddListEntry(string name,bool value)
-        {
-            /*if (Settings._settingList.Any(a => a.Name.Equals(name)))
-                return;
-            Settings._settingList.Add(new Setting { Name = name, Value=value });*/
-            _scrollDataHandler.RefreshData();
-            _scrollPool.Refresh(true);
-        }
 
         protected override void LateConstructUI()
         {
@@ -87,12 +81,13 @@ namespace BloodCraftEZLife.UI.ModContent
             _scrollPool.Refresh(true);
         }
 
-        private void EnableAllButtons(bool value)
+        /*for debugging*/
+        /*public override void OnFinishDrag()
         {
-            //todo
-            //foreach (var a in _scrollPool.CellPool)
-            //    a.Button.Component.interactable = value;
-        }
+            base.OnFinishDrag();
+            SetTitle("W:"+ Rect.rect.width.ToString()+ "H:" + Rect.rect.height.ToString());
+            SaveInternalData();
+        }*/
 
         public override void SetActive(bool active)
         {

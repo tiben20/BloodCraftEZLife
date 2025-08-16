@@ -79,7 +79,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             {
                 if (set.Type == Setting.SettingType.Bool)
                 {
-                    Checkbox = UIFactory.CreateToggle(UIRoot, "Checkbox", new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency));
+                    Checkbox = UIFactory.CreateToggle(UIRoot, "Checkbox", new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency),160);
                     UIFactory.SetLayoutElement(Checkbox.GameObject, flexibleWidth: 9999, minHeight: 25, flexibleHeight: 0);
                     Checkbox.OnValueChanged += (bool newvalue) => { OnValueChanged?.Invoke(new Setting(Checkbox.Text.text, newvalue), CurrentDataIndex); };
                 }
@@ -94,7 +94,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
                     _label = UIFactory.CreateLabel(UIRoot, "SliderNameLabel", "1",TextAlignmentOptions.Left);
                     UIFactory.CreateSlider(UIRoot, "AmountSlider", out _slider);
                     _slider.value = 1.0f;
-                    _slider.m_MaxValue = 1000.0f;
+                    _slider.m_MaxValue = 100.0f;
                     _slider.m_MinValue = 1.0f;
                     UIFactory.SetLayoutElement(_slider.gameObject, minHeight: 25);
                     _valueLabel = UIFactory.CreateLabel(UIRoot, "SliderValueLabel", "1",TextAlignmentOptions.Right);
