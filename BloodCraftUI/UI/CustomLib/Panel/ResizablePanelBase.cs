@@ -1,7 +1,8 @@
 using System;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.Utils;
-using UIBase = BloodCraftEZLife.UI.UniverseLib.UI.UIBase;
+using BloodCraftEZLife.UI.UniverseLib.UI;
+using BloodCraftEZLife.UI.ModContent.Data;
 
 namespace BloodCraftEZLife.UI.CustomLib.Panel;
 
@@ -13,6 +14,7 @@ public abstract class ResizeablePanelBase : PanelBase
     public virtual bool ResizeWholePanel => true;
     private string PanelConfigKey => $"{PanelType}{PanelId}".Replace("'", "").Replace("\"", "");
     private bool ApplyingSaveData { get; set; } = true;
+
 
     protected override void ConstructPanelContent()
     {
@@ -131,9 +133,9 @@ public abstract class ResizeablePanelBase : PanelBase
         }
 
         ApplyingSaveData = false;
-
-        if (PinPanelToggleControl != null)
-            PinPanelToggleControl.isOn = IsPinned;
+        //was that important
+        //if (PinPanelToggleControl != null)
+        //    PinPanelToggleControl.isOn = IsPinned;
 
         Dragger.OnEndResize();
     }

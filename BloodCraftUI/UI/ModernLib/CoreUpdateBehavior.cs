@@ -3,7 +3,6 @@ using BloodCraftEZLife.Services;
 using BloodCraftEZLife.Utils;
 using Il2CppInterop.Runtime.Injection;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 namespace BloodCraftEZLife.UI.ModernLib
 {

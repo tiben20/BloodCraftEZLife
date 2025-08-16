@@ -3,31 +3,69 @@ using System.IO;
 using System.Linq;
 using BepInEx;
 using BepInEx.Configuration;
-using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 
 namespace BloodCraftEZLife.Config
 {
     public class Setting
     {
+        public enum SettingType
+        {
+            Bool,
+            String,
+            Float
+        }
+        public Setting(string name, bool value)
+        {
+            Name = name;    
+            Value = value;
+            Type = SettingType.Bool;
+        }
+        public Setting(string name, float value, float min, float max, float step)
+        {
+            Name = name;
+            Value = value;
+            Type = SettingType.Float;
+            Min = min;
+            Max = max;
+            Step = step;
+        }
+        public Setting(string name, string value)
+        {
+            Name = name;
+            Value = value;
+            Type = SettingType.String;
+        }
         public string Name { get; set; }
-        public bool Value { get; set; }
+        public object Value { get; set; }
+        public float Min { get; set; }
+        public float Max { get; set; }
+        public float Step { get; set; }
+        public SettingType Type { get; set; }
     }
 
-    public class TeleportBoxData
-    {
-        public string Name { get; set; }
-    }
+
+
     public class Settings
     {
         private static string CONFIG_PATH = Path.Combine(Paths.ConfigPath, PluginInfo.PLUGIN_NAME);
         private static readonly Dictionary<string, ConfigEntryBase> ConfigEntries = new();
         public const string UI_SETTINGS_GROUP = "UISettings";
         public const string FAM_SETTINGS_GROUP = "FamiliarSettings";
-        public const string GENERAL_SETTINGS_GROUP = "GeneralOptions";
-
+        
+        public enum SettingsId
+        { 
+            TpPanel,
+            AutoTp,
+            Header,
+            Opacity
+        }
 
 
         #region "TELEPORT"
+        public class TeleportBoxData
+        {
+            public string Name { get; set; }
+        }
         public static readonly List<TeleportBoxData> _dataList = new();
         public static List<TeleportBoxData> GetTeleportEntries() => _dataList;
         public static void AddListEntry(string name)
@@ -38,6 +76,7 @@ namespace BloodCraftEZLife.Config
             
         }
         #endregion
+
         #region "Settings"
         public static readonly List<Setting> _settingList = new();
         public static List<Setting> GetSettingsEntries() => _settingList;
@@ -45,7 +84,13 @@ namespace BloodCraftEZLife.Config
         {
             if (_settingList.Any(a => a.Name.Equals(name)))
                 return;
-            _settingList.Add(new Setting { Name = name, Value = settingValue });
+            _settingList.Add(new Setting(name, settingValue));
+        }
+        public static void AddSettingEntry(string name, float settingValue,float min, float max, float step)
+        {
+            if (_settingList.Any(a => a.Name.Equals(name)))
+                return;
+            _settingList.Add(new Setting(name, settingValue,min,max,step));
         }
         #endregion
 
@@ -54,8 +99,14 @@ namespace BloodCraftEZLife.Config
 
         public static int GlobalQueryIntervalInSeconds { get; } = 2;
 
-        public static float UITransparency =>
-            (ConfigEntries[nameof(UITransparency)] as ConfigEntry<float>)?.Value ?? 0.6f;
+        /*public static float UITransparency =>
+            (ConfigEntries[nameof(UITransparency)] as ConfigEntry<float>)?.Value ?? 0.6f;*/
+
+        public static float UITransparency
+        {
+            get => (ConfigEntries[nameof(UITransparency)] as ConfigEntry<float>)?.Value ?? 0.6f;
+            set => ConfigEntries[nameof(UITransparency)].BoxedValue = value;
+        }
 
         public static bool IsTeleportPanelEnabled
         {
@@ -69,13 +120,6 @@ namespace BloodCraftEZLife.Config
             set => ConfigEntries[nameof(IsHeaderVisible)].BoxedValue = value;
         }
 
-        /*public static bool IsFamStatsPanelEnabled => (ConfigEntries[nameof(IsFamStatsPanelEnabled)] as ConfigEntry<bool>)?.Value ?? true;
-        public static bool IsBoxPanelEnabled      => (ConfigEntries[nameof(IsBoxPanelEnabled)] as ConfigEntry<bool>)?.Value ?? true;
-        public static bool IsBindButtonEnabled    => (ConfigEntries[nameof(IsBindButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
-        public static bool IsCombatButtonEnabled  => (ConfigEntries[nameof(IsCombatButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
-        public static bool AutoEnableFamiliarEquipment => (ConfigEntries[nameof(AutoEnableFamiliarEquipment)] as ConfigEntry<bool>)?.Value ?? true;
-        public static bool IsPrestigeButtonEnabled => (ConfigEntries[nameof(IsPrestigeButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;
-        public static bool IsToggleButtonEnabled => (ConfigEntries[nameof(IsToggleButtonEnabled)] as ConfigEntry<bool>)?.Value ?? true;*/
         public static bool IsAutoTeleportEnabled
         {
             get => (ConfigEntries[nameof(IsAutoTeleportEnabled)] as ConfigEntry<bool>)?.Value ?? true;
@@ -95,9 +139,12 @@ namespace BloodCraftEZLife.Config
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsTeleportPanelEnabled), true, "Is teleport box panel enabled");
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsAutoTeleportEnabled), true, "Is auto teleport enabled");
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsHeaderVisible), true, "Is title of plugin visible");
+            /*Adding settings the order is important for the index*/
             AddSettingEntry("Teleport panel", Settings.IsTeleportPanelEnabled);
             AddSettingEntry("Autoteleport", Settings.IsAutoTeleportEnabled);
             AddSettingEntry("Header visible", Settings.IsHeaderVisible);
+            AddSettingEntry("UI Opacity", Settings.UITransparency,0.1f,1.0f,0.05f);
+
             return this;
         }
 

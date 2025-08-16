@@ -12,17 +12,18 @@ using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 using BloodCraftEZLife.Utils;
 using UnityEngine;
+using static BloodCraftEZLife.Config.Settings;
 
 namespace BloodCraftEZLife.UI.ModContent
 {
     internal class TeleportListPanel : ResizeablePanelBase
     {
         public override string PanelId => "TeleportList";
-        public override int MinWidth => 340;
+        public override int MinWidth => 180;
         public override int MinHeight => 180;
         public override Vector2 DefaultAnchorMin => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultAnchorMax => new Vector2(0.5f, 0.5f);
-        public override Vector2 DefaultPivot => new Vector2(0.5f, 1f);
+        public override Vector2 DefaultPivot => new Vector2(0.5f, 0.5f);
         public override bool CanDrag => true;
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
         public override PanelType PanelType => PanelType.TeleportList;

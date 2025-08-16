@@ -19,16 +19,12 @@ namespace BloodCraftEZLife.Services
 {
     internal static partial class MessageService
     {
-        private static AbilitySchoolType? _oldVersionColor;
-        private static string _oldVersionName;
-
         private enum InterceptFlag
         {
             ListBoxes,
             ListBoxContent
         }
 
-        private static Timer _queryTimer;
         public struct TeleportRequest
         {
             public string Username;
@@ -51,7 +47,6 @@ namespace BloodCraftEZLife.Services
         const string EXTRACT_FAM_NAME_PATTERN = @"<color=[^>]+>(?<name>[^<]+)</color>";
         const string EXTRACT_FAM_SCHOOL_PATTERN = @"-\s*<color=[^>]+>(?<school>[^<]+)</color>";
 
-        private static string _currentBox;
         public static bool BoxContentFlag { get; set; }
 
         internal static void HandleMessage(Entity entity)

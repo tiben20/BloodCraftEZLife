@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Services;
 using BloodCraftEZLife.UI.CustomLib.Cells;
 using BloodCraftEZLife.UI.CustomLib.Cells.Handlers;
@@ -17,16 +18,22 @@ namespace BloodCraftEZLife.UI.ModContent
 {
     internal class PullItemsPanel : ResizeablePanelBase
     {
-        public override string PanelId => "PullItemsList";
+        //public override string  => "PullItemsList";
         public override int MinWidth => 340;
         public override int MinHeight => 180;
         public override Vector2 DefaultAnchorMin => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultAnchorMax => new Vector2(0.5f, 0.5f);
-        public override Vector2 DefaultPivot => new Vector2(0.5f, 1f);
-        public override bool CanDrag => true;
-        public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
-        public override PanelType PanelType => PanelType.SettingsPanel;
-        public override float Opacity => 0.9f;
+        public override Vector2 DefaultPosition => new Vector2(0.5f, 1f);
+        public override bool CanDrag { get; protected set; } = true;
+        // Allow vertical resizing only
+        public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.Horizontal;
+
+        
+        
+        public override string PanelId => "PullItemsList";
+
+        public override PanelType PanelType => PanelType.PullPanel;
+
         private LabelRef _valueLabel;
         public class PullItemData
         {
@@ -43,7 +50,7 @@ namespace BloodCraftEZLife.UI.ModContent
 
         public PullItemsPanel(UIBase owner) : base(owner)
         {
-            SetTitle("Pull Items from Chest");
+            SetTitle("Pull items from chest");
         }
 
         public void AddItemEntry(PullItemData item)
@@ -99,6 +106,7 @@ namespace BloodCraftEZLife.UI.ModContent
             _amountSlider.onValueChanged.AddListener((val) =>
             {
                 _valueLabel.TextMesh.text = ((int)val).ToString();
+
             });
 
             // --- Scroll pool for items ---
@@ -115,7 +123,7 @@ namespace BloodCraftEZLife.UI.ModContent
                 "ContentList",
                 out GameObject scrollObj,
                 out _,
-                new Color(0.03f, 0.03f, 0.03f, Opacity)
+                new Color(0.03f, 0.03f, 0.03f, Settings.UITransparency)
             );
             _scrollPool.Initialize(_scrollDataHandler);
             UIFactory.SetLayoutElement(scrollObj, flexibleHeight: 9999);
@@ -197,6 +205,11 @@ namespace BloodCraftEZLife.UI.ModContent
         }
 
         private bool ShouldDisplay(PullItemData data, string filter) => true;
+
+        public void SetActiveOnly(bool active)
+        {
+            throw new System.NotImplementedException();
+        }
 
         private class ItemEntry
         {

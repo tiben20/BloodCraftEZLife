@@ -12,6 +12,7 @@ using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 using BloodCraftEZLife.Utils;
 using UnityEngine;
+using static BloodCraftEZLife.Config.Settings;
 using static BloodCraftEZLife.UI.ModContent.PullItemsPanel;
 
 namespace BloodCraftEZLife.UI.ModContent

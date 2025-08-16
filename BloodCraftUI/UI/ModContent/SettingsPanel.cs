@@ -18,16 +18,19 @@ namespace BloodCraftEZLife.UI.ModContent
     internal class SettingsPanel : ResizeablePanelBase
     {
         public override string PanelId => "SettingsList";
-        public override int MinWidth => 340;
-        public override int MinHeight => 180;
+        public override int MinWidth => 180;
+        public override int MinHeight => 120;
         public override Vector2 DefaultAnchorMin => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultAnchorMax => new Vector2(0.5f, 0.5f);
-        public override Vector2 DefaultPivot => new Vector2(0.5f, 1f);
+        public override Vector2 DefaultPivot => new Vector2(0.5f, 0.5f);
         public override bool CanDrag => true;
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
         public override PanelType PanelType => PanelType.SettingsPanel;
-        public override float Opacity => Settings.UITransparency;
-        
+
+        private ScrollPool<ConfigboxCell> _scrollPool;
+        private ConfigCellHandler<Setting, ConfigboxCell> _scrollDataHandler;
+        private bool _isInitialized;
+
         public SettingsPanel(UIBase owner) : base(owner)
         {
             SetTitle("Settings");
@@ -35,9 +38,9 @@ namespace BloodCraftEZLife.UI.ModContent
 
         public void AddListEntry(string name,bool value)
         {
-            if (Settings._settingList.Any(a => a.Name.Equals(name)))
+            /*if (Settings._settingList.Any(a => a.Name.Equals(name)))
                 return;
-            Settings._settingList.Add(new Setting { Name = name, Value=value });
+            Settings._settingList.Add(new Setting { Name = name, Value=value });*/
             _scrollDataHandler.RefreshData();
             _scrollPool.Refresh(true);
         }
@@ -55,9 +58,9 @@ namespace BloodCraftEZLife.UI.ModContent
 
         protected override void ConstructPanelContent()
         {
-            _scrollDataHandler = new CheckBoxHandler<Setting, CheckboxCell>(_scrollPool, Settings.GetSettingsEntries, SetCell, ShouldDisplay, OnCellChanged);
-            _scrollPool = UIFactory.CreateScrollPool<CheckboxCell>(ContentRoot, "ContentList", out GameObject scrollObj,
-                out _, new Color(0.03f, 0.03f, 0.03f, Opacity));
+            _scrollDataHandler = new ConfigCellHandler<Setting, ConfigboxCell>(_scrollPool, Settings.GetSettingsEntries, SetCell, ShouldDisplay, OnCellChanged);
+            _scrollPool = UIFactory.CreateScrollPool<ConfigboxCell>(ContentRoot, "ContentList", out GameObject scrollObj,
+                out _, new Color(0.03f, 0.03f, 0.03f, Settings.UITransparency));
             _scrollPool.Initialize(_scrollDataHandler);
             UIFactory.SetLayoutElement(scrollObj, flexibleHeight: 9999);
 
@@ -102,55 +105,70 @@ namespace BloodCraftEZLife.UI.ModContent
 
         #region ScrollPool handling
 
-        private ScrollPool<CheckboxCell> _scrollPool;
-        private CheckBoxHandler<Setting, CheckboxCell> _scrollDataHandler;
-        private bool _isInitialized;
 
-        
+        private void SetOpacity()
+        {
+            ContentPanel panel;
+            panel = (ContentPanel)Plugin.UIManager._contentPanel;
+            if (panel != null)
+            {
+                var canvasGroup = panel.ContentRoot.GetComponent<UnityEngine.UI.Image>();
+                canvasGroup.color = new Color(canvasGroup.color.r, canvasGroup.color.g, canvasGroup.color.b).GetTransparent(Settings.UITransparency);
+            }
+            foreach (ConfigboxCell cell in _scrollPool.CellPool)
+            {
+                cell.SetOpacity(Settings.UITransparency);
+            }
+        }
 
-        private void OnCellChanged(int dataIndex,bool newValue)
+        private void OnCellChanged(Setting newValue, int dataIndex)
         {
             var curSetting = Settings._settingList[dataIndex];
             ContentPanel panel;
-            switch (dataIndex)
+            switch ((Settings.SettingsId)dataIndex)
             {
-                case 0:
-                    Settings.IsTeleportPanelEnabled = newValue;
+                case Settings.SettingsId.TpPanel:
+                    Settings.IsTeleportPanelEnabled = (bool)newValue.Value;
                     panel = (ContentPanel)Plugin.UIManager._contentPanel;
                     if (panel != null)
                     {
-                        panel.ToggleGameObject(newValue, "TeleportListButton");
+                        panel.ToggleGameObject((bool)newValue.Value, "TeleportListButton");
                     }
                     break;
-                case 1:
-                    Settings.IsAutoTeleportEnabled = newValue;
+                case Settings.SettingsId.AutoTp:
+                    Settings.IsAutoTeleportEnabled = (bool)newValue.Value;
                     break;
-                case 2:
-                    Settings.IsHeaderVisible = newValue;
+                case Settings.SettingsId.Header:
+                    Settings.IsHeaderVisible = (bool)newValue.Value;
                     panel = (ContentPanel)Plugin.UIManager._contentPanel;
                     if (panel != null)
                     {
-                        panel.ToggleGameObject(newValue,"header");
+                        panel.ToggleGameObject((bool)newValue.Value, "header");
                     }
                     break;
+                case Settings.SettingsId.Opacity:
+                    Settings.UITransparency = (float)newValue.Value;
+                    SetOpacity();
+                    break; 
                 default:
                     break;
             }
         }
 
         private bool ShouldDisplay(Setting data, string filter) => true;
-        
 
-        private void SetCell(CheckboxCell cell, int index)
+        private void SetCell(ConfigboxCell cell, int index)
         {
             if (index < 0 || index >= Settings._settingList.Count)
             {
                 cell.Disable();
                 return;
             }
-            cell.Checkbox.Text.text = Settings._settingList[index].Name;
-            cell.Checkbox.Toggle.Set(Settings._settingList[index].Value, false);
-            //cell.Button.ButtonText.text = Settings._settingList[index].Name;
+            cell.InitialiseSetting(Settings._settingList[index]);
+            
+            cell.SetValue(Settings._settingList[index]);
+
+
 
         }
 

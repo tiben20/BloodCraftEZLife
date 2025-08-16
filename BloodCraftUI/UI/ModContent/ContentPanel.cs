@@ -24,7 +24,7 @@ namespace BloodCraftEZLife.UI.ModContent
 {
     public class ContentPanel : ResizeablePanelBase
     {
-        public override string PanelId => "BloodmoonCorePanel";
+        public override string PanelId => "CorePanel";
 
         public override int MinWidth => Settings.UseHorizontalContentLayout ? 340 : 100;
         //public override int MaxWidth => 150;
@@ -33,16 +33,16 @@ namespace BloodCraftEZLife.UI.ModContent
         public override Vector2 DefaultAnchorMin => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultAnchorMax => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultPivot => new Vector2(0.5f, 0.5f);
+        
         public override Vector2 DefaultPosition => new Vector2(0f, Owner.Scaler.m_ReferenceResolution.y);
-        public override bool CanDrag => true;
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.None;
         public override PanelType PanelType => PanelType.Base;
+
         private GameObject _uiAnchor;
         private UIScaleSettingButton _scaleButtonData;
         private List<GameObject> _objectsList;
         private UniverseLib.UI.Models.LabelRef _anchorLabel;
         private UnityEngine.UI.Toggle _pinToggle;
-        public override float Opacity => Settings.UITransparency;
 
         private float timer = 0f;
         public float interval = 5f; // seconds
@@ -86,12 +86,10 @@ namespace BloodCraftEZLife.UI.ModContent
                 // Set layout element to position it correctly
                 UIFactory.SetLayoutElement(pinButton.GameObject, minHeight: 15, preferredHeight: 15, flexibleHeight: 0,
                     minWidth: 15, preferredWidth: 15, flexibleWidth: 0, ignoreLayout: false);
-                // Set RectTransform to position it at the top left
-                //RectTransform pinRect = pinButton.GetComponent<RectTransform>();
                 
                 // Set toggle properties
                 pinButton.Toggle.isOn = false;
-                pinButton.OnValueChanged += (value) => IsPinned = value;
+                //pinButton.OnValueChanged += (value) => IsPinned = value; cétait important?
                 _pinToggle = pinButton.Toggle;
 
                 // Make the label text empty or minimal

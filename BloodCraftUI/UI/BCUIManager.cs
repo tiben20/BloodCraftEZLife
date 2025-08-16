@@ -5,6 +5,8 @@ using BloodCraftEZLife.UI.CustomLib.Panel;
 using BloodCraftEZLife.UI.ModContent;
 using BloodCraftEZLife.UI.ModContent.Data;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
+using BloodCraftEZLife.Utils;
+using BloodCraftEZLife.Config;
 using UIManagerBase = BloodCraftEZLife.UI.ModernLib.UIManagerBase;
 
 namespace BloodCraftEZLife.UI;
@@ -53,6 +55,22 @@ public class BCUIManager : UIManagerBase
         }
 
         _contentPanel?.SetActive(active);
+    }
+
+    public void AdjustOpacity()
+    {
+        foreach (var pan in UIPanels)
+        {
+            
+            if (pan is PanelBase panel)
+            { 
+                var canvasGroup = panel.ContentRoot.GetComponent<UnityEngine.UI.Image>();
+                if (canvasGroup != null)
+                    canvasGroup.color = new UnityEngine.Color(canvasGroup.color.r, canvasGroup.color.g, canvasGroup.color.b).GetTransparent(Settings.UITransparency);
+            }
+
+        }
+       
     }
 
     public void AddPanel(PanelType type, string param = null)
