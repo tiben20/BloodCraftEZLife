@@ -113,7 +113,9 @@ namespace BloodCraftEZLife
             if (!IsGameDataInitialized && IsClient)
             {
                 _client = world;
-
+                FullscreenSettingService.UpdateVbloodQuery();
+                ClientScriptMapper var = _client.GetExistingSystemManaged<ClientScriptMapper>();
+                ClientGameManager var2 = var._ClientGameManager;
                 IsGameDataInitialized = true;
                 // We only want to run this once, so unpatch the hook that initiates this callback.
                 _uiInitializedTimer = new FrameTimer();

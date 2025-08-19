@@ -20,6 +20,8 @@ using UnityEngine.UIElements;
 using UnityEngine.UI;
 using ProjectM.Presentation;
 using BloodCraftEZLife.Config;
+using static ProjectM.VBloodSystem;
+using ProjectM.Gameplay.Systems;
 
 namespace BloodCraftEZLife.Patches;
 
@@ -122,32 +124,33 @@ internal static class PlayerListPatch
         }
     }
 
-    [HarmonyPatch(typeof(VBloodSystem), nameof(VBloodSystem.OnUpdate))]
+    [HarmonyPatch(typeof(CreateGameplayEventOnMinionDeathSystem), nameof(CreateGameplayEventOnMinionDeathSystem.OnUpdate))]
     [HarmonyPrefix]
-    static void OnUpdatePrefix(VBloodSystem __instance)
+    static void OnDestroy(CreateGameplayEventOnMinionDeathSystem __instance)
     {
-        if (Plugin.ServerConnectionString == null) 
+        if (__instance != null)
+        {
+            LogUtils.LogInfo("destry");
+
+        }
+        if (Plugin.ServerConnectionString == null)
             return;
 
-        NativeList<VBloodConsumed> events = __instance.EventList;
-
-        try
-        {
-            foreach (VBloodConsumed vBloodConsumed in events)
-            {
-                Entity playerCharacter = vBloodConsumed.Target;
-                User user = playerCharacter.GetUser();
-                if (Plugin.LocalCharacter != playerCharacter)
-                    continue;
-                ulong steamId = user.PlatformId;
-
-                
-            }
-        }
-        catch (Exception e)
-        {
-            
-        }
     }
+
+    [HarmonyPatch(typeof(CreateGameplayEventOnMinionDeathSystem), nameof(CreateGameplayEventOnMinionDeathSystem.OnUpdate))]
+    [HarmonyPrefix]
+    static void OnDDestroy(CreateGameplayEventOnMinionDeathSystem __instance)
+    {
+        if (__instance != null)
+        {
+            LogUtils.LogInfo("destry");
+        
+        }
+        if (Plugin.ServerConnectionString == null)
+            return;
+
+    }
+
 
 }

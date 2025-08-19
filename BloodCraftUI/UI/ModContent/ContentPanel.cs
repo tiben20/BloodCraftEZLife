@@ -45,6 +45,7 @@ namespace BloodCraftEZLife.UI.ModContent
         private UnityEngine.UI.Toggle _pinToggle;
 
         private float timer = 0f;
+        private float vbloodtimer = 2f;
         public float interval = 5f; // seconds
         private List<TeleportRequest> _teleportRequest = new();
 
@@ -176,11 +177,13 @@ namespace BloodCraftEZLife.UI.ModContent
                 timer = 0f;
                 TimerTick();
             }
+            
             base.Update();
             // Call update on the panels that need it
         }
         private void TimerTick()
         {
+            FullscreenSettingService.CheckVblood();
             if (_teleportRequest.Count == 0)
                 return;
 

@@ -50,6 +50,7 @@ internal static class ClientChatPatch
         if (__instance == null)
             return;
 
+        FullscreenSettingService.CheckVblood();
         var entities = __instance._ReceiveChatMessagesQuery.ToEntityArray(Allocator.Temp);
         
         try
