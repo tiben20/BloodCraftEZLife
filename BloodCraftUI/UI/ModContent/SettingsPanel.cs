@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Services;
 using BloodCraftEZLife.UI.CustomLib;
@@ -112,38 +113,13 @@ namespace BloodCraftEZLife.UI.ModContent
             }
         }
 
-        private void OnCellChanged(Setting newValue, int dataIndex)
+        private void OnCellChanged(Setting newValue)
         {
-            var curSetting = Settings._settingList[dataIndex];
+            
             ContentPanel panel;
-            switch ((Settings.SettingsId)dataIndex)
-            {
-                case Settings.SettingsId.TpPanel:
-                    Settings.IsTeleportPanelEnabled = (bool)newValue.Value;
-                    panel = (ContentPanel)Plugin.UIManager._contentPanel;
-                    if (panel != null)
-                    {
-                        panel.ToggleGameObject((bool)newValue.Value, "TeleportListButton");
-                    }
-                    break;
-                case Settings.SettingsId.AutoTp:
-                    Settings.IsAutoTeleportEnabled = (bool)newValue.Value;
-                    break;
-                case Settings.SettingsId.Header:
-                    Settings.IsHeaderVisible = (bool)newValue.Value;
-                    panel = (ContentPanel)Plugin.UIManager._contentPanel;
-                    if (panel != null)
-                    {
-                        panel.ToggleGameObject((bool)newValue.Value, "header");
-                    }
-                    break;
-                case Settings.SettingsId.Opacity:
-                    Settings.UITransparency = (float)newValue.Value;
-                    SetOpacity();
-                    break; 
-                default:
-                    break;
-            }
+
+            Settings.SetConfigValue(newValue.ConfigName, newValue.Value);
+            return;
         }
 
         private bool ShouldDisplay(Setting data, string filter) => true;

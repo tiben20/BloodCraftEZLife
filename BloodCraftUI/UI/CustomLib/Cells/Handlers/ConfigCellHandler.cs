@@ -17,7 +17,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
         protected readonly Func<List<TData>> GetEntries;
         protected readonly Action<TCell, int> SetICell;
         protected readonly Func<TData, string, bool> ShouldDisplay;
-        protected readonly Action<TData,int> OnCellChanged;
+        protected readonly Action<TData> OnCellChanged;
         protected readonly Action<TCell, int,float> OnSetOpacity;
 
         public string CurrentFilter
@@ -37,7 +37,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
         /// <param name="onCellClickedMethod">A method invoked when a cell is clicked, containing the data index assigned to the cell.</param>
         public ConfigCellHandler(ScrollPool<TCell> scrollPool, Func<List<TData>> getEntriesMethod,
             Action<TCell, int> setICellMethod, Func<TData, string, bool> shouldDisplayMethod,
-            Action<TData,int> onCellChangedMethod)
+            Action<TData> onCellChangedMethod)
         {
             ScrollPool = scrollPool;
 

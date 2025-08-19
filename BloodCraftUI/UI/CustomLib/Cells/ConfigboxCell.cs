@@ -22,7 +22,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
     public interface IFormedCheckbox : ICell
     {
         public int CurrentDataIndex { get; set; }
-        public Action<int,bool> OnValueChanged { get; set; }
+        public Action<int> OnValueChanged { get; set; }
     }
 
     public class ConfigboxCell : CellBase, IConfigurableCell<Setting>
@@ -47,8 +47,6 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
 
         public float MinValue { get; set; } = 0f;
         public float MaxValue { get; set; } = 100f;
-
-        public event System.Action<float> OnFloatValueChanged;
 
         public int CurrentDataIndex { get; set; }
         public override float DefaultHeight => 25f;
@@ -101,7 +99,8 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             Checkbox.OnValueChanged += (bool newvalue) =>
             {
                 Checkbox.Text.text = newvalue.ToString();
-                OnValueChanged?.Invoke(new Setting(setting.Name, newvalue), CurrentDataIndex);
+                setting.Value = newvalue;
+                OnValueChanged?.Invoke(setting);
                 // Example: Debug.Log(labelText + " set to " + val);
             };
             rowBtn.onClick.AddListener(() => Checkbox.Toggle.isOn = !Checkbox.Toggle.isOn);
@@ -118,7 +117,8 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
 
             allSceneDropdown.onValueChanged.AddListener((int val) =>
             {
-                OnValueChanged?.Invoke(new Setting(setting.Name, setting.Options[val]), CurrentDataIndex);
+                setting.Value = val;
+                OnValueChanged?.Invoke(setting);
             });
         }
 
@@ -162,8 +162,8 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             _slider.onValueChanged.AddListener((val) =>
             {
                 valueLabel.TextMesh.text = val.ToString("0.00");
-                _setting.Value = val;
-                OnValueChanged?.Invoke(_setting, CurrentDataIndex);
+                setting.Value = val;
+                OnValueChanged?.Invoke(setting);
             });
         }
 
@@ -195,7 +195,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
         }
 
 
-        public Action<Setting, int> OnValueChanged { get; set; }
+        public Action<Setting> OnValueChanged { get; set; }
 
         public void SetOpacity(float opacity)
         {
@@ -279,7 +279,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             CurrentDataIndex = value;
         }
 
-        event System.Action<Setting, int> IConfigurableCell<Setting>.OnValueChanged
+        event System.Action<Setting> IConfigurableCell<Setting>.OnValueChanged
         {
             add => OnValueChanged += value;
             remove => OnValueChanged -= value;

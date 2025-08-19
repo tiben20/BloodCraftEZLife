@@ -22,6 +22,7 @@ using ProjectM.Presentation;
 using BloodCraftEZLife.Config;
 using static ProjectM.VBloodSystem;
 using ProjectM.Gameplay.Systems;
+using BloodCraftEZLife.UI;
 
 namespace BloodCraftEZLife.Patches;
 
@@ -57,6 +58,25 @@ internal static class PlayerListPatch
     {
         TeleportsService._InMenu = true;
         TeleportsService.ClearList();
+        ContentPanel panel;
+        panel = (ContentPanel)Plugin.UIManager._contentPanel;
+        if (panel != null)
+        {
+            var group = panel.UIRoot.GetComponent<CanvasGroup>();
+            if (group == null)
+                group = panel.UIRoot.AddComponent<CanvasGroup>();
+
+            // Hide
+            group.alpha = 0f;
+            group.interactable = false;
+            group.blocksRaycasts = false;
+        }
+        
+
+        // Show
+        
+        
+        
         LogUtils.LogInfo($"OnStartRunning");
     }
 
@@ -65,6 +85,20 @@ internal static class PlayerListPatch
     private static void _FullscreenMenuOnStopRunning(FullscreenMenu __instance)
     {
         TeleportsService._InMenu = false;
+        ContentPanel panel;
+        panel = (ContentPanel)Plugin.UIManager._contentPanel;
+        if (panel != null)
+        {
+            var group = panel.UIRoot.GetComponent<CanvasGroup>();
+            if (group == null)
+                group = panel.UIRoot.AddComponent<CanvasGroup>();
+
+            // Hide
+            group.alpha = 1f;
+            group.interactable = true;
+            group.blocksRaycasts = true;
+        }
+        HideSettingsPanel();
         LogUtils.LogInfo($"OnStopRunning");
 
       
@@ -123,34 +157,4 @@ internal static class PlayerListPatch
 
         }
     }
-
-    [HarmonyPatch(typeof(CreateGameplayEventOnMinionDeathSystem), nameof(CreateGameplayEventOnMinionDeathSystem.OnUpdate))]
-    [HarmonyPrefix]
-    static void OnDestroy(CreateGameplayEventOnMinionDeathSystem __instance)
-    {
-        if (__instance != null)
-        {
-            LogUtils.LogInfo("destry");
-
-        }
-        if (Plugin.ServerConnectionString == null)
-            return;
-
-    }
-
-    [HarmonyPatch(typeof(CreateGameplayEventOnMinionDeathSystem), nameof(CreateGameplayEventOnMinionDeathSystem.OnUpdate))]
-    [HarmonyPrefix]
-    static void OnDDestroy(CreateGameplayEventOnMinionDeathSystem __instance)
-    {
-        if (__instance != null)
-        {
-            LogUtils.LogInfo("destry");
-        
-        }
-        if (Plugin.ServerConnectionString == null)
-            return;
-
-    }
-
-
 }

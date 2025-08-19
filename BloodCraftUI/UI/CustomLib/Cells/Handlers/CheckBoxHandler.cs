@@ -17,7 +17,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
         protected readonly Func<List<TData>> GetEntries;
         protected readonly Action<TCell, int> SetICell;
         protected readonly Func<TData, string, bool> ShouldDisplay;
-        protected readonly Action<int,bool> OnCellChanged;
+        protected readonly Action<int> OnCellChanged;
 
         public string CurrentFilter
         {
@@ -36,7 +36,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
         /// <param name="onCellClickedMethod">A method invoked when a cell is clicked, containing the data index assigned to the cell.</param>
         public CheckBoxHandler(ScrollPool<TCell> scrollPool, Func<List<TData>> getEntriesMethod,
             Action<TCell, int> setICellMethod, Func<TData, string, bool> shouldDisplayMethod,
-            Action<int, bool> onCellChangedMethod)
+            Action<int> onCellChangedMethod)
         {
             ScrollPool = scrollPool;
 
