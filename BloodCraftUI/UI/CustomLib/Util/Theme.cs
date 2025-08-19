@@ -77,15 +77,15 @@ public static class Theme
         SelectableNormal = new Color(0.2f, 0.2f, 0.2f, Opacity);
         SelectableHighlighted = new Color(0.3f, 0.3f, 0.3f, Opacity);
         SelectablePressed = new Color(0.15f, 0.15f, 0.15f, Opacity);
-        DefaultText = Color.white;
+        DefaultText = new Color32(160, 160, 160, 255);
         White = Color.white;
         PlaceHolderText = SliderHandle;
 
         InputFieldNormal = new Color(1f, 1f, 1f, Opacity);
         InputFieldHighlighted = new Color(0.95f, 0.95f, 0.95f, Opacity);
         InputFieldPressed = new Color(0.78f, 0.78f, 0.78f, Opacity);
-        ToggleNormal = new Color(0f, 0f, 0f, Opacity);
-        ToggleCheckMark = new Color(0.6f, 0.7f, 0.6f, Opacity);
+        ToggleNormal = new Color32(16, 24, 32, 255);
+        ToggleCheckMark = new Color32(90, 155, 213, 255);
         ViewportBackground = new Color(0.07f, 0.07f, 0.07f, Opacity);
         ScrollbarNormal = new Color(0.4f, 0.4f, 0.4f, Opacity);
         ScrollbarHighlighted = new Color(0.5f, 0.5f, 0.5f, Opacity);

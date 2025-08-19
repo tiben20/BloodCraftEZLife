@@ -144,30 +144,6 @@ namespace BloodCraftEZLife.UI.ModContent
 
             };
 
-            var settingsButton = UIFactory.CreateButton(_uiAnchor, "SettingsButton", "S");
-            UIFactory.SetLayoutElement(settingsButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
-            _objectsList.Add(settingsButton.GameObject);
-            settingsButton.OnClick = () => 
-            {
-                SettingsPanel panel;
-                panel = Plugin.UIManager.GetPanel<SettingsPanel>();
-                if (panel != null)
-                {
-                    panel.Toggle();
-                    return;
-
-                }
-                Plugin.UIManager.AddPanel(PanelType.SettingsPanel);
-
- 
-                panel = Plugin.UIManager.GetPanel<SettingsPanel>();
-                if (panel != null)
-                {
-                    panel.RefreshData();
-                }
-
-            };
-
 
             var scaleButton = UIFactory.CreateButton(_uiAnchor, "ScaleButton", "*");
             UIFactory.SetLayoutElement(scaleButton.GameObject, ignoreLayout: false, minWidth: 25, minHeight: 25);

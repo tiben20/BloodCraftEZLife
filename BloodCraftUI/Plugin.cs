@@ -12,6 +12,8 @@ using BloodCraftEZLife.UI.CustomLib.Util;
 using BloodCraftEZLife.UI.ModernLib;
 using BloodCraftEZLife.Utils;
 using HarmonyLib;
+using ProjectM;
+using ProjectM.Network;
 using ProjectM.Scripting;
 using ProjectM.UI;
 using Unity.Entities;
@@ -34,6 +36,7 @@ namespace BloodCraftEZLife
         public static CoreUpdateBehavior CoreUpdateBehavior { get; set; }
         public static bool IsClient { get; private set; }
         public static Entity LocalCharacter { get; set; }
+        public static String ServerConnectionString { get; set; }
 
         public static bool IsClientNull() => _client == null;
 
@@ -90,6 +93,7 @@ namespace BloodCraftEZLife
             //_eclipsePatch = Harmony.CreateAndPatchAll(typeof(EclipseClientChatSystemPatch));
 
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} version {PluginInfo.PLUGIN_VERSION} is loaded!");
+            ServerConnectionString = null;
         }
 
         
@@ -109,6 +113,7 @@ namespace BloodCraftEZLife
             if (!IsGameDataInitialized && IsClient)
             {
                 _client = world;
+
                 IsGameDataInitialized = true;
                 // We only want to run this once, so unpatch the hook that initiates this callback.
                 _uiInitializedTimer = new FrameTimer();
@@ -134,6 +139,6 @@ namespace BloodCraftEZLife
     {
         public const string PLUGIN_GUID = "BloodCraftEZLife.PluginsUI";
         public const string PLUGIN_NAME = "BloodCraftEZLife";
-        public const string PLUGIN_VERSION = "1.00";
+        public const string PLUGIN_VERSION = "1.0";
     }
 }

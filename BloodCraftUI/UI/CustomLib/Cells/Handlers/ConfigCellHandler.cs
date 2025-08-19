@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
-using BloodCraftEZLife.Utils;
-using BloodmoonUI.UI.CustomLib.Cells;
-using Unity.Collections;
 
 namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
 {

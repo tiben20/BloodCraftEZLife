@@ -2,6 +2,7 @@
 using System.Linq;
 using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Services;
+using BloodCraftEZLife.UI.CustomLib;
 using BloodCraftEZLife.UI.CustomLib.Cells;
 using BloodCraftEZLife.UI.CustomLib.Cells.Handlers;
 using BloodCraftEZLife.UI.CustomLib.Panel;
@@ -11,21 +12,23 @@ using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 using BloodCraftEZLife.Utils;
+using ProjectM;
 using UnityEngine;
 
 namespace BloodCraftEZLife.UI.ModContent
 {
-    internal class SettingsPanel : ResizeablePanelBase
+    internal class SettingsPanel : PanelBase
     {
         public override string PanelId => "SettingsList";
-        public override int MinWidth => 275;
-        public override int MinHeight => 134;
-        public override int MaxWidth => 275;
+        public override int MinWidth => (int)480;
+        public override int MinHeight => (int)240;
+        public override int MaxWidth => (int)3840;
         
         public override Vector2 DefaultAnchorMin => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultAnchorMax => new Vector2(0.5f, 0.5f);
         public override Vector2 DefaultPivot => new Vector2(0.5f, 0.5f);
-        public override bool CanDrag => true;
+
+        public override bool CanDrag => false;
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.None;
         public override PanelType PanelType => PanelType.SettingsPanel;
 
@@ -42,7 +45,11 @@ namespace BloodCraftEZLife.UI.ModContent
         protected override void LateConstructUI()
         {
             base.LateConstructUI();
-            RunUpdateCommand();
+            //put sizing here
+            Rect.sizeDelta = FullscreenSettingService.DeltaRect;
+            Rect.anchoredPosition = FullscreenSettingService.AnchorRect;
+            EnsureValidSize();
+            EnsureValidPosition();
         }
 
         protected override void OnClosePanelClicked()
@@ -50,29 +57,20 @@ namespace BloodCraftEZLife.UI.ModContent
             SetActive(false);
         }
 
+        public void OnDropdownValueChanged(int index)
+        { 
+        }
         protected override void ConstructPanelContent()
         {
             _scrollDataHandler = new ConfigCellHandler<Setting, ConfigboxCell>(_scrollPool, Settings.GetSettingsEntries, SetCell, ShouldDisplay, OnCellChanged);
             _scrollPool = UIFactory.CreateScrollPool<ConfigboxCell>(ContentRoot, "ContentList", out GameObject scrollObj,
-                out _, new Color(0.03f, 0.03f, 0.03f, Settings.UITransparency));
+                out _, new Color32(10,10,10,255));
             _scrollPool.Initialize(_scrollDataHandler);
             UIFactory.SetLayoutElement(scrollObj, flexibleHeight: 9999);
 
+
+
             RefreshData();
-        }
-
-        internal override void Reset()
-        {
-            //Object.Destroy(UIRoot);
-            //_dataList.Clear();
-            _scrollDataHandler.RefreshData();
-            _scrollPool.Refresh(true);
-        }
-
-        private void RunUpdateCommand()
-        {
-            Reset();
-
         }
 
         public void RefreshData()
@@ -81,21 +79,18 @@ namespace BloodCraftEZLife.UI.ModContent
             _scrollPool.Refresh(true);
         }
 
-        /*for debugging*/
-        /*public override void OnFinishDrag()
+        internal void Reset()
         {
-            base.OnFinishDrag();
-            SetTitle("W:"+ Rect.rect.width.ToString()+ "H:" + Rect.rect.height.ToString());
-            SaveInternalData();
-        }*/
+            //_scrollDataHandler.RefreshData();
+            //_scrollPool.Refresh(true);
+        }
+
 
         public override void SetActive(bool active)
         {
-            var shouldUpdateData = _isInitialized && active && Enabled == false;
+           
             _isInitialized = true;
             base.SetActive(active);
-            if (shouldUpdateData)
-                RunUpdateCommand();
         }
 
         #region ScrollPool handling
@@ -103,6 +98,7 @@ namespace BloodCraftEZLife.UI.ModContent
 
         private void SetOpacity()
         {
+            return;
             ContentPanel panel;
             panel = (ContentPanel)Plugin.UIManager._contentPanel;
             if (panel != null)

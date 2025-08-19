@@ -29,7 +29,7 @@ namespace BloodCraftEZLife.Patches
                 LogUtils.LogError(ex.ToString());
             }
         }
-        
+
         [HarmonyPatch(typeof(CommonClientDataSystem), nameof(CommonClientDataSystem.OnUpdate))]
         [HarmonyPostfix]
         static void OnUpdatePostfix(CommonClientDataSystem __instance)
@@ -70,6 +70,18 @@ namespace BloodCraftEZLife.Patches
             finally
             {
                 entities.Dispose();
+            }
+        }
+
+        [HarmonyPatch(typeof(ClientBootstrapSystem), nameof(ClientBootstrapSystem.OnUpdate))]
+        [HarmonyPostfix]
+        static void OnUpdateData(ClientBootstrapSystem __instance)
+        {
+            if (__instance.ConnectionString != null && Plugin.ServerConnectionString == null)
+            {
+                Plugin.ServerConnectionString = __instance.ConnectionString;
+                //we have the connection string so we can load the server specific json
+                FullscreenSettingService.InitialiseVbloodData();
             }
         }
     }

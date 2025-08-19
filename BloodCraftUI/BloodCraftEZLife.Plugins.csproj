@@ -6,9 +6,9 @@
     <Description>BloodCraft plugins to help in pve servers</Description>
     <Version>1.0.0</Version>
     <Authors>TiBen</Authors>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
-    <RootNamespace>BloodmoonUI</RootNamespace>
+    <RootNamespace>BloodCraftEZLife</RootNamespace>
     <PackageId>$(Authors).$(AssemblyName)</PackageId>
     <PackageProjectUrl></PackageProjectUrl>
     <BepInExVersion>6.0.0-be.733</BepInExVersion>
@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="9.0.5" />
     <PackageReference Include="BepInEx.Unity.IL2CPP" Version="$(BepInExVersion)" IncludeAssets="compile" />
     <PackageReference Include="VRising.Unhollowed.Client" Version="1.1.9.9219901" />
   </ItemGroup>
@@ -46,6 +45,10 @@
     <DebugType>Full</DebugType>
 <OutputPath>D:\Steam\steamapps\common\VRising\BepInEx\plugins</OutputPath>
 <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <Optimize>False</Optimize>
   </PropertyGroup>
 
 </Project>

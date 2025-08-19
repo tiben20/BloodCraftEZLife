@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BloodmoonUI.UI.CustomLib.Cells
+namespace BloodCraftEZLife.UI.CustomLib.Cells
 {
     public interface IConfigurableCell<T>
     {

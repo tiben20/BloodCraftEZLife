@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using BepInEx;
 using BepInEx.Configuration;
+using BloodCraftEZLife.Services;
 
 namespace BloodCraftEZLife.Config
 {
@@ -12,14 +13,26 @@ namespace BloodCraftEZLife.Config
         {
             Bool,
             String,
-            Float
+            Float,
+            Header,
+            Dropdown
         }
+
         public Setting(string name, bool value)
         {
             Name = name;    
             Value = value;
             Type = SettingType.Bool;
         }
+
+        public Setting(string name, string value, List<string> options)
+        {
+            Name = name;
+            Value = value;
+            Options = options;
+            Type = SettingType.Dropdown;
+        }
+
         public Setting(string name, float value, float min, float max, float step)
         {
             Name = name;
@@ -29,11 +42,14 @@ namespace BloodCraftEZLife.Config
             Max = max;
             Step = step;
         }
-        public Setting(string name, string value)
+        public Setting(string name, string value,bool header = false)
         {
             Name = name;
             Value = value;
-            Type = SettingType.String;
+            if (header)
+                Type = SettingType.Header;
+            else
+                Type = SettingType.String;
         }
         public string Name { get; set; }
         public object Value { get; set; }
@@ -41,13 +57,14 @@ namespace BloodCraftEZLife.Config
         public float Max { get; set; }
         public float Step { get; set; }
         public SettingType Type { get; set; }
+        public List<string> Options { get; set; }
     }
 
 
 
     public class Settings
     {
-        private static string CONFIG_PATH = Path.Combine(Paths.ConfigPath, PluginInfo.PLUGIN_NAME);
+        public static string CONFIG_PATH = Path.Combine(Paths.ConfigPath, PluginInfo.PLUGIN_NAME);
         private static readonly Dictionary<string, ConfigEntryBase> ConfigEntries = new();
         public const string UI_SETTINGS_GROUP = "UISettings";
         public const string FAM_SETTINGS_GROUP = "FamiliarSettings";
@@ -79,7 +96,24 @@ namespace BloodCraftEZLife.Config
 
         #region "Settings"
         public static readonly List<Setting> _settingList = new();
-        public static List<Setting> GetSettingsEntries() => _settingList;
+        public static List<Setting> GetSettingsEntries()
+        {
+            return _settingList;
+        }
+        public static void AddSettingHeader(string name, string settingValue)
+        {
+            if (_settingList.Any(a => a.Name.Equals(name)))
+                return;
+            _settingList.Add(new Setting(name, settingValue,true));
+        }
+
+        public static void AddSettingEntry(string name, string settingValue, List<string> options)
+        {
+            if (_settingList.Any(a => a.Name.Equals(name)))
+                return;
+            _settingList.Add(new Setting(name, settingValue, options));
+        }
+
         public static void AddSettingEntry(string name,bool settingValue)
         {
             if (_settingList.Any(a => a.Name.Equals(name)))
@@ -125,7 +159,7 @@ namespace BloodCraftEZLife.Config
             get => (ConfigEntries[nameof(IsAutoTeleportEnabled)] as ConfigEntry<bool>)?.Value ?? true;
             set => ConfigEntries[nameof(IsAutoTeleportEnabled)].BoxedValue = value;
         }
-
+    
         public Settings InitConfig()
         {
             if (!Directory.Exists(CONFIG_PATH))
@@ -140,10 +174,17 @@ namespace BloodCraftEZLife.Config
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsAutoTeleportEnabled), true, "Is auto teleport enabled");
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsHeaderVisible), true, "Is title of plugin visible");
             /*Adding settings the order is important for the index*/
+            AddSettingHeader("General options", "General");
             AddSettingEntry("Teleport panel", Settings.IsTeleportPanelEnabled);
             AddSettingEntry("Autoteleport", Settings.IsAutoTeleportEnabled);
             AddSettingEntry("Header visible", Settings.IsHeaderVisible);
             AddSettingEntry("UI Opacity", Settings.UITransparency,0.1f,1.0f,0.05f);
+            List<string> options =new List<string>();
+            options.Add("Small");
+            options.Add("Medium");
+            options.Add("Large");
+            AddSettingEntry("Text size", "Small",options);
+            
 
             return this;
         }

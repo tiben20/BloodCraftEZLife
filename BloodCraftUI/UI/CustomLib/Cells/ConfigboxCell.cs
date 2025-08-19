@@ -4,14 +4,15 @@ using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 using BloodCraftEZLife.Utils;
-using BloodmoonUI.UI.CustomLib.Cells;
 using Il2CppSystem.Data;
 using Stunlock.Localization;
 using TMPro;
 using Unity.Collections.LowLevel.Unsafe;
 using Unity.Entities.DebugProxies;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static BloodCraftEZLife.Config.Settings;
 using static Il2CppSystem.Linq.Expressions.Interpreter.NullableMethodCallInstruction;
 using static UnityEngine.Rendering.ProbeReferenceVolume;
 
@@ -53,25 +54,119 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
         public override float DefaultHeight => 25f;
         private Setting _setting;
         private bool _subCreated;
+
         public override GameObject CreateContent(GameObject parent)
         {
             //creating the group horizontal group
-            UIRoot = UIFactory.CreateHorizontalGroup(parent, "ConfigboxCell", true, false, true, true,2, default,
-                new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency), TextAnchor.MiddleCenter);
+            UIRoot = UIFactory.CreateHorizontalGroup(UIRoot, "TextScalingRow", false, false, true, true, spacing: 10,bgColor: new Color32(18, 18, 18, 255));
+            UIFactory.SetLayoutElement(UIRoot, minHeight: 40, flexibleWidth: 9999);
+
+            
             Rect = UIRoot.GetComponent<RectTransform>();
             Rect.anchorMin = new Vector2(0, 1);
             Rect.anchorMax = new Vector2(0, 1);
             Rect.pivot = new Vector2(0.5f, 1);
             Rect.sizeDelta = new Vector2(25, 25);
-            UIFactory.SetLayoutElement(UIRoot, minWidth: 100, flexibleWidth: 9999, minHeight: 25, flexibleHeight: 0);
 
-            UIRoot.SetActive(false);
+
+            _label = UIFactory.CreateLabel(UIRoot, "LabelTitle", "setting.Name",
+                                              TextAlignmentOptions.MidlineLeft, fontSize: 16, bold: false);// medium-light gray
+            UIFactory.SetLayoutElement(_label.GameObject, minHeight: 40, minWidth: 120, flexibleWidth: 9999);
 
             
-
             _subCreated = false;
             return UIRoot;
         }
+        public void CreateHeader(Setting setting)
+        {
+            _label.TextMesh.text = (string)setting.Value;
+            _label.TextMesh.fontSize = 22;
+            _label.TextMesh.color = new Color32(230, 230, 230, 255);
+
+        }
+
+        public void CreateToggle(Setting setting)
+        {
+            var rowBtn = UIRoot.AddComponent<Button>();
+            var colors = rowBtn.colors;
+            colors.normalColor = new Color(0, 0, 0, 0);
+            colors.highlightedColor = new Color(0.1f, 0.1f, 0.1f, 0.5f); // hover highlight
+            rowBtn.colors = colors;
+            // === Toggle (right) ===
+            Checkbox = UIFactory.CreateToggle(UIRoot, "ToggleSetting"); // dark bluish gray
+            UIFactory.SetLayoutElement(Checkbox.GameObject, minWidth: 30, minHeight: 30, flexibleWidth: 0, flexibleHeight: 0);
+
+            
+            // === Bind callback ===
+            Checkbox.OnValueChanged += (bool newvalue) =>
+            {
+                Checkbox.Text.text = newvalue.ToString();
+                OnValueChanged?.Invoke(new Setting(setting.Name, newvalue), CurrentDataIndex);
+                // Example: Debug.Log(labelText + " set to " + val);
+            };
+            rowBtn.onClick.AddListener(() => Checkbox.Toggle.isOn = !Checkbox.Toggle.isOn);
+        }
+
+        public void CreateDropdown(Setting setting)
+        {
+            GameObject allSceneDropObj = UIFactory.CreateDropdown(UIRoot, "DropdownSetting", out var allSceneDropdown, "", 14, null);
+            UIFactory.SetLayoutElement(allSceneDropObj, minHeight: 30, minWidth: 150, flexibleWidth: 0, flexibleHeight: 0);
+            foreach (var opt in setting.Options)
+            {
+                allSceneDropdown.options.Add(new TMPro.TMP_Dropdown.OptionData(opt));
+            }
+
+            allSceneDropdown.onValueChanged.AddListener((int val) =>
+            {
+                OnValueChanged?.Invoke(new Setting(setting.Name, setting.Options[val]), CurrentDataIndex);
+            });
+        }
+
+        public void CreateSlider(Setting setting)
+        {
+            // === Container row ===
+
+            // === Label (left) ===
+            //_label = UIFactory.CreateLabel(UIRoot, "TextScalingLabel", "Text Scaling",
+            //                                 TextAlignmentOptions.MidlineLeft, fontSize: 16, bold: false,color: new Color32(160, 160, 160, 255));// medium-light gray
+
+            // === Slider (middle) ===
+            UIFactory.CreateSlider(UIRoot, "AmountSlider", out _slider);
+            _slider.value = (float)5f;
+            _slider.m_MaxValue = 100f;
+            _slider.m_MinValue = 0f;
+            //var slider = UIFactory.CreateSlider(row.gameObject, "TextScalingSlider", setting.Min, setting.Min, setting.Value, out var sliderComp);
+            UIFactory.SetLayoutElement(_slider.gameObject, minWidth: 300, minHeight: 30, flexibleWidth: 1);
+
+            // background color (dark bluish gray)
+            Image sliderimg = _slider.transform.FindChild("Background").GetComponent<Image>();
+            sliderimg.color = new Color32(16, 24, 32, 255);
+            
+            // handle color (steel blue)
+            var handle = _slider.transform.Find("Handle Slide Area/Handle");
+            if (handle != null)
+                handle.GetComponent<Image>().color = new Color32(64, 96, 128, 255);
+
+            // fill color (active track)
+            var fill = _slider.transform.Find("Fill Area/Fill");
+            if (fill != null)
+                fill.GetComponent<Image>().color = new Color32(90, 155, 213, 255);
+
+            // === Value label (right) ===
+            var valueLabel = UIFactory.CreateLabel(UIRoot.gameObject, "TextScalingValue", "yo",
+                                                   TextAlignmentOptions.MidlineLeft, fontSize: 16,color: new Color32(218, 218, 218, 255));// near-white for emphasis
+            
+            UIFactory.SetLayoutElement(valueLabel.GameObject, minWidth: 40, flexibleWidth: 0);
+
+            // === Value binding ===
+            _slider.onValueChanged.AddListener((val) =>
+            {
+                valueLabel.TextMesh.text = val.ToString("0.00");
+                _setting.Value = val;
+                OnValueChanged?.Invoke(_setting, CurrentDataIndex);
+            });
+        }
+
         public void InitialiseSetting(Setting set)
         {
             _setting = set;
@@ -79,36 +174,21 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             {
                 if (set.Type == Setting.SettingType.Bool)
                 {
-                    Checkbox = UIFactory.CreateToggle(UIRoot, "Checkbox", new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency),160);
-                    UIFactory.SetLayoutElement(Checkbox.GameObject, flexibleWidth: 9999, minHeight: 25, flexibleHeight: 0);
-                    Checkbox.OnValueChanged += (bool newvalue) => { OnValueChanged?.Invoke(new Setting(Checkbox.Text.text, newvalue), CurrentDataIndex); };
+                    CreateToggle(_setting);
                 }
                 else if (set.Type == Setting.SettingType.Float)
                 {
-                    // Slider
-                    //_slider = UIFactory.CreateSlider(UIRoot, "Slider", MinValue, MaxValue, Value, out var sliderValueText);
-                    // Create the slider itself
-                    
-                    
-                    // Add label to show value
-                    _label = UIFactory.CreateLabel(UIRoot, "SliderNameLabel", "1",TextAlignmentOptions.Left);
-                    UIFactory.CreateSlider(UIRoot, "AmountSlider", out _slider);
-                    _slider.value = 1.0f;
-                    _slider.m_MaxValue = 100.0f;
-                    _slider.m_MinValue = 1.0f;
-                    UIFactory.SetLayoutElement(_slider.gameObject, minHeight: 25);
-                    _valueLabel = UIFactory.CreateLabel(UIRoot, "SliderValueLabel", "1",TextAlignmentOptions.Right);
-                    
-
-                    _slider.onValueChanged.AddListener((val) =>
-                    {
-                        _valueLabel.TextMesh.text = ((int)val).ToString();
-                        _setting.Value = val;
-                        OnValueChanged?.Invoke(_setting, CurrentDataIndex);
-                    });
-                   
-
+                    CreateSlider(_setting);
                 }
+                else if (set.Type == Setting.SettingType.Header)
+                {
+                    CreateHeader(_setting);
+                }
+                else if (set.Type == Setting.SettingType.Dropdown)
+                {
+                    CreateDropdown(_setting);
+                }
+                
                 _subCreated = true;
             }
             
@@ -138,7 +218,8 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             else if (_setting.Type == Setting.SettingType.Float)
             {
             }
-            }
+        }
+
         public void SetValue(Setting value)
         {
             SetLabel(value.Name);
@@ -169,12 +250,15 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             switch (_setting.Type)
             {
                 case Setting.SettingType.Bool:
-                    Checkbox.Text.text = label;
+                    _label.TextMesh.text = label;
                     break;
                 case Setting.SettingType.String:
-                    
+                    _label.TextMesh.text = label;
                     break;
                 case Setting.SettingType.Float:
+                    _label.TextMesh.text = label;
+                    break;
+                case Setting.SettingType.Dropdown:
                     _label.TextMesh.text = label;
                     break;
                 default:

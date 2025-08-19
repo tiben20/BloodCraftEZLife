@@ -14,6 +14,12 @@ using Unity.Entities.CodeGeneratedJobForEach;
 using BloodCraftEZLife.UI.ModContent;
 using UnityEngine;
 using TMPro;
+using static BloodCraftEZLife.Services.FullscreenSettingService;
+using BloodCraftEZLife.UI.UniverseLib.UI;
+using UnityEngine.UIElements;
+using UnityEngine.UI;
+using ProjectM.Presentation;
+using BloodCraftEZLife.Config;
 
 namespace BloodCraftEZLife.Patches;
 
@@ -61,79 +67,87 @@ internal static class PlayerListPatch
 
       
     }
-    [HarmonyPatch(typeof(FullscreenMenu_OuterTabEntry), nameof(FullscreenMenu_OuterTabEntry.Refresh))]
+
+    [HarmonyPatch(typeof(OptionsMenu), nameof(OptionsMenu.SwitchView))]
     [HarmonyPostfix]
-    private static void OnStartRunning_53CF59E2_b__1(FullscreenMenu_OuterTabEntry __instance,bool isSelected, bool requirementMet, bool highlight)
+    private static void OptionsMenuSwitchView(OptionsMenu __instance, ProjectM.UI.OptionsMenu.ViewState state, bool initialSwitch)
     {
-        if (__instance.name == "TabEntry_System")
+        Transform t = __instance.GeneralPanel.gameObject.transform.parent;
+        RectTransform tt = t.GetComponent<RectTransform>();
+        FullscreenSettingService.DeltaRect = new Vector2(tt.rect.width, tt.rect.height);
+        FullscreenSettingService.AnchorRect = new Vector2(tt.anchoredPosition.x, tt.anchoredPosition.y);
+        if (!Plugin.UIManager.IsInitialized)
+        { 
+            LogUtils.LogInfo("Creating UI...");
+            Plugin.UIOnInitialize();
+        }
+        SimpleStunButton simpleButton = __instance.SoundTabButton;
+
+        //Check if button exist if it exist quit
+        Transform btnSearch = simpleButton.transform.parent.Find("EZLifeButton");
+        if (btnSearch == null)
         {
-            LogUtils.LogInfo($"___OnStartRunning_53CF59E2_b__38_0");
+            var settingsButton = UnityEngine.Object.Instantiate(simpleButton.gameObject, simpleButton.transform.parent);
+            settingsButton.name = "EZLifeButton";
+
+            var newSettingsButton = settingsButton.GetComponent<SimpleStunButton>();
+
+            var label = settingsButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+            if (label != null)
+                label.text = "EZLife";
+            newSettingsButton.m_OnClick.RemoveAllListeners();
+
+            __instance.GeneralTabButton.m_OnClick.AddListener(() => HideSettingsPanel());
+            __instance.ControlsTabButton.m_OnClick.AddListener(() => HideSettingsPanel());
+            __instance.GraphicsTabButton.m_OnClick.AddListener(() => HideSettingsPanel());
+            __instance.SoundTabButton.m_OnClick.AddListener(() => HideSettingsPanel());
+
+            newSettingsButton.m_OnClick.AddListener(() =>
+            {
+                FullscreenSettingService.RaiseHeaderButtonClicked(__instance);
+            });
         }
         
-
 
     }
 
-    [HarmonyPatch(typeof(OptionsMenu), nameof(OptionsMenu.Update))]
-    [HarmonyPostfix]
-    private static void OptionsMenuUpdate(OptionsMenu __instance)
+    private static void HideSettingsPanel()
     {
-        
-        //SoundTabButton
-        //SimpleStunButton
-        //Verify we didnt add it already
-        /* HEADER BUTTON IN OPTIONS MENU EZLife */
-        SimpleStunButton simpleButton = __instance.SoundTabButton;
-        //Check if button exist if it exist quit
-        Transform btnSearch = simpleButton.transform.parent.Find("EZLifeButton");
-        if (btnSearch != null)
+        var panel = Plugin.UIManager.GetPanel<SettingsPanel>();
+        if (panel != null)
+        {
+            panel.SetActive(false);
             return;
 
-        var settingsButton = UnityEngine.Object.Instantiate(simpleButton.gameObject,simpleButton.transform.parent);
-        settingsButton.name = "EZLifeButton";
-
-        var newSettingsButton = settingsButton.GetComponent<SimpleStunButton>();
-
-        var label = settingsButton.GetComponentInChildren<TMPro.TextMeshProUGUI>();
-        if (label != null)
-            label.text = "EZLife";
-        //TODO
-        newSettingsButton.m_OnClick = null;
-
-
-        TextMeshProUGUI[] texts = __instance.GetComponentsInChildren<TextMeshProUGUI>(true);
-        // (true) means include inactive objects
-
-        foreach (TextMeshProUGUI tmp in texts)
-        {
-            if (tmp.text == "Language")
-            {
-                Debug.Log("Found Language");
-            }
-            if (tmp.text == "General")
-            {
-                Debug.Log("General");
-            }
-            if (tmp.text == "Text Scaling")
-            {
-                Debug.Log("Text Scaling");
-            }
-            Debug.Log("Found TMP: " + tmp.text);
         }
-        foreach (var cmp in __instance.SoundPanel.GetComponents<Component>())
+    }
+
+    [HarmonyPatch(typeof(VBloodSystem), nameof(VBloodSystem.OnUpdate))]
+    [HarmonyPrefix]
+    static void OnUpdatePrefix(VBloodSystem __instance)
+    {
+        if (Plugin.ServerConnectionString == null) 
+            return;
+
+        NativeList<VBloodConsumed> events = __instance.EventList;
+
+        try
         {
-
-            LogUtils.LogInfo(cmp.transform.ToString());
-            foreach (var childCmp in cmp.GetComponentsInChildren<Component>())
+            foreach (VBloodConsumed vBloodConsumed in events)
             {
-                ;
-                LogUtils.LogInfo("Child :" + childCmp.transform.ToString());
+                Entity playerCharacter = vBloodConsumed.Target;
+                User user = playerCharacter.GetUser();
+                if (Plugin.LocalCharacter != playerCharacter)
+                    continue;
+                ulong steamId = user.PlatformId;
+
+                
             }
-
         }
-
-
-
+        catch (Exception e)
+        {
+            
+        }
     }
 
 }

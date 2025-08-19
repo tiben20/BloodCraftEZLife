@@ -265,7 +265,7 @@ public static class UIFactory
     /// <param name="outlineColor"></param>
     /// <returns>Your new Text component</returns>
     public static LabelRef CreateLabel(GameObject parent, string name, string defaultText, TextAlignmentOptions alignment = TextAlignmentOptions.Center,
-        Color? color = null, int fontSize = 14, float outlineWidth = 0.15f, Color? outlineColor = null)
+        Color? color = null, int fontSize = 14, float outlineWidth = 0.15f, Color? outlineColor = null, bool bold = false)
     {
         var obj = CreateUIObject(name, parent);
         var textComp = obj.AddComponent<TextMeshProUGUI>();
@@ -277,7 +277,7 @@ public static class UIFactory
         textComp.text = defaultText;
         textComp.alignment = alignment;
         textComp.fontSize = fontSize;
-
+        textComp.m_isUsingBold = bold;
         try
         {
             textComp.outlineWidth = outlineWidth;
