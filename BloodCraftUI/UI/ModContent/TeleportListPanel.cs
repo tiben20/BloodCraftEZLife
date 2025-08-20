@@ -49,7 +49,7 @@ namespace BloodCraftEZLife.UI.ModContent
 
         protected override void ConstructPanelContent()
         {
-            _scrollDataHandler = new ButtonListHandler<TeleportBoxData, ButtonCell>(_scrollPool, Settings.GetTeleportEntries, SetCell, ShouldDisplay, OnCellClicked);
+            _scrollDataHandler = new ButtonListHandler<TeleportsService.TeleportBoxData, ButtonCell>(_scrollPool, TeleportsService.GetTeleportEntries, SetCell, ShouldDisplay, OnCellClicked);
             _scrollPool = UIFactory.CreateScrollPool<ButtonCell>(ContentRoot, "TeleportList", out GameObject scrollObj,
                 out _, new Color(0.03f, 0.03f, 0.03f, Opacity));
             _scrollPool.Initialize(_scrollDataHandler);
@@ -60,7 +60,7 @@ namespace BloodCraftEZLife.UI.ModContent
         internal override void Reset()
         {
             //Object.Destroy(UIRoot);
-            Settings._dataList.Clear();
+            TeleportsService._dataList.Clear();
             _scrollDataHandler.RefreshData();
             _scrollPool.Refresh(true);
         }
@@ -94,29 +94,29 @@ namespace BloodCraftEZLife.UI.ModContent
         #region ScrollPool handling
 
         private ScrollPool<ButtonCell> _scrollPool;
-        private ButtonListHandler<TeleportBoxData, ButtonCell> _scrollDataHandler;
+        private ButtonListHandler<TeleportsService.TeleportBoxData, ButtonCell> _scrollDataHandler;
         
         private bool _isInitialized;
         
 
         private void OnCellClicked(int dataIndex)
         {
-            var famBox = Settings._dataList[dataIndex];
+            var famBox = TeleportsService._dataList[dataIndex];
 
             MessageService.EnqueueMessage(".stp tpr " + famBox.Name);
         }
 
-        private bool ShouldDisplay(TeleportBoxData data, string filter) => true;
+        private bool ShouldDisplay(TeleportsService.TeleportBoxData data, string filter) => true;
         
 
         private void SetCell(ButtonCell cell, int index)
         {
-            if (index < 0 || index >= Settings._dataList.Count)
+            if (index < 0 || index >= TeleportsService._dataList.Count)
             {
                 cell.Disable();
                 return;
             }
-            cell.Button.ButtonText.text = Settings._dataList[index].Name;
+            cell.Button.ButtonText.text = TeleportsService._dataList[index].Name;
         }
 
         #endregion

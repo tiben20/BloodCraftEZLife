@@ -94,19 +94,7 @@ namespace BloodCraftEZLife.Config
 
 
         #region "TELEPORT"
-        public class TeleportBoxData
-        {
-            public string Name { get; set; }
-        }
-        public static readonly List<TeleportBoxData> _dataList = new();
-        public static List<TeleportBoxData> GetTeleportEntries() => _dataList;
-        public static void AddListEntry(string name)
-        {
-            if (_dataList.Any(a => a.Name.Equals(name)))
-                return;
-            _dataList.Add(new TeleportBoxData { Name = name });
-            
-        }
+        
         #endregion
 
         #region "Settings"
@@ -210,6 +198,12 @@ namespace BloodCraftEZLife.Config
             }
         }
 
+        public static bool KeepTrackOfVbloodKills
+        {
+            get => (ConfigEntries[nameof(KeepTrackOfVbloodKills)] as ConfigEntry<bool>)?.Value ?? true;
+            set => ConfigEntries[nameof(KeepTrackOfVbloodKills)].BoxedValue = value;
+        }
+
         public static bool IsAutoTeleportEnabled
         {
             get => (ConfigEntries[nameof(IsAutoTeleportEnabled)] as ConfigEntry<bool>)?.Value ?? true;
@@ -230,11 +224,14 @@ namespace BloodCraftEZLife.Config
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsTeleportPanelEnabled), true, "Is teleport box panel enabled");
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsAutoTeleportEnabled), true, "Is auto teleport enabled");
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsHeaderVisible), true, "Is title of plugin visible");
+            InitConfigEntry(UI_SETTINGS_GROUP, nameof(KeepTrackOfVbloodKills), true, "Keep track of vblood kills");
+            
             /*Adding settings the order is important for the index*/
             AddSettingHeader("General options", "General");
             AddSettingBool(nameof(IsTeleportPanelEnabled),"Teleport panel", Settings.IsTeleportPanelEnabled);
             AddSettingBool(nameof(IsAutoTeleportEnabled),"Auto teleport", Settings.IsAutoTeleportEnabled);
             AddSettingBool(nameof(IsHeaderVisible), "Header visible",Settings.IsHeaderVisible);
+            AddSettingBool(nameof(KeepTrackOfVbloodKills), "Keep track of vblood kills", Settings.KeepTrackOfVbloodKills);
             AddSettingSlider(nameof(UITransparency),"UI Opacity", Settings.UITransparency,0.1f,1.0f,0.05f);
             List<string> options =new List<string>();
             options.Add("Small");

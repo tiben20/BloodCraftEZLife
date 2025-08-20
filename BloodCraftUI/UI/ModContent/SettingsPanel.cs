@@ -58,9 +58,6 @@ namespace BloodCraftEZLife.UI.ModContent
             SetActive(false);
         }
 
-        public void OnDropdownValueChanged(int index)
-        { 
-        }
         protected override void ConstructPanelContent()
         {
             _scrollDataHandler = new ConfigCellHandler<Setting, ConfigboxCell>(_scrollPool, Settings.GetSettingsEntries, SetCell, ShouldDisplay, OnCellChanged);
@@ -74,11 +71,7 @@ namespace BloodCraftEZLife.UI.ModContent
             RefreshData();
         }
 
-        public void RefreshData()
-        {
-            _scrollDataHandler.RefreshData();
-            _scrollPool.Refresh(true);
-        }
+        
 
         internal void Reset()
         {
@@ -96,28 +89,14 @@ namespace BloodCraftEZLife.UI.ModContent
 
         #region ScrollPool handling
 
-
-        private void SetOpacity()
+        public void RefreshData()
         {
-            return;
-            ContentPanel panel;
-            panel = (ContentPanel)Plugin.UIManager._contentPanel;
-            if (panel != null)
-            {
-                var canvasGroup = panel.ContentRoot.GetComponent<UnityEngine.UI.Image>();
-                canvasGroup.color = new Color(canvasGroup.color.r, canvasGroup.color.g, canvasGroup.color.b).GetTransparent(Settings.UITransparency);
-            }
-            foreach (ConfigboxCell cell in _scrollPool.CellPool)
-            {
-                cell.SetOpacity(Settings.UITransparency);
-            }
+            _scrollDataHandler.RefreshData();
+            _scrollPool.Refresh(true);
         }
 
         private void OnCellChanged(Setting newValue)
         {
-            
-            ContentPanel panel;
-
             Settings.SetConfigValue(newValue.ConfigName, newValue.Value);
             return;
         }

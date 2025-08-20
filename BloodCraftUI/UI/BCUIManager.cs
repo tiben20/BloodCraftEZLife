@@ -80,6 +80,21 @@ public class BCUIManager : UIManagerBase
             case PanelType.Base:
                 _contentPanel = new ContentPanel(UiBase);
                 break;
+            case PanelType.PopupPanel:
+                {
+                    var panel = GetPanel<PopupPanel>();
+                    if (panel == null)
+                    {
+                        var item = new PopupPanel(UiBase);
+                        UIPanels.Add(item);
+                    }
+                    else
+                    {
+                        panel.SetActive(true);
+                    }
+
+                    break;
+                }
             case PanelType.TeleportList:
             {
                 var panel = GetPanel<TeleportListPanel>();

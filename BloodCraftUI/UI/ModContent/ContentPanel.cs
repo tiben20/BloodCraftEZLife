@@ -18,6 +18,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using static BloodCraftEZLife.Services.MessageService;
+using static UnityEngine.Rendering.DebugUI;
 using UIBase = BloodCraftEZLife.UI.UniverseLib.UI.UIBase;
 
 namespace BloodCraftEZLife.UI.ModContent
@@ -45,7 +46,6 @@ namespace BloodCraftEZLife.UI.ModContent
         private UnityEngine.UI.Toggle _pinToggle;
 
         private float timer = 0f;
-        private float vbloodtimer = 2f;
         public float interval = 5f; // seconds
         private List<TeleportRequest> _teleportRequest = new();
 
@@ -154,6 +154,9 @@ namespace BloodCraftEZLife.UI.ModContent
             {
                 _scaleButtonData.PerformAction();
             };
+
+            Plugin.UIManager.AddPanel(PanelType.PopupPanel);
+            PopupPanel panel = Plugin.UIManager.GetPanel<PopupPanel>();
         }
 
         protected override void LateConstructUI()

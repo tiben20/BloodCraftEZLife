@@ -23,7 +23,21 @@ namespace BloodCraftEZLife.Services
         public static bool _InMenu { get; set; }
         private static List<string> _ClanList = new();
         private static List<string> _SocialList = new();
-        
+        public class TeleportBoxData
+        {
+            public string Name { get; set; }
+        }
+        public static readonly List<TeleportBoxData> _dataList = new();
+
+        public static List<TeleportBoxData> GetTeleportEntries() => _dataList;
+
+        public static void AddListEntry(string name)
+        {
+            if (_dataList.Any(a => a.Name.Equals(name)))
+                return;
+            _dataList.Add(new TeleportBoxData { Name = name });
+
+        }
 
         public static void UpdateList()
         {
@@ -33,10 +47,15 @@ namespace BloodCraftEZLife.Services
             if (panel != null)
                 panel.Reset();
 
+            foreach (string cc in _ClanList)
+            {
+
+                AddListEntry(cc);
+            }
             foreach (string cc in _SocialList)
             {
                 
-                Settings.AddListEntry(cc);
+                AddListEntry(cc);
             }
             if (panel != null)
                 panel.RefreshData();

@@ -30,6 +30,7 @@ namespace BloodCraftEZLife
         public static Settings Settings { get; private set; }
         private static World _client;
         public static EntityManager EntityManager => _client.EntityManager;
+        public static PrefabCollectionSystem PrefabCollectionSystem => _client.GetExistingSystemManaged<PrefabCollectionSystem>();
         public static bool IsInitialized { get; private set; }
         public static bool IsGameDataInitialized { get; set; }
         public static BCUIManager UIManager { get; set; }

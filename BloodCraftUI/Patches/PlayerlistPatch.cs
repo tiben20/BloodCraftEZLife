@@ -35,7 +35,8 @@ internal static class PlayerListPatch
     [HarmonyPostfix]
     private static void ClanMenu2(ClanMenu __instance, ClanMenu_MemberEntry entry, ClanMenu_MemberEntry.Data data)
     {
-        if (TeleportsService._Completed)
+        
+        if (TeleportsService._Completed || !data.IsOnline)
             return;
         //clan member name
         TeleportsService.AddClanMember(data.Name);
@@ -72,9 +73,6 @@ internal static class PlayerListPatch
             group.blocksRaycasts = false;
         }
         
-
-        // Show
-        
         
         
         LogUtils.LogInfo($"OnStartRunning");
@@ -93,7 +91,7 @@ internal static class PlayerListPatch
             if (group == null)
                 group = panel.UIRoot.AddComponent<CanvasGroup>();
 
-            // Hide
+            // show
             group.alpha = 1f;
             group.interactable = true;
             group.blocksRaycasts = true;
