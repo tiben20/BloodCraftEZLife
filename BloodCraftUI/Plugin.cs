@@ -37,8 +37,7 @@ namespace BloodCraftEZLife
         public static CoreUpdateBehavior CoreUpdateBehavior { get; set; }
         public static bool IsClient { get; private set; }
         public static Entity LocalCharacter { get; set; }
-        public static String ServerConnectionString { get; set; }
-
+        
         public static bool IsClientNull() => _client == null;
 
         public const bool IS_TESTING = false;
@@ -94,7 +93,6 @@ namespace BloodCraftEZLife
             //_eclipsePatch = Harmony.CreateAndPatchAll(typeof(EclipseClientChatSystemPatch));
 
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} version {PluginInfo.PLUGIN_VERSION} is loaded!");
-            ServerConnectionString = null;
         }
 
         
@@ -114,7 +112,8 @@ namespace BloodCraftEZLife
             if (!IsGameDataInitialized && IsClient)
             {
                 _client = world;
-                FullscreenSettingService.UpdateVbloodQuery();
+                //we have the connection string so we can load the server specific json
+                FullscreenSettingService.InitialiseVbloodData(ProjectM.StunAnalytics.Client.GetServerId(EntityManager));
                 ClientScriptMapper var = _client.GetExistingSystemManaged<ClientScriptMapper>();
                 ClientGameManager var2 = var._ClientGameManager;
                 IsGameDataInitialized = true;

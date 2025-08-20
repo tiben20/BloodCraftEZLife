@@ -53,15 +53,15 @@ namespace BloodCraftEZLife.Services
         }
 
         //Unitialise vbloods
-        public static void InitialiseVbloodData()
+        public static void InitialiseVbloodData(string uniqueid)
         {
             
             // Load or create
-            string thepath = System.IO.Path.Combine(Settings.CONFIG_PATH, Plugin.ServerConnectionString) + ".json";
+            string thepath = System.IO.Path.Combine(Settings.CONFIG_PATH, uniqueid) + ".json";
             VbloodList = ConfigSaveManager.Load(thepath);
-            
 
 
+            UpdateVbloodQuery();
 
         }
 
