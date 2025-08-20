@@ -55,7 +55,6 @@ namespace BloodCraftEZLife
         private static Harmony _harmonyPlayerlistPatch;
         private static Harmony _harmonyInitPatch;
         
-        
         internal static Harmony HarmonyVersionStringPatch;
         private static FrameTimer _uiInitializedTimer;
 
@@ -90,9 +89,6 @@ namespace BloodCraftEZLife
             
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} version {PluginInfo.PLUGIN_VERSION} is loaded!");
 
-            //_eclipsePatch = Harmony.CreateAndPatchAll(typeof(EclipseClientChatSystemPatch));
-
-            Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} version {PluginInfo.PLUGIN_VERSION} is loaded!");
         }
 
         

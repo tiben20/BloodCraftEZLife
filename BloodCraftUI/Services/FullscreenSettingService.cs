@@ -1,22 +1,15 @@
-﻿
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityEngine;
-using static ProjectM.UI.SimpleStunButton;
 using ProjectM.UI;
 using BloodCraftEZLife.Utils;
-using MS.Internal.Xml.XPath;
 using ProjectM;
 using BloodCraftEZLife.UI.ModContent.Data;
 using BloodCraftEZLife.UI.ModContent;
 using BloodCraftEZLife.Config;
 using Unity.Entities;
-using Unity.Collections;
 using Unity.Mathematics;
-using static RootMotion.FinalIK.AimPoser;
+using static Il2CppSystem.Data.Common.ObjectStorage;
+
 
 namespace BloodCraftEZLife.Services
 {
@@ -230,11 +223,19 @@ namespace BloodCraftEZLife.Services
                         float dist = math.distance(vbloodpos, pos2);
                         if (dist < 10.0f && entity.TryGetComponent < Health>(out var healthData) && entity.TryGetComponent<BuffBuffer>(out var buff))
                         {
-                            if (healthData.IsDead)
+                            
+                            
+                            if (healthData.IsDead && entity.TryGetComponent<Team>(out var teamid))
                             {
-                                var vbloodString = comp.Source.GetLocalizedName();
-                                VbloodList.AddVbloodKill(vbloodString);
-                                SaveVbloodData();
+                                //Clan 2 point to vblood so far
+                                //If bugged IsUnitTeam might work
+                                if (teamid.Clan == 2)
+                                {
+                                    var vbloodString = comp.Source.GetLocalizedName();
+                                    VbloodList.AddVbloodKill(vbloodString);
+                                    SaveVbloodData();
+                                }
+                                
                             }
                         }
                         

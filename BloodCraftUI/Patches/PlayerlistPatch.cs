@@ -23,6 +23,7 @@ using BloodCraftEZLife.Config;
 using static ProjectM.VBloodSystem;
 using ProjectM.Gameplay.Systems;
 using BloodCraftEZLife.UI;
+using Stunlock.Core;
 
 namespace BloodCraftEZLife.Patches;
 
@@ -152,7 +153,9 @@ internal static class PlayerListPatch
         {
             panel.SetActive(false);
             return;
-
+            
         }
     }
+
+
 }

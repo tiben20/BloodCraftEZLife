@@ -8,7 +8,9 @@ using BloodCraftEZLife.UI.ModContent.Data;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.Utils;
+using MagicaCloth;
 using ProjectM;
+using Stunlock.Core;
 using TMPro;
 using Unity.Collections;
 using Unity.Entities;
@@ -19,6 +21,7 @@ using UnityEngine.UI;
 using UnityEngine.UIElements;
 using static BloodCraftEZLife.Services.MessageService;
 using static UnityEngine.Rendering.DebugUI;
+using ComponentType = Unity.Entities.ComponentType;
 using UIBase = BloodCraftEZLife.UI.UniverseLib.UI.UIBase;
 
 namespace BloodCraftEZLife.UI.ModContent
@@ -180,10 +183,11 @@ namespace BloodCraftEZLife.UI.ModContent
                 timer = 0f;
                 TimerTick();
             }
-            
+
             base.Update();
             // Call update on the panels that need it
         }
+
         private void TimerTick()
         {
             FullscreenSettingService.CheckVblood();
