@@ -86,9 +86,8 @@ namespace BloodCraftEZLife
             
             _harmonyPlayerlistPatch = Harmony.CreateAndPatchAll(typeof(PlayerListPatch));
             _harmonyInitPatch = Harmony.CreateAndPatchAll(typeof(InitializationPatch));
-            
+            HotkeyService.Initialise();
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} version {PluginInfo.PLUGIN_VERSION} is loaded!");
-
         }
 
         

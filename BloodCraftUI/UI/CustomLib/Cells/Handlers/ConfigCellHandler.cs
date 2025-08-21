@@ -79,8 +79,6 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
             else
             {
                 cell.Enable();
-
-                cell.SetIndex(index);
                 SetICell(cell, index);
             }
         }

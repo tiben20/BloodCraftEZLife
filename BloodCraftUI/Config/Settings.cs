@@ -131,6 +131,7 @@ namespace BloodCraftEZLife.Config
         }
         #endregion
 
+
         public static bool UseHorizontalContentLayout =>
             (ConfigEntries[nameof(UseHorizontalContentLayout)] as ConfigEntry<bool>)?.Value ?? true;
 
@@ -225,7 +226,7 @@ namespace BloodCraftEZLife.Config
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsAutoTeleportEnabled), true, "Is auto teleport enabled");
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(IsHeaderVisible), true, "Is title of plugin visible");
             InitConfigEntry(UI_SETTINGS_GROUP, nameof(KeepTrackOfVbloodKills), true, "Keep track of vblood kills");
-            
+
             /*Adding settings the order is important for the index*/
             AddSettingHeader("General options", "General");
             AddSettingBool(nameof(IsTeleportPanelEnabled),"Teleport panel", Settings.IsTeleportPanelEnabled);
@@ -238,8 +239,8 @@ namespace BloodCraftEZLife.Config
             options.Add("Medium");
             options.Add("Large");
             AddSettingList(nameof(UiTextSize),"Text size", "Small",options);
-            
 
+            
             return this;
         }
 

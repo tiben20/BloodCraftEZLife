@@ -53,6 +53,8 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
         private Setting _setting;
         private bool _subCreated;
 
+        public event Action<Setting> OnActionInput;
+
         public override GameObject CreateContent(GameObject parent)
         {
             //creating the group horizontal group
@@ -267,16 +269,6 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             
             _setting.Name = label;
             
-        }
-
-        public int GetIndex()
-        {
-            return CurrentDataIndex;
-        }
-
-        public void SetIndex(int value)
-        {
-            CurrentDataIndex = value;
         }
 
         event System.Action<Setting> IConfigurableCell<Setting>.OnValueChanged

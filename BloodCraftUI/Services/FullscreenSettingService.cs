@@ -77,9 +77,6 @@ namespace BloodCraftEZLife.Services
         //Header clicked
         public static void RaiseHeaderButtonClicked(OptionsMenu __instance)
         {
-            //PanelLayout = __instance.GeneralPanel.ContentNode.rect;
-            //PrintRect("GeneralPanel", __instance.GeneralPanel.Rect);
-
             var panel = Plugin.UIManager.GetPanel<SettingsPanel>();
             if (panel != null)
             {
@@ -219,7 +216,7 @@ namespace BloodCraftEZLife.Services
                     {
                         //ProjectM.Health
                         float3 vbloodpos = entity.GetPosition();
-                        float3 pos2 = Plugin.LocalCharacter.GetPosition();
+                        float3 pos2 = Plugin.LocalCharacter.GetPosition(); 
                         float dist = math.distance(vbloodpos, pos2);
                         if (dist < 10.0f && entity.TryGetComponent < Health>(out var healthData) && entity.TryGetComponent<BuffBuffer>(out var buff))
                         {

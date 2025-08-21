@@ -9,6 +9,7 @@ using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 using MS.Internal.Xml.XPath;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,14 +39,14 @@ namespace BloodCraftEZLife.UI.ModContent
         }
         protected override void ConstructPanelContent()
         {
-
             _canvasGroup = UIRoot.AddComponent<CanvasGroup>();
-            _messageLabel = UIFactory.CreateLabel(UIRoot, "Popup Message","Message",fontSize:64,bold:true,color:new Color32(238,238,238,255), outlineColor: new Color32(226, 32, 32, 255), outlineWidth:0.15f);
+            _messageLabel = UIFactory.CreateLabel(UIRoot, "Popup Message","Message",fontSize:64,color:new Color32(226,32,32,255), outlineColor: new Color32(226, 32, 32, 85), outlineWidth:0.15f);
             
             Image BgImg = ContentRoot.GetComponent<UnityEngine.UI.Image>();
             Color bgColor = BgImg.color;
             bgColor.a = 0.0f;
             BgImg.color = bgColor;
+            _messageLabel.TextMesh.m_fontWeight = FontWeight.Bold;
             HideMessage();
             //TeleportListTeleportList = 600,417|35.666626,38.5|False
             // Hide
@@ -56,7 +57,15 @@ namespace BloodCraftEZLife.UI.ModContent
 
         public override void Update()
         {
-            
+            //visible lets fade in or out
+            if (_canvasGroup.alpha > 0f)
+            {
+                float alpha= alpha = Mathf.Lerp(1f, 0f,timer / 15);
+                Color originalColor = _messageLabel.TextMesh.color;
+
+                _messageLabel.TextMesh.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+
+            }
             timer += Time.deltaTime;
             if (timer >= 15)
             {
@@ -70,7 +79,7 @@ namespace BloodCraftEZLife.UI.ModContent
 
         public void HideMessage()
         {
-            // Show
+            // Hide
             _canvasGroup.alpha = 0f;
             _canvasGroup.interactable = false;
             _canvasGroup.blocksRaycasts = false;
@@ -81,10 +90,8 @@ namespace BloodCraftEZLife.UI.ModContent
         {
             timer = 0f;
             _messageLabel.TextMesh.text = message;
-            // Hide
+            // Show
             _canvasGroup.alpha = 1f;
-            //_canvasGroup.interactable = true;
-            //_canvasGroup.blocksRaycasts = true;
         }
 
         protected override void LateConstructUI()
@@ -92,9 +99,6 @@ namespace BloodCraftEZLife.UI.ModContent
             base.LateConstructUI();
             Rect.sizeDelta = new Vector2(640, 417);
             Rect.anchoredPosition = new Vector2(35, 38);
-            //put sizing here
-            //Rect.sizeDelta = FullscreenSettingService.DeltaRect;
-            //Rect.anchoredPosition = FullscreenSettingService.AnchorRect;
             EnsureValidSize();
             EnsureValidPosition();
         }

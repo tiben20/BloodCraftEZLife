@@ -28,7 +28,11 @@ namespace BloodCraftEZLife.UI.ModContent
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
         public override PanelType PanelType => PanelType.TeleportList;
         public override float Opacity => Settings.UITransparency;
-        
+
+        private ScrollPool<ButtonCell> _scrollPool;
+        private ButtonListHandler<TeleportsService.TeleportBoxData, ButtonCell> _scrollDataHandler;
+        private bool _isInitialized;
+
         public TeleportListPanel(UIBase owner) : base(owner)
         {
             SetTitle("Teleport List");
@@ -39,7 +43,7 @@ namespace BloodCraftEZLife.UI.ModContent
         protected override void LateConstructUI()
         {
             base.LateConstructUI();
-            RunUpdateCommand();
+            
         }
 
         protected override void OnClosePanelClicked()
@@ -71,32 +75,15 @@ namespace BloodCraftEZLife.UI.ModContent
             _scrollPool.Refresh(true);
         }
 
-        private void RunUpdateCommand()
-        {
-            
-        }
-
-        private void EnableAllButtons(bool value)
-        {
-            foreach (var a in _scrollPool.CellPool)
-                a.Button.Component.interactable = value;
-        }
-
         public override void SetActive(bool active)
         {
             var shouldUpdateData = _isInitialized && active && Enabled == false;
             _isInitialized = true;
             base.SetActive(active);
-            if (shouldUpdateData)
-                RunUpdateCommand();
         }
 
         #region ScrollPool handling
 
-        private ScrollPool<ButtonCell> _scrollPool;
-        private ButtonListHandler<TeleportsService.TeleportBoxData, ButtonCell> _scrollDataHandler;
-        
-        private bool _isInitialized;
         
 
         private void OnCellClicked(int dataIndex)

@@ -12,7 +12,5 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
         T GetValue();
         void SetLabel(string label);
         event Action<T> OnValueChanged;
-        int GetIndex();
-        void SetIndex(int value);
     }
 }

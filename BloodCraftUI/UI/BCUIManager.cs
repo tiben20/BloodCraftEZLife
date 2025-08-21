@@ -125,6 +125,21 @@ public class BCUIManager : UIManagerBase
 
                     break;
                 }
+            case PanelType.HotkeysPanel:
+                {
+                    var panel = GetPanel<HotkeysPanel>();
+                    if (panel == null)
+                    {
+                        var item = new HotkeysPanel(UiBase);
+                        UIPanels.Add(item);
+                    }
+                    else
+                    {
+                        panel.SetActive(true);
+                    }
+
+                    break;
+                }
             case PanelType.PullPanel:
                 {
                     var panel = GetPanel<PullItemsPanel>();

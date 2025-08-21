@@ -10,5 +10,6 @@ public enum PanelType
     BossPanel,
     BossTrackerPanel,
     PopupPanel,
+    HotkeysPanel,
     TestPanel
 }

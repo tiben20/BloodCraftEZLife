@@ -7,6 +7,7 @@ using BloodCraftEZLife.UI.CustomLib;
 using BloodCraftEZLife.UI.CustomLib.Cells;
 using BloodCraftEZLife.UI.CustomLib.Cells.Handlers;
 using BloodCraftEZLife.UI.CustomLib.Panel;
+using BloodCraftEZLife.UI.CustomLib.Util;
 using BloodCraftEZLife.UI.ModContent.Data;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;
@@ -15,6 +16,7 @@ using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 using BloodCraftEZLife.Utils;
 using ProjectM;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BloodCraftEZLife.UI.ModContent
 {
@@ -33,6 +35,8 @@ namespace BloodCraftEZLife.UI.ModContent
         public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.None;
         public override PanelType PanelType => PanelType.SettingsPanel;
 
+        public GameObject PanelSettingsContent { get; protected set; }
+
         private ScrollPool<ConfigboxCell> _scrollPool;
         private ConfigCellHandler<Setting, ConfigboxCell> _scrollDataHandler;
         private bool _isInitialized;
@@ -46,8 +50,13 @@ namespace BloodCraftEZLife.UI.ModContent
         protected override void LateConstructUI()
         {
             base.LateConstructUI();
+            float xfact = Owner.Scaler.referenceResolution.x / 1920;
+            float yfact = Owner.Scaler.referenceResolution.y / 1080;
             //put sizing here
-            Rect.sizeDelta = FullscreenSettingService.DeltaRect;
+
+            Vector2 newRect =new Vector2(FullscreenSettingService.DeltaRect.x*xfact, FullscreenSettingService.DeltaRect.y * yfact);
+            Rect.sizeDelta = newRect;
+
             Rect.anchoredPosition = FullscreenSettingService.AnchorRect;
             EnsureValidSize();
             EnsureValidPosition();
@@ -60,13 +69,35 @@ namespace BloodCraftEZLife.UI.ModContent
 
         protected override void ConstructPanelContent()
         {
+            PanelSettingsContent = UIFactory.CreateVerticalGroup(ContentRoot, "HotkeyVerticalLayout", false, true, true, true, 2,
+                new Vector4(2, 2, 2, 2), Theme.PanelBackground);
+            UIFactory.SetLayoutElement(PanelSettingsContent, minHeight: 25, flexibleHeight: 0);
+
             _scrollDataHandler = new ConfigCellHandler<Setting, ConfigboxCell>(_scrollPool, Settings.GetSettingsEntries, SetCell, ShouldDisplay, OnCellChanged);
-            _scrollPool = UIFactory.CreateScrollPool<ConfigboxCell>(ContentRoot, "ContentList", out GameObject scrollObj,
+            _scrollPool = UIFactory.CreateScrollPool<ConfigboxCell>(PanelSettingsContent, "ContentList", out GameObject scrollObj,
                 out _, new Color32(10,10,10,255));
             _scrollPool.Initialize(_scrollDataHandler);
             UIFactory.SetLayoutElement(scrollObj, flexibleHeight: 9999);
+            var btnHotkey = UIFactory.CreateButton(PanelSettingsContent, "btnHotkey", "Hotkeys", new ColorBlock
+            {
+                normalColor = new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency),
+                disabledColor = new Color(0.3f, 0.3f, 0.3f).GetTransparent(Settings.UITransparency),
+                highlightedColor = new Color(0.16f, 0.16f, 0.16f).GetTransparent(Settings.UITransparency),
+                pressedColor = new Color(0.05f, 0.05f, 0.05f).GetTransparent(Settings.UITransparency)
+            });
+            UIFactory.SetLayoutElement(btnHotkey.Component.gameObject, flexibleWidth: 9999, minHeight: 25, flexibleHeight: 0);
 
+            btnHotkey.OnClick += () =>
+            {
+                var panel = Plugin.UIManager.GetPanel<HotkeysPanel>();
+                if (panel != null)
+                {
+                    panel.SetActive(true);
+                    return;
 
+                }
+                Plugin.UIManager.AddPanel(PanelType.HotkeysPanel);
+            };
 
             RefreshData();
         }
@@ -111,11 +142,7 @@ namespace BloodCraftEZLife.UI.ModContent
                 return;
             }
             cell.InitialiseSetting(Settings._settingList[index]);
-            
             cell.SetValue(Settings._settingList[index]);
-
-
-
         }
 
         #endregion

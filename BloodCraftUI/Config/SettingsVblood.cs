@@ -1,14 +1,25 @@
-﻿using BloodCraftEZLife.UI.ModContent;
+﻿using BloodCraftEZLife.Services;
+using BloodCraftEZLife.UI.CustomLib.Util;
+using BloodCraftEZLife.UI.ModContent;
+using Epic.OnlineServices;
 using ProjectM;
 using System.Collections.Generic;
 using System.IO;
 
 using System.Text.Json;
+using System.Xml;
 using UnityEngine;
 namespace BloodCraftEZLife.Config
 {
 
-    
+    public class SettingsHotkeys
+    {
+        public Dictionary<KeyCode, string> HotKeys { get; set; }
+        public SettingsHotkeys()
+        {
+            HotKeys = new Dictionary<KeyCode, string> { };
+        }
+    }
     public class SettingsVblood
     {
         float thetime;
@@ -22,6 +33,7 @@ namespace BloodCraftEZLife.Config
         // Must be a field, not a property
         //public List<string> items = new List<string>();
         public Dictionary<string, int> VBloodKills { get; set; }
+        
 
         public void AddVbloodKill(string name)
         {
@@ -62,6 +74,33 @@ namespace BloodCraftEZLife.Config
             var options = new JsonSerializerOptions { WriteIndented = true };
             string jsonoutput = JsonSerializer.Serialize(data, options);
             File.WriteAllText(SavePath, jsonoutput);
+
+        }
+
+        public static void Save(Dictionary<KeyCode, string> keys)
+        {
+            SettingsHotkeys data = new SettingsHotkeys();
+            data.HotKeys = keys;
+            
+            string thepath = System.IO.Path.Combine(Settings.CONFIG_PATH, "hotkeys") + ".json";
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string jsonoutput = JsonSerializer.Serialize(data, options);
+            File.WriteAllText(thepath, jsonoutput);
+
+        }
+
+        public static SettingsHotkeys LoadHotkeys()
+        {
+            string thepath = System.IO.Path.Combine(Settings.CONFIG_PATH, "hotkeys") + ".json";
+            if (File.Exists(thepath))
+            {
+                string json = File.ReadAllText(thepath);
+                return JsonSerializer.Deserialize<SettingsHotkeys>(json);
+            }
+            else
+            {
+                return new SettingsHotkeys(); // empty if none
+            }
 
         }
 

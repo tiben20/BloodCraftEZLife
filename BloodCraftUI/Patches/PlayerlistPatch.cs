@@ -78,6 +78,21 @@ internal static class PlayerListPatch
         
         LogUtils.LogInfo($"OnStartRunning");
     }
+    [HarmonyPatch(typeof(MainMenuNewView), nameof(MainMenuNewView.Awake))]
+    [HarmonyPostfix]
+    private static void _FullscreenMenuOnUpdate(MainMenuNewView __instance)
+    {
+        var panel = Plugin.UIManager.GetPanel<SettingsPanel>();
+        if (panel != null)
+        {
+            panel.SetActive(false);
+        }
+        var panel2 = Plugin.UIManager.GetPanel<HotkeysPanel>();
+        if (panel2 != null)
+        {
+            panel2.SetActive(false);
+        }
+    }
 
     [HarmonyPatch(typeof(FullscreenMenuMapper), nameof(FullscreenMenuMapper.OnStopRunning))]
     [HarmonyPostfix]
@@ -111,11 +126,33 @@ internal static class PlayerListPatch
         RectTransform tt = t.GetComponent<RectTransform>();
         FullscreenSettingService.DeltaRect = new Vector2(tt.rect.width, tt.rect.height);
         FullscreenSettingService.AnchorRect = new Vector2(tt.anchoredPosition.x, tt.anchoredPosition.y);
+        if (false)
+        { 
+            while (t != null)
+            {
+                RectTransform rect = t.GetComponent<RectTransform>();
+                if (rect != null)
+                {
+                    LogUtils.LogInfo(
+                        $"Object: {t.name} | " +
+                        $"AnchoredPos: {rect.anchoredPosition} | " +
+                        $"Rect: {rect.rect}"
+                    );
+                }
+                else
+                {
+                    LogUtils.LogInfo($"Object: {t.name} (no RectTransform)");
+                }
+
+                t = t.parent; // climb one level
+            }
+        }
         if (!Plugin.UIManager.IsInitialized)
         { 
             LogUtils.LogInfo("Creating UI...");
             Plugin.UIOnInitialize();
         }
+
         SimpleStunButton simpleButton = __instance.SoundTabButton;
 
         //Check if button exist if it exist quit

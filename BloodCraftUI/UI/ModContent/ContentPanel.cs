@@ -101,7 +101,7 @@ namespace BloodCraftEZLife.UI.ModContent
             }
 
 
-            _anchorLabel = UIFactory.CreateLabel(_uiAnchor, "UIAnchorText", $"BMOON {PluginInfo.PLUGIN_VERSION}");
+            _anchorLabel = UIFactory.CreateLabel(_uiAnchor, "UIAnchorText", $"EZLife {PluginInfo.PLUGIN_VERSION}");
             UIFactory.SetLayoutElement(_anchorLabel.GameObject, 80, 25, 1, 1);
             _objectsList.Add(_anchorLabel.GameObject);
             _anchorLabel.GameObject.SetActive(Settings.IsHeaderVisible);
@@ -183,13 +183,16 @@ namespace BloodCraftEZLife.UI.ModContent
                 timer = 0f;
                 TimerTick();
             }
-
+            //send an update on the hotkeys
+            HotkeyService.Update();
             base.Update();
             // Call update on the panels that need it
         }
 
         private void TimerTick()
         {
+            if (!Plugin.IsGameDataInitialized)
+                return;
             FullscreenSettingService.CheckVblood();
             if (_teleportRequest.Count == 0)
                 return;

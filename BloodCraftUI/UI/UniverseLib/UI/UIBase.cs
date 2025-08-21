@@ -56,7 +56,7 @@ public class UIBase
         Scaler = RootObject.AddComponent<CanvasScaler>();
         //var scaler = GameObject.Find("MainMenuCanvas(Clone)").GetComponentInChildren<CanvasScaler>();
         var resolution = new Vector2(Screen.width, Screen.height);
-        LogUtils.LogInfo($"Scaler ref: {resolution.x}x{resolution.y}");
+        LogUtils.LogInfo($"Scaler ref: {resolution.x}x{resolution.y} id:{id}");
         Scaler.referenceResolution = resolution;
         Scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         Scaler.screenMatchMode = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
