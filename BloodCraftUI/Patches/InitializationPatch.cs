@@ -72,5 +72,14 @@ namespace BloodCraftEZLife.Patches
                 entities.Dispose();
             }
         }
+
+        [HarmonyPatch(typeof(ClientBootstrapSystem), nameof(ClientBootstrapSystem.OnDestroy))]
+        [HarmonyPrefix]
+        static void OnUpdatePrefix(ClientBootstrapSystem __instance)
+        {
+            Plugin.UIManager.Reset();
+            MessageService.Destroy();
+            Plugin.Reset();
+        }
     }
 }

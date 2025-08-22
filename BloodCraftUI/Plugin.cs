@@ -56,7 +56,6 @@ namespace BloodCraftEZLife
         private static Harmony _harmonyInitPatch;
         
         internal static Harmony HarmonyVersionStringPatch;
-        private static FrameTimer _uiInitializedTimer;
 
         public override void Load()
         {
@@ -93,6 +92,7 @@ namespace BloodCraftEZLife
         
         public override bool Unload()
         {
+
             HarmonyVersionStringPatch.UnpatchSelf();
             _harmonyChatPatch.UnpatchSelf();
             _harmonyPlayerlistPatch.UnpatchSelf();
@@ -112,15 +112,6 @@ namespace BloodCraftEZLife
                 ClientScriptMapper var = _client.GetExistingSystemManaged<ClientScriptMapper>();
                 ClientGameManager var2 = var._ClientGameManager;
                 IsGameDataInitialized = true;
-                // We only want to run this once, so unpatch the hook that initiates this callback.
-                _uiInitializedTimer = new FrameTimer();
-
-                _uiInitializedTimer.Initialise(() =>
-                    {
-                        _uiInitializedTimer.Stop();
-                    },
-                    TimeSpan.FromSeconds(5),
-                    true).Start();
             }
         }
 
@@ -136,6 +127,6 @@ namespace BloodCraftEZLife
     {
         public const string PLUGIN_GUID = "BloodCraftEZLife.PluginsUI";
         public const string PLUGIN_NAME = "BloodCraftEZLife";
-        public const string PLUGIN_VERSION = "1.0";
+        public const string PLUGIN_VERSION = "1.03";
     }
 }
