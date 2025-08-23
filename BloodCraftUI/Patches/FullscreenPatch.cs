@@ -24,11 +24,12 @@ using static ProjectM.VBloodSystem;
 using ProjectM.Gameplay.Systems;
 using BloodCraftEZLife.UI;
 using Stunlock.Core;
+using UnityEngine.Events;
 
 namespace BloodCraftEZLife.Patches;
 
 [HarmonyPatch]
-internal static class PlayerListPatch
+internal static class FullscreenPatch
 {
 
 
@@ -61,6 +62,7 @@ internal static class PlayerListPatch
         TeleportsService._InMenu = true;
         TeleportsService.ClearList();
         ContentPanel panel;
+        //hidding our main panel when in mainmenu
         panel = (ContentPanel)Plugin.UIManager._contentPanel;
         if (panel != null)
         {
@@ -73,15 +75,12 @@ internal static class PlayerListPatch
             group.interactable = false;
             group.blocksRaycasts = false;
         }
-        
-        
-        
-        LogUtils.LogInfo($"OnStartRunning");
     }
     [HarmonyPatch(typeof(MainMenuNewView), nameof(MainMenuNewView.Awake))]
     [HarmonyPostfix]
     private static void _FullscreenMenuOnUpdate(MainMenuNewView __instance)
     {
+        //hidding our config panels when pressed escape while in the settings pannel
         var panel = Plugin.UIManager.GetPanel<SettingsPanel>();
         if (panel != null)
         {
@@ -98,6 +97,7 @@ internal static class PlayerListPatch
     [HarmonyPostfix]
     private static void _FullscreenMenuOnStopRunning(FullscreenMenu __instance)
     {
+        
         TeleportsService._InMenu = false;
         ContentPanel panel;
         panel = (ContentPanel)Plugin.UIManager._contentPanel;
@@ -112,10 +112,7 @@ internal static class PlayerListPatch
             group.interactable = true;
             group.blocksRaycasts = true;
         }
-        HideSettingsPanel();
-        LogUtils.LogInfo($"OnStopRunning");
-
-      
+        HideSettingsPanel(null);
     }
 
     [HarmonyPatch(typeof(OptionsMenu), nameof(OptionsMenu.SwitchView))]
@@ -126,29 +123,10 @@ internal static class PlayerListPatch
         RectTransform tt = t.GetComponent<RectTransform>();
         FullscreenSettingService.DeltaRect = new Vector2(tt.rect.width, tt.rect.height);
         FullscreenSettingService.AnchorRect = new Vector2(tt.anchoredPosition.x, tt.anchoredPosition.y);
-        if (false)
-        { 
-            while (t != null)
-            {
-                RectTransform rect = t.GetComponent<RectTransform>();
-                if (rect != null)
-                {
-                    LogUtils.LogInfo(
-                        $"Object: {t.name} | " +
-                        $"AnchoredPos: {rect.anchoredPosition} | " +
-                        $"Rect: {rect.rect}"
-                    );
-                }
-                else
-                {
-                    LogUtils.LogInfo($"Object: {t.name} (no RectTransform)");
-                }
 
-                t = t.parent; // climb one level
-            }
-        }
         if (!Plugin.UIManager.IsInitialized)
-        { 
+        {
+            //start the manager since we got to the settings before entering a server
             LogUtils.LogInfo("Creating UI...");
             Plugin.UIOnInitialize();
         }
@@ -156,6 +134,7 @@ internal static class PlayerListPatch
         SimpleStunButton simpleButton = __instance.SoundTabButton;
 
         //Check if button exist if it exist quit
+        //if not clone and add our own
         Transform btnSearch = simpleButton.transform.parent.Find("EZLifeButton");
         if (btnSearch == null)
         {
@@ -169,22 +148,42 @@ internal static class PlayerListPatch
                 label.text = "EZLife";
             newSettingsButton.m_OnClick.RemoveAllListeners();
 
-            __instance.GeneralTabButton.m_OnClick.AddListener(() => HideSettingsPanel());
-            __instance.ControlsTabButton.m_OnClick.AddListener(() => HideSettingsPanel());
-            __instance.GraphicsTabButton.m_OnClick.AddListener(() => HideSettingsPanel());
-            __instance.SoundTabButton.m_OnClick.AddListener(() => HideSettingsPanel());
+            __instance.GeneralTabButton.m_OnClick.AddListener((UnityAction)(() => HideSettingsPanel(newSettingsButton)));
 
+            __instance.ControlsTabButton.m_OnClick.AddListener((UnityAction)(() => HideSettingsPanel(newSettingsButton)));
+            __instance.GraphicsTabButton.m_OnClick.AddListener((UnityAction)(() => HideSettingsPanel(newSettingsButton)));
+            __instance.SoundTabButton.m_OnClick.AddListener((UnityAction)(() => HideSettingsPanel(newSettingsButton)));
+            SimpleStunButton smp = __instance.GeneralTabButton;
             newSettingsButton.m_OnClick.AddListener(() =>
             {
+                smp.ForceHighlight = false;
+                newSettingsButton.ForceHighlight = true;
                 FullscreenSettingService.RaiseHeaderButtonClicked(__instance);
             });
+            
+            //get the button templates
+            //FullscreenSettingService.ClonePanelAndGetTemplates(__instance.GeneralPanel);
+            FullscreenSettingService.ClonePanelAndGetTemplates(__instance.ControlsPanel);
+            
         }
         
 
     }
 
-    private static void HideSettingsPanel()
+    [HarmonyPatch(typeof(ProjectM.UI.RebindingMenu), nameof(ProjectM.UI.RebindingMenu.Awake))]
+    [HarmonyPostfix]
+    private static void RebindingMenuAwake(RebindingMenu __instance)
     {
+        LogUtils.LogError("Starting here");
+        UnityHelper.PrintParents(__instance.transform);
+        FullscreenSettingService._templates.Binding = __instance.ControlsInputEntryPrefab;
+        
+
+    }
+    private static void HideSettingsPanel(SimpleStunButton btn)
+    {
+        if (btn != null)
+            btn.ForceHighlight = false;
         var panel = Plugin.UIManager.GetPanel<SettingsPanel>();
         if (panel != null)
         {

@@ -6,6 +6,32 @@ namespace BloodCraftEZLife.Utils;
 
 public static class UnityHelper
 {
+
+
+    public static void ListAllComponentsWithChildren(GameObject root)
+    {
+        // Get all components in this object and children (true = include inactive)
+        Component[] allComponents = root.GetComponentsInChildren<Component>(true);
+
+        foreach (Component comp in allComponents)
+        {
+            if (comp == null) continue; // skip missing scripts
+            LogUtils.LogInfo($"[{comp.GetType().Name} on {comp.gameObject.name}]");
+        }
+    }
+
+    public static void ListAllComponents(GameObject root)
+    {
+        // Get all components in this object and children (true = include inactive)
+        Component[] allComponents = root.GetComponents<Component>();
+
+        foreach (Component comp in allComponents)
+        {
+            if (comp == null) continue; // skip missing scripts
+            Debug.Log($"[{comp.GetType().Name} on {comp.gameObject.name}]");
+        }
+    }
+
     public static GameObject FindInHierarchy(string path)
     {
         if (string.IsNullOrEmpty(path))
@@ -64,4 +90,48 @@ public static class UnityHelper
                 $"Property {i}: {name} - {desc} - {(attr != null ? string.Join(',', attr.Select(a => a)) : null)} - {flags} - {type} - {def} - {range.x}:{range.y}");
         }
     }
+
+    /// <summary>
+    /// Prints the hierarchy of parents up to the root.
+    /// </summary>
+    public static void PrintParents(Transform t)
+    {
+        int depth = 0;
+        Transform current = t;
+
+        while (current != null)
+        {
+            string prefix = new string('-', depth);
+            Debug.Log(prefix + current.gameObject.name);
+
+            current = current.parent;
+            depth++;
+        }
+    }
+    static public void PrintChilds(Transform t, int depth, bool withcomponent = false)
+    {
+        // Prefix with dashes based on depth
+        string prefix = new string('-', depth);
+
+        // Print GameObject name
+        Debug.Log(prefix + t.gameObject.name+ GetLabelValue(t.gameObject));
+        if (withcomponent)
+            ListAllComponentsWithChildren(t.gameObject);
+
+        for (int i = 0; i < t.childCount; i++)
+        {
+            Transform child = t.GetChild(i);
+            PrintChilds(child, depth + 1);
+        }
+
+
+    }
+    public static string GetLabelValue(GameObject obj)
+    {
+        var label = obj.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+        if (label != null)
+            return " Text: "+label.text;
+        return "";
+    }
+
 }

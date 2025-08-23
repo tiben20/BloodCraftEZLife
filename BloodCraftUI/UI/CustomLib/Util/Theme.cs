@@ -67,7 +67,7 @@ public static class Theme
 
     private static void UpdateColors()
     {
-        PanelBackground = new Color(0.07f, 0.07f, 0.07f, Opacity);
+        PanelBackground = new Color32(0,1,3,255);
         DarkBackground = new Color(0.07f, 0.07f, 0.07f, Opacity);
         SliderFill = new Color(0.3f, 0.3f, 0.3f, Opacity);
         SliderHandle = new Color(0.5f, 0.5f, 0.5f, Opacity);

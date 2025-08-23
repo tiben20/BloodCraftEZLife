@@ -75,7 +75,7 @@ namespace BloodCraftEZLife.UI.ModContent
 
             _scrollDataHandler = new ConfigCellHandler<Setting, ConfigboxCell>(_scrollPool, Settings.GetSettingsEntries, SetCell, ShouldDisplay, OnCellChanged);
             _scrollPool = UIFactory.CreateScrollPool<ConfigboxCell>(PanelSettingsContent, "ContentList", out GameObject scrollObj,
-                out _, new Color32(10,10,10,255));
+                out _, new Color32(0,1,3,255));
             _scrollPool.Initialize(_scrollDataHandler);
             UIFactory.SetLayoutElement(scrollObj, flexibleHeight: 9999);
             var btnHotkey = UIFactory.CreateButton(PanelSettingsContent, "btnHotkey", "Hotkeys", new ColorBlock
@@ -142,7 +142,6 @@ namespace BloodCraftEZLife.UI.ModContent
                 return;
             }
             cell.InitialiseSetting(Settings._settingList[index]);
-            cell.SetValue(Settings._settingList[index]);
         }
 
         #endregion

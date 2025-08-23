@@ -21,11 +21,13 @@ namespace BloodCraftEZLife.Services
         /// </summary>
         public class OptionTemplates
         {
-            public GameObject ComboBox;
-            public GameObject Slider;
-            public GameObject Toggle;
-            public GameObject Header;
-            public GameObject OptionsSlider;
+            public SettingsEntry_Dropdown ComboBox;
+            public SettingsEntry_Slider Slider;
+            public SettingsEntry_Checkbox Toggle;
+            public SettingsEntry_Label Header;
+            public SettingsEntry_Button Button;
+            public SettingsEntry_Selector Selector;
+            public SettingsEntry_Binding Binding;
         }
 
         public static OptionTemplates _templates;
@@ -94,78 +96,21 @@ namespace BloodCraftEZLife.Services
         /// </summary>
         /// <param name="originalPanel">Original panel (ScrollView) to copy.</param>
         /// <returns>A tuple with the cloned panel and its option templates.</returns>
-        public static void ClonePanelAndGetTemplates(GameObject originalPanel)
+        public static void ClonePanelAndGetTemplates(OptionsPanel_Controls originalPanel)
         {
-            PrintHierarchy(originalPanel.transform,1);
-
-            _templates = new OptionTemplates();
-            if (originalPanel == null)
-            {
-                Debug.LogError("Original panel is null!");
-                return;
-            }
-
-            // Instantiate a copy of the scrollview
-            _newPanel = Object.Instantiate(originalPanel, originalPanel.transform.parent);
-            _newPanel.name = originalPanel.name + "_Clone";
-
+            UnityHelper.PrintChilds(originalPanel.transform,1);
             
+            _templates = new OptionTemplates();
+            
+            _templates.Header = originalPanel.HeaderPrefab;
 
-            ScrollRect scrollRect = _newPanel.GetComponentInChildren<ScrollRect>();
-            if (scrollRect == null)
-            {
-                Debug.LogError("Clone does not have a ScrollRect component!");
-                return;
-            }
+            _templates.ComboBox = originalPanel.DropdownPrefab;// transform.FindChild("CustomGameSettings_Dropdown(Clone)").gameObject;
+            
+            _templates.Toggle = originalPanel.CheckboxPrefab;
+            _templates.Slider = originalPanel.SliderPrefab;
+            _templates.Selector = originalPanel.SelectorPrefab;
 
-            Transform content = scrollRect.content;
-            if (content == null)
-            {
-                Debug.LogError("ScrollRect content is missing!");
-                return;
-            }
-
-            OptionTemplates templates = new OptionTemplates();
-            Transform theader = content.transform.FindChild("CustomGameSettings_Label(Clone)");
-            if (theader != null)
-            {
-                templates.Header = theader.gameObject;
-                templates.Header.name = "CustomGameSettings_Header_EZLife";
-            }
-
-            Transform tdropdown = content.transform.FindChild("CustomGameSettings_Dropdown(Clone)");
-            if (tdropdown != null)
-            {
-                templates.ComboBox = tdropdown.gameObject;
-                templates.ComboBox.name = "CustomGameSettings_ComboBox_EZLife";
-            }
-
-            Transform tcheckbox = content.transform.FindChild("CustomGameSettings_Checkbox(Clone)");
-            if (tcheckbox != null)
-            {
-                templates.Toggle = tcheckbox.gameObject;
-                templates.Toggle.name = "CustomGameSettings_Toggle_EZLife";
-            }
-
-            Transform tslider = content.transform.FindChild("CustomGameSettings_Slider(Clone)");
-            if (theader != null)
-            {
-                templates.Slider = theader.gameObject;
-                templates.Slider.name = "CustomGameSettings_Slider_EZLife";
-                
-            }
-
-            Transform toptslider = content.transform.FindChild("Options_Control_Slider");
-            if (toptslider != null)
-            {
-                templates.OptionsSlider = toptslider.gameObject;
-                templates.OptionsSlider.name = "Options_Control_Slider_EZLife";
-            }
-
-            DestroyLoop(content.gameObject,"CustomGameSettings_Label(Clone)");
-            DestroyLoop(content.gameObject, "CustomGameSettings_Checkbox(Clone)");
-            DestroyLoop(content.gameObject, "CustomGameSettings_Slider(Clone)");
-            DestroyLoop(content.gameObject, "CustomGameSettings_Dropdown(Clone)");
+            //Transform toptslider = originalPanel.transform.FindChild("Options_Control_Slider").gameObject;
         }
 
         static public void DestroyLoop(GameObject go, string objname)
@@ -185,21 +130,8 @@ namespace BloodCraftEZLife.Services
             }
         }
 
-        static public void PrintHierarchy(Transform t, int depth)
-        {
-            // Prefix with dashes based on depth
-            string prefix = new string('-', depth);
 
-            // Print GameObject name
-            Debug.Log(prefix + t.gameObject.name);
-
-            
-            for (int i = 0; i < t.childCount; i++)
-            {
-                Transform child = t.GetChild(i);
-                PrintHierarchy(child, depth + 1);
-            }
-        }
+        
 
         
 

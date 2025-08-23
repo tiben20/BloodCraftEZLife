@@ -83,7 +83,7 @@ namespace BloodCraftEZLife
             HarmonyVersionStringPatch = Harmony.CreateAndPatchAll(typeof(VersionStringPatch));
             _harmonyChatPatch = Harmony.CreateAndPatchAll(typeof(ClientChatPatch));
             
-            _harmonyPlayerlistPatch = Harmony.CreateAndPatchAll(typeof(PlayerListPatch));
+            _harmonyPlayerlistPatch = Harmony.CreateAndPatchAll(typeof(FullscreenPatch));
             _harmonyInitPatch = Harmony.CreateAndPatchAll(typeof(InitializationPatch));
             HotkeyService.Initialise();
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} version {PluginInfo.PLUGIN_VERSION} is loaded!");
@@ -112,9 +112,9 @@ namespace BloodCraftEZLife
                 ClientScriptMapper var = _client.GetExistingSystemManaged<ClientScriptMapper>();
                 ClientGameManager var2 = var._ClientGameManager;
                 IsGameDataInitialized = true;
+                
             }
         }
-
         public static void UIOnInitialize()
         {
             UIManager.SetupAndShowUI();
