@@ -31,12 +31,13 @@ namespace BloodCraftEZLife.Services
         }
 
         public static OptionTemplates _templates;
-        public static GameObject _newPanel;
+        
 
-        public static event System.Action OnHeaderButtonClicked;
+        
         public static Vector2 DeltaRect;
         public static Vector2 AnchorRect;
-        public static Rect PanelLayout;
+        public static Vector2 ResFactor;
+        
 
         public static SettingsVblood VbloodList;
         internal static EntityQuery VBloodCarriers;
@@ -98,7 +99,7 @@ namespace BloodCraftEZLife.Services
         /// <returns>A tuple with the cloned panel and its option templates.</returns>
         public static void ClonePanelAndGetTemplates(OptionsPanel_Controls originalPanel)
         {
-            UnityHelper.PrintChilds(originalPanel.transform,1);
+            //UnityHelper.PrintChilds(originalPanel.transform,1);
             
             _templates = new OptionTemplates();
             
@@ -109,7 +110,7 @@ namespace BloodCraftEZLife.Services
             _templates.Toggle = originalPanel.CheckboxPrefab;
             _templates.Slider = originalPanel.SliderPrefab;
             _templates.Selector = originalPanel.SelectorPrefab;
-
+            _templates.Button = originalPanel.ButtonPrefab;
             //Transform toptslider = originalPanel.transform.FindChild("Options_Control_Slider").gameObject;
         }
 

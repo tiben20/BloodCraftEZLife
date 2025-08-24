@@ -1,87 +1,137 @@
 ﻿using System;
+using System.ComponentModel;
 using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Services;
+using BloodCraftEZLife.UI.CustomLib.Util;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.Utils;
+using ProjectM.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
+using static UnityEngine.UI.GridLayoutGroup;
 
 namespace BloodCraftEZLife.UI.CustomLib.Cells
 {
-    public class HotkeyCell : CellBase, IConfigurableCell<Hotkey>
+    public class HotkeyCell : CellHotkeyBase, IConfigurableCell<Hotkey>
     {
         private InputFieldRef _inputField;
-        public ButtonRef Button { get; set; }
-        public string Label
-        {
-            get => _inputField.Text;
-            set => _inputField.Text = value;
-        }
+        
+        private GameObject ConfigboxContainer;
 
         public override float DefaultHeight => 25f;
         private Hotkey _hotkey;
-        public Action OnClick { get; set; }
+        
+        public Action<Hotkey> OnInputBox { get; set; }
+
+        event Action<Hotkey> IConfigurableCell<Hotkey>.OnInputBox
+        {
+            add => OnInputBox += value;
+            remove => OnInputBox -= value;
+        }
+
+        public Action<Hotkey> OnValueChanged { get; set; }
+
+        event Action<Hotkey> IConfigurableCell<Hotkey>.OnValueChanged
+        {
+            add => OnValueChanged += value;
+            remove => OnValueChanged -= value;
+        }
+        private SimpleStunButton SecondButton;
+        private SettingsEntry_Button ButtonClone;
 
         public override GameObject CreateContent(GameObject parent)
         {
             //creating the group horizontal group
-            UIRoot = UIFactory.CreateHorizontalGroup(parent, "HotkeyRow", false, false, true, true, spacing: 10, bgColor: new Color32(18, 18, 18, 255));
-            UIFactory.SetLayoutElement(UIRoot, minHeight: 40, flexibleWidth: 9999);
+            ConfigboxContainer = UIFactory.CreateHorizontalGroup(UIRoot, "TextScalingRow", true, true, true, true, bgColor: Theme.PanelBackground);
+            UIFactory.SetLayoutElement(ConfigboxContainer, minHeight: 40, flexibleWidth: 9999);
 
 
-            Rect = UIRoot.GetComponent<RectTransform>();
+            Rect = ConfigboxContainer.GetComponent<RectTransform>();
             Rect.anchorMin = new Vector2(0, 1);
             Rect.anchorMax = new Vector2(0, 1);
             Rect.pivot = new Vector2(0.5f, 1);
             Rect.sizeDelta = new Vector2(25, 25);
+            GameObject lblHeader = UnityEngine.Object.Instantiate(FullscreenSettingService._templates.Button.gameObject, ConfigboxContainer.transform);
+            GameObject btn2 = UnityEngine.Object.Instantiate(FullscreenSettingService._templates.Button.Button.gameObject, lblHeader.transform);
+            ButtonClone = lblHeader.GetComponent<SettingsEntry_Button>();
+            //hide reset button
+            UnityHelper.HideObject(ButtonClone.ResetButton.gameObject);
 
+            SecondButton = btn2.GetComponent<SimpleStunButton>();
+            RectTransform primaryRect = ButtonClone.Button.GetComponent<RectTransform>();
+            RectTransform secondaryRect = SecondButton.GetComponent<RectTransform>();
+            float xfact = FullscreenSettingService.ResFactor.x;
 
-            _inputField = UIFactory.CreateInputField(UIRoot, "InputField", "..");// medium-light gray
-            //var rowBtn = _inputField.GameObject.AddComponent<Button>();
-            /*var colors = rowBtn.colors;
-            colors.normalColor = new Color(0, 0, 0, 0);
-            colors.highlightedColor = new Color(0.1f, 0.1f, 0.1f, 0.5f); // hover highlight*/
+            float offset = (FullscreenSettingService.DeltaRect.x * FullscreenSettingService.ResFactor.x * 0.7f) - 20f;
 
-            UIFactory.SetLayoutElement(_inputField.GameObject, minHeight: 40, minWidth: 120, flexibleWidth: 9999);
-            _inputField.OnValueChanged += OnInputChanged;
-            _inputField.Component.onSubmit.AddListener(OnInputSubmit);
-            _inputField.Component.onSelect.AddListener(OnInputSelect);
-            UIRoot.SetActive(false);
-
-            Button = UIFactory.CreateButton(UIRoot, "NameButton", "Name", new ColorBlock
-            {
-                normalColor = new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency),
-                disabledColor = new Color(0.3f, 0.3f, 0.3f).GetTransparent(Settings.UITransparency),
-                highlightedColor = new Color(0.16f, 0.16f, 0.16f).GetTransparent(Settings.UITransparency),
-                pressedColor = new Color(0.05f, 0.05f, 0.05f).GetTransparent(Settings.UITransparency)
-            });
-            UIFactory.SetLayoutElement(Button.Component.gameObject, flexibleWidth: 9999, minHeight: 25, flexibleHeight: 0);
-            var buttonText = Button.Component.GetComponentInChildren<TextMeshProUGUI>();
-            buttonText.overflowMode = TextOverflowModes.Overflow;
-            buttonText.alignment = TextAlignmentOptions.MidlineLeft;
-            buttonText.margin = new Vector4(5, 0, 0, 0);
-
-            Button.OnClick += () => { OnValueChanged?.Invoke(_hotkey); };
+            primaryRect.localPosition = primaryRect.localPosition - new Vector3(offset, 0, 0);
+            secondaryRect.sizeDelta = new Vector2(secondaryRect.localPosition.x - primaryRect.localPosition.x - 20f, secondaryRect.sizeDelta.y);
+            SettingsEntryBase lbl = lblHeader.GetComponent<SettingsEntryBase>();
+            ButtonClone.HeaderText.Text.text = "";
+            ButtonClone.SecondaryText.Text.text = "";
             
-            //rowBtn.onClick.AddListener(new Action(() => { OnActionInput?.Invoke(_hotkey); }));
+            GameObject inputGO = new GameObject("HiddenInputField");
 
-            /*Button.OnClick += () => 
+            TMP_InputField inputField = inputGO.AddComponent<TMP_InputField>();
+            Navigation nav = inputField.navigation;
+            nav.mode = Navigation.Mode.None;
+            inputField.navigation = nav;
+
+            // Add a Text component for the InputField to work, but keep it hidden
+            TextMeshProUGUI inputText = inputGO.AddComponent<TextMeshProUGUI>();
+
+            inputText.enabled = true; // completely invisible
+            inputField.textComponent = inputText;
+
+            inputField.characterLimit = 100; // or whatever limit
+            inputField.interactable = true;
+            inputField.selectionColor = Color.red;
+            SecondButton.onClick.AddListener(() =>
             {
-                HotkeyService.WaitingForInput = true;
-                buttonText.text = "Press a key";
-            };*/
-            return UIRoot;
+                OnInputBox?.Invoke(_hotkey);
+                //inputField.text = SecondButton.GetText();
+                //inputField.ActivateInputField();
+                //inputField.m_CaretPosition = inputField.text.Length;
+                //inputField.m_CaretSelectPosition = inputField.text.Length;
+            });
+      
+
+            // Hook up InputField end edit to update Button Text
+            inputField.onEndEdit.AddListener((string s) =>
+            {
+               
+                SecondButton.SetText(s);
+                OnInputSubmit(s);
+
+            });
+
+            //This is the key field listenener
+            ButtonClone.Button.onClick.AddListener(() =>
+            {
+                ButtonClone.Button.SetText("Press key");
+                
+                HotkeyService.ChangingOldKey = _hotkey.key;
+                OnValueChanged?.Invoke(_hotkey);
+
+            });
+            return ConfigboxContainer;
+
         }
 
         public void SetValue(Hotkey value) 
         {
             _hotkey = value;
-            Label = value.action;
-            Button.ButtonText.text = value.key.ToString();
-            
+            ButtonClone.Button.SetText(value.key.ToString());
+            SecondButton.SetText(value.action);
+            if (value.action == "Press key")
+            {
+                ButtonClone.Button.SetText("Press key");
+            }
+
+            ConfigboxContainer?.SetActive(true);
         }
         
 
@@ -90,10 +140,6 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             return _hotkey;
         }
 
-        public void SetLabel(string label)
-        {
-            throw new NotImplementedException();
-        }
 
         private void OnInputSubmit(string val)
         {
@@ -113,13 +159,12 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             _hotkey.action = val;
         }
 
-        public Action<Hotkey> OnValueChanged { get; set; }
-
-        event Action<Hotkey> IConfigurableCell<Hotkey>.OnValueChanged
+        public override void Disable()
         {
-            add => OnValueChanged += value;
-            remove => OnValueChanged -= value;
+            ConfigboxContainer?.SetActive(false);
         }
+
+        
     }
 
 }

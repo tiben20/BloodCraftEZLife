@@ -15,6 +15,7 @@ using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 using BloodCraftEZLife.Utils;
 using ProjectM;
+using ProjectM.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,7 +54,7 @@ namespace BloodCraftEZLife.UI.ModContent
             float xfact = Owner.Scaler.referenceResolution.x / 1920;
             float yfact = Owner.Scaler.referenceResolution.y / 1080;
             //put sizing here
-
+            FullscreenSettingService.ResFactor = new Vector2(xfact, yfact);
             Vector2 newRect =new Vector2(FullscreenSettingService.DeltaRect.x*xfact, FullscreenSettingService.DeltaRect.y * yfact);
             Rect.sizeDelta = newRect;
 
@@ -69,7 +70,7 @@ namespace BloodCraftEZLife.UI.ModContent
 
         protected override void ConstructPanelContent()
         {
-            PanelSettingsContent = UIFactory.CreateVerticalGroup(ContentRoot, "HotkeyVerticalLayout", false, true, true, true, 2,
+            PanelSettingsContent = UIFactory.CreateVerticalGroup(ContentRoot, "HotkeyVerticalLayout", true, true, true, true, 2,
                 new Vector4(2, 2, 2, 2), Theme.PanelBackground);
             UIFactory.SetLayoutElement(PanelSettingsContent, minHeight: 25, flexibleHeight: 0);
 
@@ -78,16 +79,23 @@ namespace BloodCraftEZLife.UI.ModContent
                 out _, new Color32(0,1,3,255));
             _scrollPool.Initialize(_scrollDataHandler);
             UIFactory.SetLayoutElement(scrollObj, flexibleHeight: 9999);
-            var btnHotkey = UIFactory.CreateButton(PanelSettingsContent, "btnHotkey", "Hotkeys", new ColorBlock
+            /*var btnHotkey = UIFactory.CreateButton(PanelSettingsContent, "btnHotkey", "Hotkeys", new ColorBlock
             {
                 normalColor = new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency),
                 disabledColor = new Color(0.3f, 0.3f, 0.3f).GetTransparent(Settings.UITransparency),
                 highlightedColor = new Color(0.16f, 0.16f, 0.16f).GetTransparent(Settings.UITransparency),
                 pressedColor = new Color(0.05f, 0.05f, 0.05f).GetTransparent(Settings.UITransparency)
             });
-            UIFactory.SetLayoutElement(btnHotkey.Component.gameObject, flexibleWidth: 9999, minHeight: 25, flexibleHeight: 0);
+            UIFactory.SetLayoutElement(btnHotkey.Component.gameObject, flexibleWidth: 9999, minHeight: 25, flexibleHeight: 0);*/
+            GameObject btnHotkey = UnityEngine.Object.Instantiate(FullscreenSettingService._templates.Button.gameObject, PanelSettingsContent.transform);
+            SettingsEntry_Button btn = btnHotkey.GetComponent<SettingsEntry_Button>();
 
-            btnHotkey.OnClick += () =>
+
+            btn.HeaderText.Text.m_text = "";
+            btn.SecondaryText.Text.m_text = "";
+            btn.ButtonText.Text.text = "HOTKEYS";
+
+            btn.Button.onClick.AddListener(() =>
             {
                 var panel = Plugin.UIManager.GetPanel<HotkeysPanel>();
                 if (panel != null)
@@ -97,7 +105,7 @@ namespace BloodCraftEZLife.UI.ModContent
 
                 }
                 Plugin.UIManager.AddPanel(PanelType.HotkeysPanel);
-            };
+            });
 
             RefreshData();
         }

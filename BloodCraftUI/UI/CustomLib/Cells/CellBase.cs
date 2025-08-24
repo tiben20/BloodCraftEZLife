@@ -21,5 +21,6 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
         {
             UIRoot?.SetActive(false);
         }
+
     }
 }

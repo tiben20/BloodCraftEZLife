@@ -91,6 +91,11 @@ internal static class FullscreenPatch
         {
             panel2.SetActive(false);
         }
+        var pane3 = Plugin.UIManager.GetPanel<CommandInput>();
+        if (pane3 != null)
+        {
+            pane3.SetActive(false);
+        }
     }
 
     [HarmonyPatch(typeof(FullscreenMenuMapper), nameof(FullscreenMenuMapper.OnStopRunning))]
@@ -160,9 +165,10 @@ internal static class FullscreenPatch
                 newSettingsButton.ForceHighlight = true;
                 FullscreenSettingService.RaiseHeaderButtonClicked(__instance);
             });
-            
+
             //get the button templates
             //FullscreenSettingService.ClonePanelAndGetTemplates(__instance.GeneralPanel);
+            
             FullscreenSettingService.ClonePanelAndGetTemplates(__instance.ControlsPanel);
             
         }
@@ -170,16 +176,17 @@ internal static class FullscreenPatch
 
     }
 
-    [HarmonyPatch(typeof(ProjectM.UI.RebindingMenu), nameof(ProjectM.UI.RebindingMenu.Awake))]
+    /*[HarmonyPatch(typeof(ProjectM.UI.RebindingMenu), nameof(ProjectM.UI.RebindingMenu.Awake))]
     [HarmonyPostfix]
     private static void RebindingMenuAwake(RebindingMenu __instance)
     {
         LogUtils.LogError("Starting here");
-        UnityHelper.PrintParents(__instance.transform);
+        UnityHelper.PrintChilds(__instance.ControlsInputEntryPrefab.transform, 1, true);
+        UnityHelper.DumpUI(__instance.ControlsInputEntryPrefab.gameObject);
         FullscreenSettingService._templates.Binding = __instance.ControlsInputEntryPrefab;
         
 
-    }
+    }*/
     private static void HideSettingsPanel(SimpleStunButton btn)
     {
         if (btn != null)

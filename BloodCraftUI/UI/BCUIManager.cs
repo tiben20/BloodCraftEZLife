@@ -16,7 +16,7 @@ public class BCUIManager : UIManagerBase
     private List<IPanelBase> UIPanels { get; } = new();
     public IPanelBase _contentPanel;
     private readonly List<string> _visibilityAffectedPanels = new();
-
+   
     public override void Reset()
     {
         base.Reset();
@@ -140,6 +140,21 @@ public class BCUIManager : UIManagerBase
 
                     break;
                 }
+            case PanelType.InputBox:
+                {
+                    var panel = GetPanel<CommandInput>();
+                    if (panel == null)
+                    {
+                        var item = new CommandInput(UiBase);
+                        UIPanels.Add(item);
+                    }
+                    else
+                    {
+                        panel.SetActive(true);
+                    }
+
+                    break;
+                }
             case PanelType.PullPanel:
                 {
                     var panel = GetPanel<PullItemsPanel>();
@@ -180,4 +195,5 @@ public class BCUIManager : UIManagerBase
         var t = typeof(T);
         return UIPanels.FirstOrDefault(a => a.GetType() == t) as T;
     }
+
 }

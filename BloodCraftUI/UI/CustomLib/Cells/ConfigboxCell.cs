@@ -45,6 +45,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
         private bool _subCreated;
 
         public event Action<Setting> OnActionInput;
+        public event Action<Setting> OnInputBox;
 
         public override GameObject CreateContent(GameObject parent)
         {
@@ -69,6 +70,8 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             _subCreated = false;
             return ConfigboxContainer;
         }
+        
+
         public void CreateHeader(Setting setting)
         {
             GameObject lblHeader = UnityEngine.Object.Instantiate(FullscreenSettingService._templates.Header.gameObject, ConfigboxContainer.transform);
@@ -98,7 +101,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
                 SetLabelName(toggleObject.gameObject, _setting.Name);
                 
                 toggleObject.Value = (bool)setting.Value;
-                UnityHelper.PrintChilds(toggleObject.transform, 1);
+                //UnityHelper.PrintChilds(toggleObject.transform, 1);
 
                 toggleObject.Toggle.onValueChanged.AddListener((bool val) =>
                 {
@@ -138,8 +141,8 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
         {
             GameObject slider = UnityEngine.Object.Instantiate(FullscreenSettingService._templates.Slider.gameObject, ConfigboxContainer.transform);
             SettingsEntry_Slider sliderObject = slider.GetComponent<SettingsEntry_Slider>();
-            Debug.Log("Child of our sliderObject ");
-            UnityHelper.PrintChilds(slider.transform, 1, true);
+            //Debug.Log("Child of our sliderObject ");
+            //UnityHelper.PrintChilds(slider.transform, 1, true);
             if (sliderObject != null)
             {
                 SetLabelName(sliderObject.gameObject, _setting.Name);

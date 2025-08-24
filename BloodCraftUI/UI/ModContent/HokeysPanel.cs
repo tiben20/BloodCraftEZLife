@@ -15,6 +15,7 @@ using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 using BloodCraftEZLife.Utils;
 using ProjectM;
+using ProjectM.UI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,9 +40,10 @@ namespace BloodCraftEZLife.UI.ModContent
         public GameObject PanelHotkeyContent { get; protected set; }
 
         private ScrollPool<HotkeyCell> _scrollPool;
-        private ConfigCellHandler<Hotkey, HotkeyCell> _scrollDataHandler;
+        private HotkeyCellHandler<Hotkey, HotkeyCell> _scrollDataHandler;
         private bool _isInitialized;
         private int _indexWaitingFor = 0;
+        
 
         public HotkeysPanel(UIBase owner) : base(owner)
         {
@@ -57,7 +59,7 @@ namespace BloodCraftEZLife.UI.ModContent
             float yfact = Owner.Scaler.referenceResolution.y / 1080;
 
 
-            Vector2 newRect = new Vector2(FullscreenSettingService.DeltaRect.x * xfact, FullscreenSettingService.DeltaRect.y * yfact);
+            Vector2 newRect = new Vector2(FullscreenSettingService.DeltaRect.x * xfact, FullscreenSettingService.DeltaRect.y * yfact );
             Rect.sizeDelta = newRect;
             Rect.anchoredPosition = FullscreenSettingService.AnchorRect;
             EnsureValidSize();
@@ -69,83 +71,72 @@ namespace BloodCraftEZLife.UI.ModContent
             SetActive(false);
         }
 
+        
         protected override void ConstructPanelContent()
         {
-            PanelHotkeyContent = UIFactory.CreateVerticalGroup(ContentRoot, "HotkeyVerticalLayout", false, true, true, true, 2,
+            PanelHotkeyContent = UIFactory.CreateVerticalGroup(ContentRoot, "HotkeyVerticalLayout", true, true, true, true, 2,
             new Vector4(2, 2, 2, 2), Theme.PanelBackground);
+
+
+            GameObject lblHeader = UnityEngine.Object.Instantiate(FullscreenSettingService._templates.Header.gameObject, PanelHotkeyContent.transform);
+            SettingsEntry_Label lbl = lblHeader.GetComponent<SettingsEntry_Label>();
+
+            if (lbl != null)
+            {
+                lbl.HeaderText.Text.text = "Hotkeys";
+            }
             UIFactory.SetLayoutElement(PanelHotkeyContent, minHeight: 25, flexibleHeight: 0);
-            _scrollDataHandler = new ConfigCellHandler<Hotkey, HotkeyCell>(_scrollPool, HotkeyService.GetHotkeys, SetCell, ShouldDisplay, OnCellChanged);
+            _scrollDataHandler = new HotkeyCellHandler<Hotkey, HotkeyCell>(_scrollPool, HotkeyService.GetHotkeys, SetCell, ShouldDisplay, OnCellChanged,OnInputBox);
             _scrollPool = UIFactory.CreateScrollPool<HotkeyCell>(PanelHotkeyContent, "ContentList", out GameObject scrollObj,
-                out _, new Color32(10,10,10,255));
+                out _, Theme.PanelBackground);
             _scrollPool.Initialize(_scrollDataHandler);
             UIFactory.SetLayoutElement(scrollObj, flexibleHeight: 9999);
 
-            var saveHkButton = UIFactory.CreateButton(PanelHotkeyContent, "SaveHkButton", "Save and close", new ColorBlock
+            GameObject newButtonObj = UnityEngine.Object.Instantiate(FullscreenSettingService._templates.Button.gameObject, PanelHotkeyContent.transform);
+            SettingsEntry_Button newButton = newButtonObj.GetComponent<SettingsEntry_Button>();
+            newButton.ButtonText.Text.text = "New hotkey";
+            UnityHelper.HideObject(newButton.ResetButton.gameObject);
+            newButton.HeaderText.Text.text = "";
+            newButton.SecondaryText.Text.text = "";
+            GameObject saveButtonObj = UnityEngine.Object.Instantiate(FullscreenSettingService._templates.Button.gameObject, PanelHotkeyContent.transform);
+            SettingsEntry_Button saveButton = saveButtonObj.GetComponent<SettingsEntry_Button>();
+            saveButton.ButtonText.Text.text = "Save and close";
+            UnityHelper.HideObject(saveButton.ResetButton.gameObject);
+            saveButton.HeaderText.Text.text = "";
+            saveButton.SecondaryText.Text.text = "";
+
+
+            newButton.Button.onClick.AddListener(() =>
             {
-                normalColor = new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency),
-                disabledColor = new Color(0.3f, 0.3f, 0.3f).GetTransparent(Settings.UITransparency),
-                highlightedColor = new Color(0.16f, 0.16f, 0.16f).GetTransparent(Settings.UITransparency),
-                pressedColor = new Color(0.05f, 0.05f, 0.05f).GetTransparent(Settings.UITransparency)
-            });
-            UIFactory.SetLayoutElement(saveHkButton.Component.gameObject, flexibleWidth: 9999, minHeight: 25, flexibleHeight: 0);
-
-            //creating the group horizontal group
-            var newhotkeyrow = UIFactory.CreateHorizontalGroup(PanelHotkeyContent, "NewButtonRow", false, false, true, true, spacing: 10, bgColor: new Color32(18, 18, 18, 255));
-            UIFactory.SetLayoutElement(UIRoot, minHeight: 40, flexibleWidth: 9999);
-
-
-            RectTransform newRect = newhotkeyrow.GetComponent<RectTransform>();
-            newRect.anchorMin = new Vector2(0, 1);
-            newRect.anchorMax = new Vector2(0, 1);
-            newRect.pivot = new Vector2(0.5f, 1);
-            newRect.sizeDelta = new Vector2(25, 25);
-
-
-            var newhklabel = UIFactory.CreateLabel(newhotkeyrow, "LabelTitle", "setting.Name",
-                                              TextAlignmentOptions.MidlineLeft, fontSize: 16, bold: false);// medium-light gray
-            UIFactory.SetLayoutElement(newhklabel.GameObject, minHeight: 40, minWidth: 120, flexibleWidth: 9999);
-
-
-            var newHkButton = UIFactory.CreateButton(newhotkeyrow, "NewHkButton", "New Hotkey", new ColorBlock
-            {
-                normalColor = new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency),
-                disabledColor = new Color(0.3f, 0.3f, 0.3f).GetTransparent(Settings.UITransparency),
-                highlightedColor = new Color(0.16f, 0.16f, 0.16f).GetTransparent(Settings.UITransparency),
-                pressedColor = new Color(0.05f, 0.05f, 0.05f).GetTransparent(Settings.UITransparency)
-            });
-            UIFactory.SetLayoutElement(newHkButton.Component.gameObject, flexibleWidth: 9999, minHeight: 25, flexibleHeight: 0);
-            var buttonText = newHkButton.Component.GetComponentInChildren<TextMeshProUGUI>();
-            buttonText.overflowMode = TextOverflowModes.Overflow;
-            buttonText.alignment = TextAlignmentOptions.MidlineLeft;
-            buttonText.margin = new Vector4(5, 0, 0, 0);
-
-            newHkButton.OnClick += () =>
-            {
-                HotkeyService.Register(KeyCode.None, "waiting input");
+                HotkeyService.NewKey = true;
+                HotkeyService.Register(KeyCode.None, "press a key");
                 HotkeyService.WaitingForInput = true;
                 //index not used yet
                 _indexWaitingFor = HotkeyService.HotkeyCount() - 1;
                 RefreshData();
-            };
-            saveHkButton.OnClick += () =>
+            });
+
+            saveButton.Button.onClick.AddListener(() =>
             {
                 HotkeyService.SaveHotkeys();
                 this.SetActive(false);
-            };
-
+            });
+            
             RefreshData();
         }
 
         public override void Update()
         {
-
-
             //send an update on the hotkeys
             
             if (HotkeyService.WaitedForKey != KeyCode.None)
             {
                 HotkeyService.SetKey(HotkeyService.GetHotkey(_indexWaitingFor), HotkeyService.WaitedForKey);
                 HotkeyService.WaitedForKey = KeyCode.None;
+                if (HotkeyService.NewKey)
+                {
+                    OnInputBox(HotkeyService.GetHotkey(_indexWaitingFor));
+                }
                 RefreshData();
             }
             base.Update();
@@ -174,6 +165,24 @@ namespace BloodCraftEZLife.UI.ModContent
             _scrollPool.Refresh(true);
         }
 
+        private void OnInputBox(Hotkey newValue)
+        {
+            var panel = Plugin.UIManager.GetPanel<CommandInput>();
+            panel._onCommand = OnInputBoxSubmit;
+            
+            panel.SetActive(true);
+            panel.Show(newValue);
+
+        }
+
+        public void OnInputBoxSubmit(Hotkey newValue)
+        {
+            HotkeyService.Register(newValue.key, newValue.action);
+            Plugin.UIManager.GetPanel<CommandInput>().SetActive(false);
+
+            RefreshData();
+        }
+
         private void OnCellChanged(Hotkey newValue)
         {
             HotkeyService.WaitingForInput = true;
@@ -183,7 +192,11 @@ namespace BloodCraftEZLife.UI.ModContent
             return;
         }
 
-        private bool ShouldDisplay(Hotkey data, string filter) => true;
+        private bool ShouldDisplay(Hotkey data, string filter)
+        {
+            return true;
+        
+        }
 
         private void SetCell(HotkeyCell cell, int index)
         {

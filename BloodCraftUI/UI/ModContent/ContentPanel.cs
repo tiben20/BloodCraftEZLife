@@ -160,6 +160,10 @@ namespace BloodCraftEZLife.UI.ModContent
 
             Plugin.UIManager.AddPanel(PanelType.PopupPanel);
             PopupPanel panel = Plugin.UIManager.GetPanel<PopupPanel>();
+            Plugin.UIManager.AddPanel(PanelType.InputBox);
+            CommandInput inputbox = Plugin.UIManager.GetPanel<CommandInput>();
+            inputbox.SetActive(false);
+
         }
 
         protected override void LateConstructUI()

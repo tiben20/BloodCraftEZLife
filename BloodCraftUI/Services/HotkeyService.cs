@@ -32,7 +32,10 @@ namespace BloodCraftEZLife.Services
         private static Dictionary<KeyCode, string> bindings = new();
         private static float timer = 0f;
         public static bool WaitingForInput = false;
+        public static bool NewKey = false;
         public static KeyCode WaitedForKey = KeyCode.None;
+        public static KeyCode ChangingOldKey = KeyCode.None;
+
 
         public static void Initialise()
         {
@@ -118,8 +121,10 @@ namespace BloodCraftEZLife.Services
                     {
                         if (bindings.ContainsKey(k))
                         {
-                            return;
+                            if (ChangingOldKey != k)
+                                continue;
                         }
+
                         WaitedForKey = k;
                         WaitingForInput = false;
                         return;

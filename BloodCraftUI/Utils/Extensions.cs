@@ -8,6 +8,7 @@ using ProjectM.Gameplay.Systems;
 using ProjectM.Network;
 using ProjectM.Scripting;
 using ProjectM.Shared;
+using ProjectM.UI;
 using Stunlock.Core;
 using Stunlock.Localization;
 using TMPro;
@@ -27,6 +28,21 @@ internal static class Extensions
     // static PrefabCollectionSystem PrefabCollectionSystem => SystemService.PrefabCollectionSystem;
 
     const string EMPTY_KEY = "LocalizationKey.Empty";
+
+    public static string GetText(this SimpleStunButton helper)
+    {
+        var label = helper.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+        if (label != null)
+            return label.text;
+        return "";
+    }
+
+    public static void SetText(this SimpleStunButton helper, string text)
+    {
+        var label = helper.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+        if (label != null)
+            label.text = text;
+    }
 
     public static bool IsEnabled(this TextMeshProUGUI entity)
     {
