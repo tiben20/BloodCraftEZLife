@@ -11,6 +11,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
         void SetValue(T value);
         T GetValue();
 
+        event Action<T> OnDelete;
         event Action<T> OnValueChanged;
         event Action<T> OnInputBox;
     }

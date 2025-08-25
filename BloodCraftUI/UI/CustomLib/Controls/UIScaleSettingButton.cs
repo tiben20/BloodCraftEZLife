@@ -15,7 +15,7 @@ public class UIScaleSettingButton : SettingsButtonBase
 
     private int _scaleIndex;
 
-    public UIScaleSettingButton() : base("UIScale", "normal")
+    public UIScaleSettingButton() : base("UIScale", "small")
     {
         _scaleIndex = State switch
         {
@@ -45,7 +45,9 @@ public class UIScaleSettingButton : SettingsButtonBase
     {
         foreach (var uiBase in UniversalUI.uiBases)
         {
-            uiBase.Panels.PanelHolder.GetComponent<RectTransform>().localScale = new Vector3(_scales[_scaleIndex].Item2, _scales[_scaleIndex].Item2, 1f);
+            //temp removed
+            //uiBase.Panels.PanelHolder.GetComponent<RectTransform>().localScale = new Vector3(_scales[_scaleIndex].Item2, _scales[_scaleIndex].Item2, 1f);
+            uiBase.Panels.PanelHolder.GetComponent<RectTransform>().localScale = new Vector3(_scales[0].Item2, _scales[0].Item2, 1f);
             //uiBase.Panels.UpdatePanelsPlacement();
             uiBase.Panels.ValidatePanels();
         }

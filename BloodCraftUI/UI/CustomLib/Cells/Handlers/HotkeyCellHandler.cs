@@ -19,6 +19,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
         protected readonly Func<TData, string, bool> ShouldDisplay;
         protected readonly Action<TData> OnCellChanged;
         protected readonly Action<TData> OnInputBox;
+        protected readonly Action<TData> OnDelete;
         protected readonly Action<TCell, int,float> OnSetOpacity;
 
         public string CurrentFilter
@@ -38,7 +39,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
         /// <param name="onCellClickedMethod">A method invoked when a cell is clicked, containing the data index assigned to the cell.</param>
         public HotkeyCellHandler(ScrollPool<TCell> scrollPool, Func<List<TData>> getEntriesMethod,
             Action<TCell, int> setICellMethod, Func<TData, string, bool> shouldDisplayMethod,
-            Action<TData> onCellChangedMethod,Action<TData> onInputBox)
+            Action<TData> onCellChangedMethod,Action<TData> onInputBox, Action<TData> onDelete)
         {
             ScrollPool = scrollPool;
 
@@ -47,6 +48,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
             ShouldDisplay = shouldDisplayMethod;
             OnCellChanged = onCellChangedMethod;
             OnInputBox = onInputBox;
+            OnDelete = onDelete;
         }
 
         public void RefreshData()
@@ -70,6 +72,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
         {
             cell.OnValueChanged += OnCellChanged;
             cell.OnInputBox += OnInputBox;
+            cell.OnDelete += OnDelete;
         }
 
         public virtual void SetCell(TCell cell, int index)

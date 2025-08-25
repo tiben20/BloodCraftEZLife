@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using BloodCraftEZLife.Services;
+using BloodCraftEZLife.Services.Data;
+using Bloody.Core;
 using Il2CppInterop.Runtime;
 using ProjectM;
 using ProjectM.Gameplay.Systems;
@@ -183,6 +185,77 @@ internal static class Extensions
 
         return false;
     }
+
+    public static bool HasComponentInternal<T>(this EntityManager entityManager, Entity entity)
+    {
+        try
+        {
+            return entityManager.HasComponent<T>(entity);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public static bool TryGetComponentDataInternal<T>(this EntityManager entityManager, Entity entity, out T value)
+    where T : new()
+    {
+        try
+        {
+            value = entityManager.GetComponentData<T>(entity);
+            return true;
+        }
+        catch
+        {
+            value = default;
+            return false;
+        }
+    }
+
+    public static List<T> ToList<T>(this DynamicBuffer<T> bufferList) where T : new()
+    {
+        if (bufferList.Length == 0)
+        {
+            return null;
+        }
+
+        var result = new List<T>();
+        foreach (var item in bufferList)
+        {
+            result.Add(item);
+        }
+
+        return result;
+    }
+
+    public static List<T> GetBufferInternal<T>(this EntityManager entityManager, Entity entity) where T : struct
+    {
+        try
+        {
+            return entityManager.GetBuffer<T>(entity).ToList();
+        }
+        catch (Exception ex)
+        {
+            //LogUtils.LogDebug(ex.Message);
+            return null;
+        }
+    }
+
+    public static T GetManagedComponentDataInternal<T>(this World world, BaseEntityModel entity)
+    where T : class
+    {
+        var prefabGuid = entity.PrefabGUID;
+        if (prefabGuid == null)
+        {
+            return null;
+            ;
+        }
+
+        var managedDataRegistry = world.GetExistingSystemManaged<GameDataSystem>().ManagedDataRegistry;
+        return managedDataRegistry.GetOrDefault<T>(prefabGuid.Value);
+    }
+
     public static bool Has<T>(this Entity entity)
     {
         return EntityManager.HasComponent(entity, new(Il2CppType.Of<T>()));
@@ -524,4 +597,5 @@ internal static class Extensions
         return isValid;
     }
 
-}
+    
+ }

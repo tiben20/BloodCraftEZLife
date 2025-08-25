@@ -1,0 +1,272 @@
+	Line  20: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI version 1.1.0 is loaded!
+	Line  29: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Emote actions <color=green>enabled</color>!
+	Line  32: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Please don’t share your private information with anyone! Keep your real name, home address, phone number, email address, and other personal data a secret.
+	Line  34: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam sb angram
+	Line  35: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Angram the Purifier</color><color=#A020F0>*</color> <color=#00FFFF>bound</color>!
+	Line  36: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed items from your inventory to the current territory!
+	Line  37: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>1</color>x <color=green>Flawless Sapphire</color> to <color=#FFC0CB>Small Gem Storage</color>
+	Line  38: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>1</color>x <color=green>Onyx Tear</color> to <color=#FFC0CB>Large Alchemy Storage</color>
+	Line  39: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>1</color>x <color=green>Frost Jewel Tier 4 Jewel Tier 4</color> to <color=#FFC0CB>T2</color>
+	Line  42: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp teleport iron
+	Line  43: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ffffff>Teleported to <color=#a963ff>iron</color> successfully.</color>
+	Line  44: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=red>Warrior</color> legacy improved to [<color=white>49</color>]!
+	Line  45: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<size=12>Wanted level increased (Militia: ★★★★☆☆)
+	Line  46: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Familiar Boxes:
+	Line  47: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=white>box1</color>, <color=white>box2</color>, <color=white>box3</color>, <color=white>box4</color>, <color=white>box5</color>, <color=white>box6</color>
+	Line  48: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=white>box7</color>, <color=white>good</color>, <color=white>box9</color>, <color=white>box10</color>, <color=white>box11</color>, <color=white>box12</color>
+	Line  49: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=white>box13</color>, <color=white>box14</color>, <color=white>box15</color>, <color=white>box16</color>, <color=white>box17</color>
+	Line  50: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line  53: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line  54: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line  55: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:New unit unlocked: <color=green>Simon Belmont the Vampire Hunter</color>
+	Line  56: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line  59: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam sb simon
+	Line  60: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Can't unbind familiar right now! (dismissed)
+	Line  61: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line  62: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line  65: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line  66: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line  69: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line  70: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line  73: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line  74: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line  77: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line  78: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line  81: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line  82: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line  85: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=red>Warrior</color> legacy improved to [<color=white>50</color>]!
+	Line  89: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line  90: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ffffff>Teleport request sent to <color=#a963ff>crimson</color>.</color>
+	Line  93: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam sb simon
+	Line  94: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color> <color=#00FFFF>bound</color>!
+	Line  97: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line  98: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ff8f8f>You already have a pending teleport request.</color>
+	Line 101: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 102: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ff8f8f>You already have a pending teleport request.</color>
+	Line 105: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 106: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ff8f8f>You already have a pending teleport request.</color>
+	Line 109: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 110: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ff8f8f>You already have a pending teleport request.</color>
+	Line 113: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 114: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ff8f8f>You already have a pending teleport request.</color>
+	Line 117: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 118: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ff8f8f>You already have a pending teleport request.</color>
+	Line 121: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 122: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ff8f8f>You already have a pending teleport request.</color>
+	Line 125: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 126: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ff8f8f>You already have a pending teleport request.</color>
+	Line 129: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 130: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ff8f8f>You already have a pending teleport request.</color>
+	Line 133: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 134: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ff8f8f>You already have a pending teleport request.</color>
+	Line 137: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 138: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ff8f8f>You already have a pending teleport request.</color>
+	Line 141: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 142: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ff8f8f>You already have a pending teleport request.</color>
+	Line 145: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 146: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ffffff>Teleport request sent to <color=#a963ff>crimson</color>.</color>
+	Line 149: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp teleport iron
+	Line 150: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ffffff>Teleported to <color=#a963ff>iron</color> successfully.</color>
+	Line 151: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line 154: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 155: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ffffff>Teleport request sent to <color=#a963ff>crimson</color>.</color>
+	Line 156: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line 157: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#353641>Blacksmithing</color> improved to [<color=white>20</color>]
+	Line 160: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.pull charged 50
+	Line 161: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Was able to only pull 0x out of desired 50x Charged Battery from containers.
+	Line 162: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#7E22CE>Enchanting</color> improved to [<color=white>10</color>]
+	Line 163: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#D98C80>Tailoring</color> improved to [<color=white>27</color>]
+	Line 164: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed items from your inventory to the current territory!
+	Line 165: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>1</color>x <color=green>Ancestral Sword Shards Tier 2 Shattered</color> to <color=#FFC0CB>Weapon Storage</color>
+	Line 166: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>1</color>x <color=green>Flawless Miststone</color> to <color=#FFC0CB>Small Gem Storage</color>
+	Line 167: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>7</color>x <color=green>Power Core</color> to <color=#FFC0CB>Large Alchemy Storage</color>
+	Line 168: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>1</color>x <color=green>Onyx Tear</color> to <color=#FFC0CB>Large Alchemy Storage</color>
+	Line 169: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>12</color>x <color=green>Depleted Battery</color> to <color=#FFC0CB>Large Alchemy Storage</color>
+	Line 170: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>1</color>x <color=green>Exquisite Heart</color> to <color=#FFC0CB>Alch r0s0</color>
+	Line 171: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>11</color>x <color=green>Silver Ore</color> to <color=#FFC0CB>Large Material Storage</color>
+	Line 172: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>1</color>x <color=green>Storm Jewel Tier 4 Jewel Tier 4</color> to <color=#FFC0CB>T2</color>
+	Line 173: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Unable to stash <color=white>14</color>x <color=green>Depleted Battery</color> due to insufficient space in stashes!
+	Line 174: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line 175: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line 176: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line 179: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line 180: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line 181: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Hunt in <color=#D1DA3E>Oakveil Shoreline</color> started.
+	Line 184: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line 185: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line 188: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line 189: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line 192: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line 194: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line 196: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line 197: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line 198: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#c0c0c0>Axe</color> improved to [<color=white>58</color>]!
+	Line 199: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<size=12>Wanted level increased (Legion: ★☆☆☆☆☆)
+	Line 200: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=red>Warrior</color> legacy improved to [<color=white>51</color>]!
+	Line 201: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<size=12>Wanted level increased (Legion: ★★☆☆☆☆)
+	Line 202: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line 205: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp teleport iron
+	Line 206: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ffffff>Teleported to <color=#a963ff>iron</color> successfully.</color>
+	Line 209: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line 210: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line 213: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp teleport iron
+	Line 214: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ffffff>Teleported to <color=#a963ff>iron</color> successfully.</color>
+	Line 215: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=red>Warrior</color> legacy improved to [<color=white>52</color>]!
+	Line 216: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<size=12>Wanted level increased (Militia: ★★★☆☆☆)
+	Line 219: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp teleportrequest spectarz
+	Line 220: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ffffff>Teleport request sent to <color=#a963ff>spectarz</color>.</color>
+	Line 223: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=white><color=#ffffff>Your teleport request to <color=#a963ff>Spectarz</color> was accepted. Teleporting now...</color></color>
+	Line 224: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<size=12>Wanted level increased (Militia: ★★★☆☆☆)
+	Line 225: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<size=12>Wanted level increased (Militia: ★★★★☆☆)
+	Line 226: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line 227: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line 228: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed items from your inventory to the current territory!
+	Line 229: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>1</color>x <color=green>Ancestral Sword Shards Tier 2 Shattered</color> to <color=#FFC0CB>Weapon Storage</color>
+	Line 230: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>1</color>x <color=green>Flawless Sapphire</color> to <color=#FFC0CB>Small Gem Storage</color>
+	Line 231: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>84</color>x <color=green>Plant Fibre</color> to <color=#FFC0CB>Large Herb Storage</color>
+	Line 232: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Stashed <color=white>1</color>x <color=green>Gold Ore</color> to <color=#FFC0CB>Large Material Storage</color>
+	Line 233: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line 234: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line 235: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line 238: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line 239: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line 240: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<size=12>Wanted level increased (Legion: ★☆☆☆☆☆)
+	Line 241: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<size=12>Wanted level increased (Legion: ★★☆☆☆☆)
+	Line 242: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:,wep cst LongBow 7
+	Line 245: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp tpr crimson
+	Line 246: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ffffff>Teleport request sent to <color=#a963ff>crimson</color>.</color>
+	Line 247: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=white><color=#ffffff>Your teleport request to <color=#a963ff>Crimson</color> was accepted. Teleporting now...</color></color>
+	Line 250: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line 252: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line 254: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line 255: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line 256: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:heya tiben when you go to log for a bit can I catch a buff on
+	Line 257: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:holy shit
+	Line 258: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:you freaking got ihm
+	Line 261: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:yeah
+	Line 263: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:dam grats
+	Line 265: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:finally
+	Line 268: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:and he is bugged
+	Line 270: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:is he as beastly as I think he would be
+	Line 271: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:one sec let me buff
+	Line 273: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:because you dont have a level on him when farming
+	Line 274: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>21</color>][<color=#90EE90>0</color>] and has <color=yellow>3910</color> <color=#FFC0CB>experience</color> (<color=white>90%</color>)!
+	Line 275: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 276: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2840</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>83</color>, <color=#00FFFF>SpellPower</color>: <color=white>88</color>
+	Line 279: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:yeah he is lower now lol
+	Line 280: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:ooo
+	Line 282: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>21</color>][<color=#90EE90>0</color>] and has <color=yellow>3910</color> <color=#FFC0CB>experience</color> (<color=white>90%</color>)!
+	Line 283: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 284: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2840</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>83</color>, <color=#00FFFF>SpellPower</color>: <color=white>88</color>
+	Line 285: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:oofa
+	Line 287: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:so he start at 8k life
+	Line 289: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>21</color>][<color=#90EE90>0</color>] and has <color=yellow>3910</color> <color=#FFC0CB>experience</color> (<color=white>90%</color>)!
+	Line 290: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 291: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2840</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>83</color>, <color=#00FFFF>SpellPower</color>: <color=white>88</color>
+	Line 293: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:200 pp 200 sp
+	Line 296: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line 297: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line 300: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam t
+	Line 301: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line 302: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:damn
+	Line 303: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>21</color>][<color=#90EE90>0</color>] and has <color=yellow>3910</color> <color=#FFC0CB>experience</color> (<color=white>90%</color>)!
+	Line 304: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 305: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2479</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>72</color>, <color=#00FFFF>SpellPower</color>: <color=white>77</color>
+	Line 308: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam sb angram
+	Line 309: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:that's so insnae
+	Line 311: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color> <color=#FFC0CB>unbound</color>!
+	Line 312: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Angram the Purifier</color><color=#A020F0>*</color> <color=#00FFFF>bound</color>!
+	Line 314: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam sb simon
+	Line 315: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:insane*
+	Line 316: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>90</color>][<color=#90EE90>10</color>] and has <color=yellow>159</color> <color=#FFC0CB>experience</color> (<color=white>0%</color>)!
+	Line 317: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Angram the Purifier</color>*</color> - <color=#A020F0>Chaos</color>[<color=white>1</color>]
+	Line 318: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>3000</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>119</color>, <color=#00FFFF>SpellPower</color>: <color=white>119</color>
+	Line 319: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Angram the Purifier</color><color=#A020F0>*</color> <color=#FFC0CB>unbound</color>!
+	Line 320: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color> <color=#00FFFF>bound</color>!
+	Line 321: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>21</color>][<color=#90EE90>0</color>] and has <color=yellow>3910</color> <color=#FFC0CB>experience</color> (<color=white>90%</color>)!
+	Line 322: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 323: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>8762</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>199</color>, <color=#00FFFF>SpellPower</color>: <color=white>203</color>
+	Line 326: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:so he dont get stats when he level up lol
+	Line 328: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>21</color>][<color=#90EE90>0</color>] and has <color=yellow>3910</color> <color=#FFC0CB>experience</color> (<color=white>90%</color>)!
+	Line 329: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 330: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>8762</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>199</color>, <color=#00FFFF>SpellPower</color>: <color=white>203</color>
+	Line 331: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:ooo
+	Line 333: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:he is like always 90
+	Line 334: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:but that's amazing though
+	Line 335: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>21</color>][<color=#90EE90>0</color>] and has <color=yellow>3910</color> <color=#FFC0CB>experience</color> (<color=white>90%</color>)!
+	Line 336: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 337: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>8762</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>199</color>, <color=#00FFFF>SpellPower</color>: <color=white>203</color>
+	Line 340: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:yeah
+	Line 342: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:could you senti my errol?
+	Line 344: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:he as a lot of life
+	Line 347: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:yeap
+	Line 349: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>21</color>][<color=#90EE90>0</color>] and has <color=yellow>3910</color> <color=#FFC0CB>experience</color> (<color=white>90%</color>)!
+	Line 350: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 351: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>8762</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>199</color>, <color=#00FFFF>SpellPower</color>: <color=white>203</color>
+	Line 353: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam sb senti
+	Line 354: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:freak aye
+	Line 355: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color> <color=#FFC0CB>unbound</color>!
+	Line 356: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Sentinel</color><color=#00FFFF>*</color> <color=#00FFFF>bound</color>!
+	Line 358: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>90</color>][<color=#90EE90>0</color>] and has <color=yellow>58</color> <color=#FFC0CB>experience</color> (<color=white>0%</color>)!
+	Line 359: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Sentinel</color>*</color> - <color=#00FFFF>Frost</color>[<color=white>1</color>]
+	Line 360: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2448</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>147</color>, <color=#00FFFF>SpellPower</color>: <color=white>94</color>
+	Line 362: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam sb simon
+	Line 364: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:man, almost 90 so I'm going to try and farm him
+	Line 365: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Sentinel</color><color=#00FFFF>*</color> <color=#FFC0CB>unbound</color>!
+	Line 366: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color> <color=#00FFFF>bound</color>!
+	Line 367: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>21</color>][<color=#90EE90>0</color>] and has <color=yellow>3910</color> <color=#FFC0CB>experience</color> (<color=white>90%</color>)!
+	Line 368: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 369: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 371: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:but the buff is a level depending on the sentinel level
+	Line 374: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>21</color>][<color=#90EE90>0</color>] and has <color=yellow>3910</color> <color=#FFC0CB>experience</color> (<color=white>90%</color>)!
+	Line 375: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 376: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 379: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp teleport iron
+	Line 380: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:ahhhh
+	Line 381: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ffffff>Teleported to <color=#a963ff>iron</color> successfully.</color>
+	Line 382: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>21</color>][<color=#90EE90>0</color>] and has <color=yellow>3910</color> <color=#FFC0CB>experience</color> (<color=white>90%</color>)!
+	Line 383: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 384: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 386: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:my senti is base
+	Line 388: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.stp teleportrequest spectarz
+	Line 389: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#ffffff>Teleport request sent to <color=#a963ff>spectarz</color>.</color>
+	Line 390: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=white><color=#ffffff>Your teleport request to <color=#a963ff>Spectarz</color> was accepted. Teleporting now...</color></color>
+	Line 391: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>21</color>][<color=#90EE90>0</color>] and has <color=yellow>3910</color> <color=#FFC0CB>experience</color> (<color=white>90%</color>)!
+	Line 392: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 393: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 394: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 395: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>22</color>][<color=#90EE90>0</color>] and has <color=yellow>1042</color> <color=#FFC0CB>experience</color> (<color=white>23%</color>)!
+	Line 396: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 397: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>22</color>][<color=#90EE90>0</color>] and has <color=yellow>4102</color> <color=#FFC0CB>experience</color> (<color=white>91%</color>)!
+	Line 398: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 399: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 400: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>23</color>][<color=#90EE90>0</color>] and has <color=yellow>195</color> <color=#FFC0CB>experience</color> (<color=white>4%</color>)!
+	Line 401: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 402: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 403: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>23</color>][<color=#90EE90>0</color>] and has <color=yellow>195</color> <color=#FFC0CB>experience</color> (<color=white>4%</color>)!
+	Line 404: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 405: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 406: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>23</color>][<color=#90EE90>0</color>] and has <color=yellow>787</color> <color=#FFC0CB>experience</color> (<color=white>16%</color>)!
+	Line 407: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 408: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 409: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<size=12>Wanted level increased (Militia: ★★★★★☆)
+	Line 410: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>23</color>][<color=#90EE90>0</color>] and has <color=yellow>1897</color> <color=#FFC0CB>experience</color> (<color=white>40%</color>)!
+	Line 411: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 412: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 413: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>23</color>][<color=#90EE90>0</color>] and has <color=yellow>4065</color> <color=#FFC0CB>experience</color> (<color=white>86%</color>)!
+	Line 414: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 415: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 416: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=red>disabled</color>!
+	Line 417: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>24</color>][<color=#90EE90>0</color>] and has <color=yellow>895</color> <color=#FFC0CB>experience</color> (<color=white>18%</color>)!
+	Line 418: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 419: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 420: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>24</color>][<color=#90EE90>0</color>] and has <color=yellow>895</color> <color=#FFC0CB>experience</color> (<color=white>18%</color>)!
+	Line 421: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 422: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 423: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=yellow>Familiar</color> <color=green>enabled</color>!
+	Line 424: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:Your familiar is level [<color=white>24</color>][<color=#90EE90>0</color>] and has <color=yellow>895</color> <color=#FFC0CB>experience</color> (<color=white>18%</color>)!
+	Line 425: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color>:
+	Line 426: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=#00FFFF>MaxHealth</color>: <color=white>2107</color>, <color=#00FFFF>PhysicalPower</color>: <color=white>53</color>, <color=#00FFFF>SpellPower</color>: <color=white>58</color>
+	Line 429: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:.fam sb angram
+	Line 430: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Simon Belmont the Vampire Hunter</color> <color=#FFC0CB>unbound</color>!
+	Line 431: [Info   :BloodCraftUI] Plugin panthernet.BloodCraftUI message:<color=green>Angram the Purifier</color><color=#A020F0>*</color> <color=#00FFFF>bound</color>!

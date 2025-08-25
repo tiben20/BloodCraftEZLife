@@ -46,6 +46,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
 
         public event Action<Setting> OnActionInput;
         public event Action<Setting> OnInputBox;
+        public event Action<Setting> OnDelete;
 
         public override GameObject CreateContent(GameObject parent)
         {

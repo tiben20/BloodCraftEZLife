@@ -13,5 +13,9 @@ Changelog:
 0.4.0
 -Remade the fullscreen menu to be more clean and easier to use
 -Kills popup msg more clean
+0.5.0
+Fixed scaling on new file config
+added delete hotkey
+
 
 Sourcecode: https://github.com/tiben20/BloodCraftEZLife

@@ -86,7 +86,7 @@ namespace BloodCraftEZLife.UI.ModContent
                 lbl.HeaderText.Text.text = "Hotkeys";
             }
             UIFactory.SetLayoutElement(PanelHotkeyContent, minHeight: 25, flexibleHeight: 0);
-            _scrollDataHandler = new HotkeyCellHandler<Hotkey, HotkeyCell>(_scrollPool, HotkeyService.GetHotkeys, SetCell, ShouldDisplay, OnCellChanged,OnInputBox);
+            _scrollDataHandler = new HotkeyCellHandler<Hotkey, HotkeyCell>(_scrollPool, HotkeyService.GetHotkeys, SetCell, ShouldDisplay, OnCellChanged,OnInputBox, OnDelete);
             _scrollPool = UIFactory.CreateScrollPool<HotkeyCell>(PanelHotkeyContent, "ContentList", out GameObject scrollObj,
                 out _, Theme.PanelBackground);
             _scrollPool.Initialize(_scrollDataHandler);
@@ -165,6 +165,13 @@ namespace BloodCraftEZLife.UI.ModContent
             _scrollPool.Refresh(true);
         }
 
+        private void OnDelete(Hotkey newValue)
+        {
+            HotkeyService.Delete(newValue.key);
+            RefreshData();
+
+        }
+
         private void OnInputBox(Hotkey newValue)
         {
             var panel = Plugin.UIManager.GetPanel<CommandInput>();
@@ -179,7 +186,6 @@ namespace BloodCraftEZLife.UI.ModContent
         {
             HotkeyService.Register(newValue.key, newValue.action);
             Plugin.UIManager.GetPanel<CommandInput>().SetActive(false);
-
             RefreshData();
         }
 

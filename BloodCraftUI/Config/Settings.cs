@@ -233,12 +233,12 @@ namespace BloodCraftEZLife.Config
             AddSettingBool(nameof(IsAutoTeleportEnabled),"Auto teleport", Settings.IsAutoTeleportEnabled);
             AddSettingBool(nameof(IsHeaderVisible), "Header visible",Settings.IsHeaderVisible);
             AddSettingBool(nameof(KeepTrackOfVbloodKills), "Keep track of vblood kills", Settings.KeepTrackOfVbloodKills);
-            AddSettingSlider(nameof(UITransparency),"UI Opacity", Settings.UITransparency,0.1f,1.0f,0.05f);
+            /*AddSettingSlider(nameof(UITransparency),"UI Opacity", Settings.UITransparency,0.1f,1.0f,0.05f);
             List<string> options =new List<string>();
             options.Add("Small");
             options.Add("Medium");
             options.Add("Large");
-            AddSettingList(nameof(UiTextSize),"Text size", "Small",options);
+            AddSettingList(nameof(UiTextSize),"Text size", "Small",options);*/
 
             
             return this;

@@ -1,3 +1,5 @@
+### v1.05
+Fixed scaling on new file config
 ### v1.04
 Fixed changing server
 ### V1.03

@@ -91,10 +91,6 @@ namespace BloodCraftEZLife.Services
 
                 }
             }
-            else 
-            {
-                LogUtils.LogWarning(message);
-            }
         }
 
         

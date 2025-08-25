@@ -59,7 +59,9 @@ internal static class FullscreenPatch
     [HarmonyPostfix]
     private static void _FullscreenMenuOnStartRunning(FullscreenMenu __instance)
     {
+        LogUtils.LogInfo("_FullscreenMenuOnStartRunning");
         TeleportsService._InMenu = true;
+        LogUtils.LogInfo("_Clearing the tp list list");
         TeleportsService.ClearList();
         ContentPanel panel;
         //hidding our main panel when in mainmenu

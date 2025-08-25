@@ -16,6 +16,7 @@ using ProjectM;
 using ProjectM.Network;
 using ProjectM.Scripting;
 using ProjectM.UI;
+using Stunlock.Core;
 using Unity.Entities;
 using UnityEngine;
 
@@ -28,16 +29,22 @@ namespace BloodCraftEZLife
         public static Plugin Instance { get; private set; }
         public static ManualLogSource LogInstance => Instance.Log;
         public static Settings Settings { get; private set; }
-        private static World _client;
+        public static World _client;
         public static EntityManager EntityManager => _client.EntityManager;
-        public static PrefabCollectionSystem PrefabCollectionSystem => _client.GetExistingSystemManaged<PrefabCollectionSystem>();
+        public static LocalizationService Localization { get; private set; } = new();
+
         public static bool IsInitialized { get; private set; }
+
+        public static Core Core => IsGameDataInitialized ? Core.Instance : throw new InvalidOperationException("Core is not initialized");
+
         public static bool IsGameDataInitialized { get; set; }
         public static BCUIManager UIManager { get; set; }
         public static CoreUpdateBehavior CoreUpdateBehavior { get; set; }
         public static bool IsClient { get; private set; }
         public static Entity LocalCharacter { get; set; }
+
         
+
         public static bool IsClientNull() => _client == null;
 
         public const bool IS_TESTING = false;
@@ -87,6 +94,7 @@ namespace BloodCraftEZLife
             _harmonyInitPatch = Harmony.CreateAndPatchAll(typeof(InitializationPatch));
             HotkeyService.Initialise();
             Log.LogInfo($"Plugin {PluginInfo.PLUGIN_GUID} version {PluginInfo.PLUGIN_VERSION} is loaded!");
+            Localization = new LocalizationService();
         }
 
         
@@ -108,9 +116,7 @@ namespace BloodCraftEZLife
             {
                 _client = world;
                 //we have the connection string so we can load the server specific json
-                FullscreenSettingService.InitialiseVbloodData(ProjectM.StunAnalytics.Client.GetServerId(EntityManager));
-                ClientScriptMapper var = _client.GetExistingSystemManaged<ClientScriptMapper>();
-                ClientGameManager var2 = var._ClientGameManager;
+                FullscreenSettingService.InitialiseVbloodData(ProjectM.StunAnalytics.Client.GetServerId(EntityManager));;
                 IsGameDataInitialized = true;
                 
             }
@@ -127,6 +133,6 @@ namespace BloodCraftEZLife
     {
         public const string PLUGIN_GUID = "BloodCraftEZLife.PluginsUI";
         public const string PLUGIN_NAME = "BloodCraftEZLife";
-        public const string PLUGIN_VERSION = "1.03";
+        public const string PLUGIN_VERSION = "0.5.0";
     }
 }

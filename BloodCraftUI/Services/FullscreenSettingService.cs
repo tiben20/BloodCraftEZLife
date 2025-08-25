@@ -42,11 +42,7 @@ namespace BloodCraftEZLife.Services
         public static SettingsVblood VbloodList;
         internal static EntityQuery VBloodCarriers;
 
-        private static void PrintRect(string rectname, RectTransform rect)
-        {
-            LogUtils.LogInfo(rectname+"anchors width:" + rect.rect.width.ToString() + " height:" + rect.rect.height.ToString());
-            LogUtils.LogInfo(rectname + "position x:" + rect.anchoredPosition.x.ToString() + " y:" + rect.anchoredPosition.y.ToString());
-        }
+        
 
         //Unitialise vbloods
         public static void InitialiseVbloodData(string uniqueid)

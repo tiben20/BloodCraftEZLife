@@ -2,6 +2,7 @@
 using System.Linq;
 using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Services;
+using BloodCraftEZLife.Services.Data;
 using BloodCraftEZLife.UI.CustomLib.Cells;
 using BloodCraftEZLife.UI.CustomLib.Cells.Handlers;
 using BloodCraftEZLife.UI.CustomLib.Panel;
@@ -10,6 +11,7 @@ using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
+using Stunlock.Core;
 using UnityEngine;
 using UnityEngine.UI;
 using static BloodCraftEZLife.UI.ModContent.TeleportListPanel;
@@ -26,10 +28,10 @@ namespace BloodCraftEZLife.UI.ModContent
         public override Vector2 DefaultPosition => new Vector2(0.5f, 1f);
         public override bool CanDrag { get; protected set; } = true;
         // Allow vertical resizing only
-        public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.Horizontal;
+        public override PanelDragger.ResizeTypes CanResize => PanelDragger.ResizeTypes.All;
+        
 
-        
-        
+
         public override string PanelId => "PullItemsList";
 
         public override PanelType PanelType => PanelType.PullPanel;
@@ -38,11 +40,11 @@ namespace BloodCraftEZLife.UI.ModContent
         public class PullItemData
         {
             public string Name { get; set; }
-            public string IngameName { get; set; }
-            public PullItemData(string name, string ingameName)
+            public PrefabGUID PrefabGUID { get; set; }
+            public PullItemData(string name, PrefabGUID ingameGuid)
             {
                 Name = name;
-                IngameName = ingameName;
+                PrefabGUID = ingameGuid;
             }
         }
 
@@ -51,16 +53,6 @@ namespace BloodCraftEZLife.UI.ModContent
         public PullItemsPanel(UIBase owner) : base(owner)
         {
             SetTitle("Pull items from chest");
-        }
-
-        public void AddItemEntry(PullItemData item)
-        {
-            if (_items.Any(a => a.Equals(item)))
-                return;
-
-            _items.Add(item);
-            _scrollDataHandler?.RefreshData();
-            _scrollPool?.Refresh(true);
         }
 
         protected override void LateConstructUI()
@@ -101,7 +93,6 @@ namespace BloodCraftEZLife.UI.ModContent
 
             // Optional: Add label to show value
             _valueLabel = UIFactory.CreateLabel(sliderContainer, "SliderValueLabel", "1");
-
 
             _amountSlider.onValueChanged.AddListener((val) =>
             {
@@ -162,14 +153,18 @@ namespace BloodCraftEZLife.UI.ModContent
 
         private readonly List<PullItemData> _items = new List<PullItemData>();
 
-        private List<PullItemData> GetItemEntries() => _items;
+        private List<PullItemData> GetItemEntries()
+        {
+            return _items;
+        }
+        
 
         private void OnCellClicked(int index)
         {
             if (index < 0 || index >= _items.Count)
                 return;
 
-            string itemName = _items[index].IngameName;
+            string itemName = _items[index].Name;
             MessageService.EnqueueMessage(".pull \"" + itemName+"\" "+ _valueLabel.TextMesh.text);
             //Plugin.Console.SendCommand($".pull {itemName}");
         }
@@ -189,19 +184,14 @@ namespace BloodCraftEZLife.UI.ModContent
 
         private void PopulateAllPullableItems()
         {
-            // Example list of all pullable items; replace with your actual items
-            var allItems = new List<PullItemData>
+            _items.Clear();
+            Items.Instance.FillList();
+            foreach (var itm in Items.Instance.Alchemys)
             {
-                new PullItemData("Iron Ore","Iron Ore"),
-                new PullItemData("Copper Ore","Copper Ore"),
-                new PullItemData("Wood", "Wood"),
-                new PullItemData("Stone","Stone"),
-                new PullItemData("Blood Essence","Blood Essence")
-                // Add every pullable item here
-            };
-
-            foreach (var item in allItems)
-                AddItemEntry(item);
+                _items.Add(new PullItemData(itm.Name, itm.PrefabGuid));
+                
+            }
+            
         }
 
         private bool ShouldDisplay(PullItemData data, string filter) => true;

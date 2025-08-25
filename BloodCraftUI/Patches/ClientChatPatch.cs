@@ -22,22 +22,7 @@ internal static class ClientChatPatch
         string timeStamp,
         NetworkIdLookupMap networkIdMap)
     {
-        LogUtils.LogInfo($"_OnInputEndEditPostfix");
         var e = networkIdMap._NetworkIdToEntityMap[localUserNetworkId];
-    }
-
-    [HarmonyPatch(typeof(ClientChatSystem), nameof(ClientChatSystem._OnInputEndEdit))]
-    [HarmonyPostfix]
-    private static void _OnInputEndEditPostfix(ClientChatSystem __instance)
-    {
-        LogUtils.LogInfo($"_OnInputEndEditPostfix");
-    }
-
-    [HarmonyPatch(typeof(ClientChatSystem), nameof(ClientChatSystem._OnInputSelect))]
-    [HarmonyPostfix]
-    private static void _OnInputSelectPostfix(string arg0)
-    {
-        LogUtils.LogInfo($"_OnInputSelectPostfix: {arg0}");
     }
 
     [HarmonyPatch(typeof(ClientChatSystem), nameof(ClientChatSystem.OnUpdate))]

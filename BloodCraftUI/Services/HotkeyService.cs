@@ -81,6 +81,12 @@ namespace BloodCraftEZLife.Services
             return new Hotkey(KeyCode.F1,""); // not found
         }
 
+        public static void Delete(KeyCode key)
+        {
+
+            bindings.Remove(key);
+        }
+
         public static void Register(KeyCode key, string action)
         {
             

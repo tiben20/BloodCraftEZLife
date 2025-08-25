@@ -25,6 +25,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
         private Hotkey _hotkey;
         
         public Action<Hotkey> OnInputBox { get; set; }
+        public Action<Hotkey> OnDelete { get; set; }
 
         event Action<Hotkey> IConfigurableCell<Hotkey>.OnInputBox
         {
@@ -39,8 +40,23 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             add => OnValueChanged += value;
             remove => OnValueChanged -= value;
         }
-        private SimpleStunButton SecondButton;
+
+        event Action<Hotkey> IConfigurableCell<Hotkey>.OnDelete
+        {
+            add => OnDelete += value;
+            remove => OnDelete -= value;
+        }
+
+        private SimpleStunButton ActionButton;
+        private SimpleStunButton DeleteButton;
         private SettingsEntry_Button ButtonClone;
+
+        private static void PrintRect(string rectname, RectTransform rect)
+        {
+            LogUtils.LogInfo(rectname + " LocalPosition x:" + rect.localPosition.x.ToString() + " y:" + rect.localPosition.y.ToString());
+            LogUtils.LogInfo(rectname + " sizeDelta width:" + rect.sizeDelta.x.ToString() + " height:" + rect.sizeDelta.y.ToString());
+            
+        }
 
         public override GameObject CreateContent(GameObject parent)
         {
@@ -56,56 +72,42 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             Rect.sizeDelta = new Vector2(25, 25);
             GameObject lblHeader = UnityEngine.Object.Instantiate(FullscreenSettingService._templates.Button.gameObject, ConfigboxContainer.transform);
             GameObject btn2 = UnityEngine.Object.Instantiate(FullscreenSettingService._templates.Button.Button.gameObject, lblHeader.transform);
+            GameObject btn3 = UnityEngine.Object.Instantiate(FullscreenSettingService._templates.Button.Button.gameObject, lblHeader.transform);
             ButtonClone = lblHeader.GetComponent<SettingsEntry_Button>();
             //hide reset button
             UnityHelper.HideObject(ButtonClone.ResetButton.gameObject);
-
-            SecondButton = btn2.GetComponent<SimpleStunButton>();
-            RectTransform primaryRect = ButtonClone.Button.GetComponent<RectTransform>();
-            RectTransform secondaryRect = SecondButton.GetComponent<RectTransform>();
+            //action button
+            ActionButton = btn2.GetComponent<SimpleStunButton>();
+            DeleteButton = btn3.GetComponent<SimpleStunButton>();
+            RectTransform keyRect = ButtonClone.Button.GetComponent<RectTransform>();
+            RectTransform actionRect = ActionButton.GetComponent<RectTransform>();
+            RectTransform deleteRect = DeleteButton.GetComponent<RectTransform>();
             float xfact = FullscreenSettingService.ResFactor.x;
+            float offsetDelete = (FullscreenSettingService.DeltaRect.x * FullscreenSettingService.ResFactor.x * 0.2f) - 20f;
 
-            float offset = (FullscreenSettingService.DeltaRect.x * FullscreenSettingService.ResFactor.x * 0.7f) - 20f;
-
-            primaryRect.localPosition = primaryRect.localPosition - new Vector3(offset, 0, 0);
-            secondaryRect.sizeDelta = new Vector2(secondaryRect.localPosition.x - primaryRect.localPosition.x - 20f, secondaryRect.sizeDelta.y);
+            float offset = (FullscreenSettingService.DeltaRect.x * FullscreenSettingService.ResFactor.x * 0.8f) - 20f;
+            
+            keyRect.localPosition = keyRect.localPosition - new Vector3(offset, 0, 0);
+            
+            deleteRect.sizeDelta = new Vector2((deleteRect.localPosition.x - keyRect.localPosition.x - 20f)/4, deleteRect.sizeDelta.y);
+            actionRect.sizeDelta = new Vector2((deleteRect.localPosition.x - keyRect.localPosition.x - 20f) / 1.3333333333f, deleteRect.sizeDelta.y);
+            //actionRect.localPosition = deleteRect.localPosition - new Vector3((actionRect.sizeDelta.x - 20f)/2 , 0, 0);
+            actionRect.localPosition = deleteRect.localPosition - new Vector3(deleteRect.sizeDelta.x, 0, 0);
+            //PrintRect("key", keyRect);
+            //PrintRect("action", actionRect);
+            //PrintRect("delete", deleteRect);
             SettingsEntryBase lbl = lblHeader.GetComponent<SettingsEntryBase>();
             ButtonClone.HeaderText.Text.text = "";
             ButtonClone.SecondaryText.Text.text = "";
-            
-            GameObject inputGO = new GameObject("HiddenInputField");
+            DeleteButton.SetText("Delete hotkey");
+            DeleteButton.onClick.AddListener(() =>
+            {
+                OnDelete?.Invoke(_hotkey);
+            });
 
-            TMP_InputField inputField = inputGO.AddComponent<TMP_InputField>();
-            Navigation nav = inputField.navigation;
-            nav.mode = Navigation.Mode.None;
-            inputField.navigation = nav;
-
-            // Add a Text component for the InputField to work, but keep it hidden
-            TextMeshProUGUI inputText = inputGO.AddComponent<TextMeshProUGUI>();
-
-            inputText.enabled = true; // completely invisible
-            inputField.textComponent = inputText;
-
-            inputField.characterLimit = 100; // or whatever limit
-            inputField.interactable = true;
-            inputField.selectionColor = Color.red;
-            SecondButton.onClick.AddListener(() =>
+            ActionButton.onClick.AddListener(() =>
             {
                 OnInputBox?.Invoke(_hotkey);
-                //inputField.text = SecondButton.GetText();
-                //inputField.ActivateInputField();
-                //inputField.m_CaretPosition = inputField.text.Length;
-                //inputField.m_CaretSelectPosition = inputField.text.Length;
-            });
-      
-
-            // Hook up InputField end edit to update Button Text
-            inputField.onEndEdit.AddListener((string s) =>
-            {
-               
-                SecondButton.SetText(s);
-                OnInputSubmit(s);
-
             });
 
             //This is the key field listenener
@@ -125,7 +127,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
         {
             _hotkey = value;
             ButtonClone.Button.SetText(value.key.ToString());
-            SecondButton.SetText(value.action);
+            ActionButton.SetText(value.action);
             if (value.action == "Press key")
             {
                 ButtonClone.Button.SetText("Press key");

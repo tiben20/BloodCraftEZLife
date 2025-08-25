@@ -33,6 +33,7 @@ namespace BloodCraftEZLife.Services
 
         public static void AddListEntry(string name)
         {
+            LogUtils.LogInfo("Adding " + name + "to the list");
             if (_dataList.Any(a => a.Name.Equals(name)))
                 return;
             _dataList.Add(new TeleportBoxData { Name = name });

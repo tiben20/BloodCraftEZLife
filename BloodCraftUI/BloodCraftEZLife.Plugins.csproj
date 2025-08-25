@@ -22,8 +22,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Services\Data\English.json" />
+    <None Remove="Services\Data\PrefabNames.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="BepInEx.Unity.IL2CPP" Version="$(BepInExVersion)" IncludeAssets="compile" />
     <PackageReference Include="VRising.Unhollowed.Client" Version="1.1.9.9219901" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Services\Data\English.json" />
+    <EmbeddedResource Include="Services\Data\PrefabNames.json" />
   </ItemGroup>
 
   <ItemGroup>
