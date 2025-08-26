@@ -53,7 +53,7 @@ namespace BloodCraftEZLife.UI.ModContent
             }
         }
 
-        protected Slider _amountSlider;
+        public Slider _amountSlider;
 
         public PullItemsPanel(UIBase owner) : base(owner)
         {
@@ -94,7 +94,7 @@ namespace BloodCraftEZLife.UI.ModContent
             );
             _amountSlider.value = 1;
             _amountSlider.m_MaxValue = 10000;
-            _amountSlider.m_MinValue = 1;
+            _amountSlider.m_MinValue = 0;
             UIFactory.SetLayoutElement(_amountSlider.gameObject, minHeight: 40,minWidth:180);
 
             // Optional: Add label to show value
@@ -104,7 +104,6 @@ namespace BloodCraftEZLife.UI.ModContent
             _amountSlider.onValueChanged.AddListener((val) =>
             {
                 _valueLabel.Component.text = ((int)val).ToString();
-
             });
             
 
@@ -197,7 +196,14 @@ namespace BloodCraftEZLife.UI.ModContent
                 return;
 
             string itemName = _items[index].Name;
-            MessageService.EnqueueMessage(".pull \"" + itemName+"\" "+ _valueLabel.Text);
+            var panel = Plugin.UIManager.GetPanel<PopupPanel>();
+            if (panel != null)
+            {
+                string themessage = $"Pulling {_valueLabel.Text} {_items[index].Name}";
+                panel.ShowMessage(themessage, 3f,PopupPanel.MessageType.Small);
+            }
+            
+            MessageService.EnqueueMessage(".pull \"" + _items[index].Name + "\" "+ _valueLabel.Text);
             //Plugin.Console.SendCommand($".pull {itemName}");
         }
 

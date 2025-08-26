@@ -145,6 +145,11 @@ namespace BloodCraftEZLife.Services
             {
                 if (Input.GetKeyDown(kvp.Key))
                 {
+                    var panel = Plugin.UIManager.GetPanel<PopupPanel>();
+                    if (panel != null)
+                    {
+                        panel.ShowMessage(kvp.Value, 3f, PopupPanel.MessageType.Small);
+                    }
                     if (kvp.Value.Contains("|"))
                     {
                         foreach (var valuesplit in kvp.Value.Split("|"))

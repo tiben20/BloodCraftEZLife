@@ -56,7 +56,7 @@ namespace BloodCraftEZLife.Config
             var panel = Plugin.UIManager.GetPanel<PopupPanel>();
             if (panel != null)
             {
-                panel.ShowMessage("Killed " + name + " " + VBloodKills[name].ToString() + " times");
+                panel.ShowMessage("Killed " + name + " " + VBloodKills[name].ToString() + " times",7f);
             }
             thetime = Time.time;
             lastadded = name;
