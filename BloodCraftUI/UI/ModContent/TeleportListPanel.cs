@@ -2,6 +2,7 @@
 using System.Linq;
 using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Services;
+using BloodCraftEZLife.UI.CustomLib;
 using BloodCraftEZLife.UI.CustomLib.Cells;
 using BloodCraftEZLife.UI.CustomLib.Cells.Handlers;
 using BloodCraftEZLife.UI.CustomLib.Panel;
@@ -11,7 +12,13 @@ using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 using BloodCraftEZLife.Utils;
+using ProjectM;
+using ProjectM.UI;
+using Unity.Entities;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using static BloodCraftEZLife.Config.Settings;
 
 namespace BloodCraftEZLife.UI.ModContent
@@ -58,6 +65,9 @@ namespace BloodCraftEZLife.UI.ModContent
                 out _, new Color(0.03f, 0.03f, 0.03f, Opacity));
             _scrollPool.Initialize(_scrollDataHandler);
             UIFactory.SetLayoutElement(scrollObj, flexibleHeight: 9999);
+
+            //ProjectM.ButtonInputAction.ClanMenu
+            //ClanMenu
             RefreshData();
         }
 
@@ -89,6 +99,8 @@ namespace BloodCraftEZLife.UI.ModContent
         private void OnCellClicked(int dataIndex)
         {
             var famBox = TeleportsService._dataList[dataIndex];
+            if (famBox.Name == "Open social menu")
+                return;
 
             MessageService.EnqueueMessage(".stp tpr " + famBox.Name);
         }

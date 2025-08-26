@@ -53,8 +53,9 @@ namespace BloodCraftEZLife.Services.Data
         }
 
         private List<ItemModel> _itemPrefabs;
-        private List<ItemModel> _itemAlchemyPrefabs;
+        private List<ItemModelNoEntity> _itemStackablePrefabs;
         public List<ItemModel> Prefabs => _itemPrefabs ??= GetItemPrefabs();
+        public List<ItemModelNoEntity> ItemPrefabs => _itemStackablePrefabs ??= GetStackablePrefabs();
 
         public static void ListEntityComponents(Entity entity)
         {
@@ -77,10 +78,10 @@ namespace BloodCraftEZLife.Services.Data
             componentTypes.Dispose();
         }
 
-        public void FillList()
+        private List<ItemModelNoEntity> GetStackablePrefabs()
         {
-            _alchemys = new List<ItemModelNoEntity>();
-
+            
+            var result = new List<ItemModelNoEntity>();
             var gameData = Plugin._client.GetExistingSystemManaged<GameDataSystem>();
             var map = gameData.ItemHashLookupMap; // NativeParallelHashMap<PrefabGUID, ItemData>
             var keys = map.GetKeyArray(Allocator.Temp);
@@ -92,16 +93,21 @@ namespace BloodCraftEZLife.Services.Data
                     if (map.TryGetValue(key, out value))
                     {
 
-                        if (value.ItemCategory == ItemCategory.Alchemy)
+                        if (value.ItemType == ItemType.Stackable)
                         {
 
                             LogUtils.LogInfo(key.JsonPrefabName());
                             ItemModelNoEntity itemModelNoEnt = new ItemModelNoEntity();
-                            itemModelNoEnt.ItemCategory = ItemCategory.Alchemy;
+                            itemModelNoEnt.ItemCategory = value.ItemCategory;
                             itemModelNoEnt.ItemType = value.ItemType;
                             itemModelNoEnt.Name = key.JsonPrefabName();
                             itemModelNoEnt.PrefabGuid = key;
-                            _alchemys.Add(itemModelNoEnt);
+                            var manageddata = Plugin.Core.GameDataSystem.ManagedDataRegistry.GetOrDefault<ManagedItemData>(key);
+                            if (manageddata != null)
+                            {
+                                itemModelNoEnt.Icon = manageddata?.Icon;
+                            }
+                            result.Add(itemModelNoEnt);
                         }
                     }
                 }
@@ -110,6 +116,7 @@ namespace BloodCraftEZLife.Services.Data
             {
                 keys.Dispose();
             }
+            return result;
         }
 
         private List<ItemModel> GetItemPrefabs()
@@ -132,8 +139,14 @@ namespace BloodCraftEZLife.Services.Data
         private List<ItemModel> _weapons;
         public List<ItemModel> Weapons => _weapons ??= Prefabs.Where(itemModel => itemModel.EquipmentType == EquipmentType.Weapon).ToList();
 
+
         private List<ItemModelNoEntity> _alchemys;
-        public List<ItemModelNoEntity> Alchemys => _alchemys ;
+        public List<ItemModelNoEntity> Alchemys => _alchemys ??= ItemPrefabs.Where(itemModel => itemModel.ItemCategory == ItemCategory.Alchemy).ToList();
+        
+        public List<ItemModelNoEntity> Stackables(ItemCategory cat) => ItemPrefabs.Where(itemModel => itemModel.ItemCategory == cat || cat == ItemCategory.ALL).ToList();
+        
+
+
 
     }
 }

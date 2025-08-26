@@ -29,7 +29,12 @@ namespace BloodCraftEZLife.Services
         }
         public static readonly List<TeleportBoxData> _dataList = new();
 
-        public static List<TeleportBoxData> GetTeleportEntries() => _dataList;
+        public static List<TeleportBoxData> GetTeleportEntries()
+        {
+            if (_dataList.Count == 0)
+                _dataList.Add(new TeleportBoxData { Name = "Open social menu" });
+            return _dataList;
+        }
 
         public static void AddListEntry(string name)
         {

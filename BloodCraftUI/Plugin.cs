@@ -118,7 +118,7 @@ namespace BloodCraftEZLife
                 //we have the connection string so we can load the server specific json
                 FullscreenSettingService.InitialiseVbloodData(ProjectM.StunAnalytics.Client.GetServerId(EntityManager));;
                 IsGameDataInitialized = true;
-                
+                UIManager.ClientActivate(true);
             }
         }
         public static void UIOnInitialize()
@@ -133,6 +133,6 @@ namespace BloodCraftEZLife
     {
         public const string PLUGIN_GUID = "BloodCraftEZLife.PluginsUI";
         public const string PLUGIN_NAME = "BloodCraftEZLife";
-        public const string PLUGIN_VERSION = "0.5.0";
+        public const string PLUGIN_VERSION = "0.6.0";
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Services;
@@ -11,6 +12,7 @@ using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
+using ProjectM;
 using Stunlock.Core;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +22,7 @@ namespace BloodCraftEZLife.UI.ModContent
 {
     internal class PullItemsPanel : ResizeablePanelBase
     {
+        private Dictionary<string, ItemCategory> _itemCategorys = new Dictionary<string, ItemCategory>();
         //public override string  => "PullItemsList";
         public override int MinWidth => 340;
         public override int MinHeight => 180;
@@ -35,16 +38,18 @@ namespace BloodCraftEZLife.UI.ModContent
         public override string PanelId => "PullItemsList";
 
         public override PanelType PanelType => PanelType.PullPanel;
-
-        private LabelRef _valueLabel;
+        private TMPro.TMP_Dropdown _dropdown;
+        private InputFieldRef _valueLabel;
         public class PullItemData
         {
             public string Name { get; set; }
             public PrefabGUID PrefabGUID { get; set; }
-            public PullItemData(string name, PrefabGUID ingameGuid)
+            public Sprite Icon { get; set; }
+            public PullItemData(string name, PrefabGUID ingameGuid,Sprite icon)
             {
                 Name = name;
                 PrefabGUID = ingameGuid;
+                Icon = icon;
             }
         }
 
@@ -53,6 +58,7 @@ namespace BloodCraftEZLife.UI.ModContent
         public PullItemsPanel(UIBase owner) : base(owner)
         {
             SetTitle("Pull items from chest");
+            
         }
 
         protected override void LateConstructUI()
@@ -76,8 +82,8 @@ namespace BloodCraftEZLife.UI.ModContent
                 true, // childForceExpand
                 true, // controlChildHeight
                 true, // controlChildWidth
-                spacing: 8,
-                padding: new Vector4(8, 8, 8, 8)
+                spacing: 2,
+                padding: new Vector4(2, 2, 2, 2)
             );
 
             // Create the slider itself
@@ -87,18 +93,39 @@ namespace BloodCraftEZLife.UI.ModContent
                 out _amountSlider
             );
             _amountSlider.value = 1;
-            _amountSlider.m_MaxValue = 1000;
+            _amountSlider.m_MaxValue = 10000;
             _amountSlider.m_MinValue = 1;
-            UIFactory.SetLayoutElement(_amountSlider.gameObject, minHeight: 25);
+            UIFactory.SetLayoutElement(_amountSlider.gameObject, minHeight: 40,minWidth:180);
 
             // Optional: Add label to show value
-            _valueLabel = UIFactory.CreateLabel(sliderContainer, "SliderValueLabel", "1");
-
+            _valueLabel = UIFactory.CreateInputField(sliderContainer, "SliderValueLabel", "");
+            
+            _valueLabel.Component.text = ((int)1).ToString();
             _amountSlider.onValueChanged.AddListener((val) =>
             {
-                _valueLabel.TextMesh.text = ((int)val).ToString();
+                _valueLabel.Component.text = ((int)val).ToString();
 
             });
+            
+
+            _itemCategorys.Add("ALL", ItemCategory.ALL);
+            _itemCategorys.Add("Alchemy", ItemCategory.Alchemy);
+            _itemCategorys.Add("Materials", ItemCategory.Mineral);
+            _itemCategorys.Add("Tailoring", ItemCategory.Tailoring);
+            _itemCategorys.Add("Herb", ItemCategory.Herb);
+            _itemCategorys.Add("Fish", ItemCategory.Fish);
+            _itemCategorys.Add("Gems", ItemCategory.Gem);
+            
+            
+
+
+            var dropdownobj = UIFactory.CreateDropdown(ContentRoot,"DropdownCategory",out _dropdown, "All",18, OnDropdownChanged);
+            foreach (var cat in _itemCategorys) 
+            {
+                _dropdown.options.Add(new TMPro.TMP_Dropdown.OptionData(cat.Key));
+            }
+            UIFactory.SetLayoutElement(dropdownobj, minHeight: 40);
+
 
             // --- Scroll pool for items ---
             _scrollDataHandler = new ButtonListHandler<PullItemData, ButtonCell>(
@@ -119,11 +146,16 @@ namespace BloodCraftEZLife.UI.ModContent
             _scrollPool.Initialize(_scrollDataHandler);
             UIFactory.SetLayoutElement(scrollObj, flexibleHeight: 9999);
 
-            PopulateAllPullableItems(); // <-- Fill the panel with all items
 
+            PopulateAllPullableItems(ItemCategory.ALL);
             RefreshData();
         }
 
+        private void OnDropdownChanged(int index)
+        {
+            PopulateAllPullableItems(_itemCategorys[_dropdown.options[index].text]);
+            RefreshData();
+        }
         internal override void Reset()
         {
             _scrollDataHandler.RefreshData();
@@ -165,7 +197,7 @@ namespace BloodCraftEZLife.UI.ModContent
                 return;
 
             string itemName = _items[index].Name;
-            MessageService.EnqueueMessage(".pull \"" + itemName+"\" "+ _valueLabel.TextMesh.text);
+            MessageService.EnqueueMessage(".pull \"" + itemName+"\" "+ _valueLabel.Text);
             //Plugin.Console.SendCommand($".pull {itemName}");
         }
 
@@ -177,18 +209,21 @@ namespace BloodCraftEZLife.UI.ModContent
                 return;
             }
             cell.Button.ButtonText.text = _items[index].Name;
-            
+            cell.IconImage.sprite = _items[index].Icon;
+
+
         }
 
         #endregion
 
-        private void PopulateAllPullableItems()
+        private void PopulateAllPullableItems(ItemCategory cat)
         {
             _items.Clear();
-            Items.Instance.FillList();
-            foreach (var itm in Items.Instance.Alchemys)
+            
+            foreach (var itm in Items.Instance.Stackables(cat))
             {
-                _items.Add(new PullItemData(itm.Name, itm.PrefabGuid));
+                string newitm = itm.Name +" "+itm.ItemCategory.ToString();
+                _items.Add(new PullItemData(newitm, itm.PrefabGuid,itm.Icon));
                 
             }
             

@@ -25,6 +25,8 @@ using ProjectM.Gameplay.Systems;
 using BloodCraftEZLife.UI;
 using Stunlock.Core;
 using UnityEngine.Events;
+using Epic.OnlineServices;
+using UnityEngine.InputSystem;
 
 namespace BloodCraftEZLife.Patches;
 
@@ -54,6 +56,24 @@ internal static class FullscreenPatch
 
         
     }
+
+    /*[HarmonyPatch(typeof(InputActionSystem), nameof(InputActionSystem.OnUpdate))]
+    [HarmonyPrefix]
+    static void OnUpdatePrefix(InputActionSystem __instance)
+    {
+        foreach (var key in __instance._ButtonInputActions)
+        {
+            if (key.Value == ButtonInputAction.ClanMenu)
+            {
+                key.Key.actionMap.actions[0].Enable();
+                foreach (var act in key.Key.controls)
+                {
+                    LogUtils.LogInfo(act.aliases.ToString());
+                }
+                LogUtils.LogInfo("InputActionSystem OnUpdatePrefix");
+            }
+        }
+    }*/
 
     [HarmonyPatch(typeof(FullscreenMenuMapper), nameof(FullscreenMenuMapper.OnStartRunning))]
     [HarmonyPostfix]

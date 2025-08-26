@@ -73,12 +73,20 @@ public class BCUIManager : UIManagerBase
        
     }
 
+    public void ClientActivate(bool active)
+    {
+        ContentPanel cpan = (ContentPanel)_contentPanel;
+        cpan.ToggleGameObject(active, "TeleportListButton");
+        cpan.ToggleGameObject(active, "PullButton");
+    }
+
     public void AddPanel(PanelType type, string param = null)
     {
         switch (type)
         {
             case PanelType.Base:
                 _contentPanel = new ContentPanel(UiBase);
+                ClientActivate(false);
                 break;
             case PanelType.PopupPanel:
                 {

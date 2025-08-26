@@ -2,6 +2,7 @@
 using Unity.Entities;
 using BloodCraftEZLife.Utils;
 using Stunlock.Core;
+using UnityEngine;
 
 namespace BloodCraftEZLife.Services.Data
 {
@@ -16,6 +17,7 @@ namespace BloodCraftEZLife.Services.Data
         public ItemCategory ItemCategory { get; set; }
         public ItemType ItemType { get; set; }
         public EquipmentType EquipmentType { get; set; }
+        public Sprite Icon { get; set; }
     }
 
     public partial class ItemModel : EntityModel

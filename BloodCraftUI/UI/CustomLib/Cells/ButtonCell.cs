@@ -3,6 +3,7 @@ using BloodCraftEZLife.Config;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.Utils;
+using Il2CppSystem.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
     public class ButtonCell : CellBase, IFormedCell
     {
         public ButtonRef Button { get; set; }
+        public Image IconImage;
         public int CurrentDataIndex { get; set; }
         public override float DefaultHeight => 25f;
 
@@ -27,6 +29,10 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             UIFactory.SetLayoutElement(UIRoot, minWidth: 100, flexibleWidth: 9999, minHeight: 25, flexibleHeight: 0);
 
             UIRoot.SetActive(false);
+            // ITEM ICON
+            var imageIcon = UIFactory.CreateUIObject("IconItem-", UIRoot);
+            IconImage = imageIcon.AddComponent<Image>();
+            UIFactory.SetLayoutElement(imageIcon, minWidth: 60, minHeight: 60, flexibleHeight: 0, preferredHeight: 60, flexibleWidth: 0, preferredWidth: 60);
 
             Button = UIFactory.CreateButton(UIRoot, "NameButton", "Name", new ColorBlock
             {
