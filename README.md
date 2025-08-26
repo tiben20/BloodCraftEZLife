@@ -16,6 +16,8 @@ Changelog:
 0.5.0
 Fixed scaling on new file config
 added delete hotkey
-
+0.6.0
+Added msg for commande sended
+Finished the pull panel
 
 Sourcecode: https://github.com/tiben20/BloodCraftEZLife

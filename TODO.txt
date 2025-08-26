@@ -1,3 +1,3 @@
 TODO
- - Check if box list parsing finishes
- - Move commands, conditions and regex to json config
+-Add chat window
+-Counter for people dead around you

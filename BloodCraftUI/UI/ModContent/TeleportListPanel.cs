@@ -101,7 +101,12 @@ namespace BloodCraftEZLife.UI.ModContent
             var famBox = TeleportsService._dataList[dataIndex];
             if (famBox.Name == "Open social menu")
                 return;
-
+            
+            var panel = Plugin.UIManager.GetPanel<PopupPanel>();
+            if (panel != null)
+            {
+                panel.ShowMessage("Teleporting to "+famBox.Name, 3f, PopupPanel.MessageType.Small);
+            }
             MessageService.EnqueueMessage(".stp tpr " + famBox.Name);
         }
 
@@ -116,6 +121,7 @@ namespace BloodCraftEZLife.UI.ModContent
                 return;
             }
             cell.Button.ButtonText.text = TeleportsService._dataList[index].Name;
+            cell.IconImage.gameObject.SetActive(false);
         }
 
         #endregion
