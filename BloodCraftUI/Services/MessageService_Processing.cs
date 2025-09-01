@@ -1,5 +1,5 @@
 ﻿using ProjectM.Network;
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -49,12 +49,24 @@ namespace BloodCraftEZLife.Services
 
         public static bool BoxContentFlag { get; set; }
 
-        internal static void HandleMessage(Entity entity)
+
+        internal static void HandleMessage(Entity entity,string whispername)
         {
             var chatMessage = entity.Read<ChatMessageServerEvent>();
             var message = chatMessage.MessageText.Value;
+            if (chatMessage.MessageType.Equals(ServerChatMessageType.WhisperFrom))
+            {
+                ConfigSaveManager.ChatMessages.AddMessage(whispername, message, chatMessage.TimeUTC,true);
+                
+                ConfigSaveManager.SavePerServer();
 
+            }
+            if (chatMessage.MessageType.Equals(ServerChatMessageType.WhisperTo))
+            {
+                ConfigSaveManager.ChatMessages.AddMessage(whispername, message, chatMessage.TimeUTC,false);
+                ConfigSaveManager.SavePerServer();
 
+            }
             if (chatMessage.MessageType.Equals(ServerChatMessageType.System))
             {
                 if (message.Contains("has requested to teleport") && Settings.IsAutoTeleportEnabled)

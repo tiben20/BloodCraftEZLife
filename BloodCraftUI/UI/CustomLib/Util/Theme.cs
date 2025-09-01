@@ -88,9 +88,9 @@ public static class Theme
         ToggleNormal = new Color32(16, 24, 32, 255);
         ToggleCheckMark = new Color32(90, 155, 213, 255);
         ViewportBackground = new Color(0.07f, 0.07f, 0.07f, Opacity);
-        ScrollbarNormal = new Color(0.4f, 0.4f, 0.4f, Opacity);
-        ScrollbarHighlighted = new Color(0.5f, 0.5f, 0.5f, Opacity);
-        ScrollbarPressed = new Color(0.3f, 0.3f, 0.3f, Opacity);
+        ScrollbarNormal = new Color(0.65f, 0.65f, 0.65f, Opacity);
+        ScrollbarHighlighted = new Color(0.85f, 0.85f, 0.85f, Opacity);
+        ScrollbarPressed = new Color(0.95f, 0.95f, 0.95f, Opacity);
         ScrollbarDisabled = new Color(0.5f, 0.5f, 0.5f, Opacity);
 
         Level1 = new Color(0.64f, 0, 0, Opacity);

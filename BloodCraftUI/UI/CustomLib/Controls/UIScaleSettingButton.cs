@@ -1,6 +1,10 @@
-using System.Collections.Generic;
+using BloodCraftEZLife.Config;
+using BloodCraftEZLife.UI.CustomLib.Controls;
+using BloodCraftEZLife.UI.ModContent;
 using BloodCraftEZLife.UI.UniverseLib.UI;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace BloodCraftEZLife.UI.CustomLib.Controls;
 
@@ -15,7 +19,7 @@ public class UIScaleSettingButton : SettingsButtonBase
 
     private int _scaleIndex;
 
-    public UIScaleSettingButton() : base("UIScale", "small")
+    public UIScaleSettingButton() : base("UIScale", "normal")
     {
         _scaleIndex = State switch
         {
@@ -43,13 +47,30 @@ public class UIScaleSettingButton : SettingsButtonBase
 
     private void ApplyScale()
     {
-        foreach (var uiBase in UniversalUI.uiBases)
+
+        var panel = Plugin.UIManager.GetPanel<PullItemsPanel>();
+        if (panel != null)
         {
-            //temp removed
-            //uiBase.Panels.PanelHolder.GetComponent<RectTransform>().localScale = new Vector3(_scales[_scaleIndex].Item2, _scales[_scaleIndex].Item2, 1f);
-            uiBase.Panels.PanelHolder.GetComponent<RectTransform>().localScale = new Vector3(_scales[0].Item2, _scales[0].Item2, 1f);
-            //uiBase.Panels.UpdatePanelsPlacement();
-            uiBase.Panels.ValidatePanels();
+            panel.ContentRoot.GetComponent<RectTransform>().localScale = new Vector3(_scales[_scaleIndex].Item2, _scales[_scaleIndex].Item2, 1f);
+            panel.EnsureValidPosition();
+        }
+
+        var panel2 = Plugin.UIManager.GetPanel<ChatPanel>();
+        if (panel2 != null)
+        {
+            panel2.ContentRoot.GetComponent<RectTransform>().localScale = new Vector3(_scales[_scaleIndex].Item2, _scales[_scaleIndex].Item2, 1f);
+            panel2.EnsureValidPosition();
+        }
+
+        var panel3 = Plugin.UIManager.GetPanel<ContentPanel>();
+        if (panel3 != null)
+            panel3.ContentRoot.GetComponent<RectTransform>().localScale = new Vector3(_scales[_scaleIndex].Item2, _scales[_scaleIndex].Item2, 1f);
+
+        var panel4 = Plugin.UIManager.GetPanel<TeleportListPanel>();
+        if (panel4 != null)
+        { 
+            panel4.ContentRoot.GetComponent<RectTransform>().localScale = new Vector3(_scales[_scaleIndex].Item2, _scales[_scaleIndex].Item2, 1f);
+            panel4.EnsureValidPosition();
         }
     }
 }

@@ -39,8 +39,9 @@ namespace BloodCraftEZLife.Services
 
         public static void Initialise()
         {
-            SettingsHotkeys h = ConfigSaveManager.LoadHotkeys();
-            bindings = h.HotKeys;
+            
+            ConfigSaveManager.LoadGlobal();
+            bindings = ConfigSaveManager.Hotkeys;
         }
         public static List<Hotkey> GetHotkeys()
         {
@@ -113,7 +114,7 @@ namespace BloodCraftEZLife.Services
 
         public static void SaveHotkeys()
         {
-            ConfigSaveManager.Save(bindings);
+            ConfigSaveManager.SaveGlobal(bindings);
         }
 
         public static void Update()

@@ -12,14 +12,7 @@ using UnityEngine;
 namespace BloodCraftEZLife.Config
 {
 
-    public class SettingsHotkeys
-    {
-        public Dictionary<KeyCode, string> HotKeys { get; set; }
-        public SettingsHotkeys()
-        {
-            HotKeys = new Dictionary<KeyCode, string> { };
-        }
-    }
+
     public class SettingsVblood
     {
         float thetime;
@@ -64,58 +57,5 @@ namespace BloodCraftEZLife.Config
 
     }
 
-    public static class ConfigSaveManager
-    {
-        private static string SavePath;
-
-
-        public static void Save(SettingsVblood data)
-        {
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonoutput = JsonSerializer.Serialize(data, options);
-            File.WriteAllText(SavePath, jsonoutput);
-
-        }
-
-        public static void Save(Dictionary<KeyCode, string> keys)
-        {
-            SettingsHotkeys data = new SettingsHotkeys();
-            data.HotKeys = keys;
-            
-            string thepath = System.IO.Path.Combine(Settings.CONFIG_PATH, "hotkeys") + ".json";
-            var options = new JsonSerializerOptions { WriteIndented = true };
-            string jsonoutput = JsonSerializer.Serialize(data, options);
-            File.WriteAllText(thepath, jsonoutput);
-
-        }
-
-        public static SettingsHotkeys LoadHotkeys()
-        {
-            string thepath = System.IO.Path.Combine(Settings.CONFIG_PATH, "hotkeys") + ".json";
-            if (File.Exists(thepath))
-            {
-                string json = File.ReadAllText(thepath);
-                return JsonSerializer.Deserialize<SettingsHotkeys>(json);
-            }
-            else
-            {
-                return new SettingsHotkeys(); // empty if none
-            }
-
-        }
-
-        public static SettingsVblood Load(string flepath)
-        {
-            SavePath = flepath;
-            if (File.Exists(SavePath))
-            {
-                string json = File.ReadAllText(SavePath);
-                return JsonSerializer.Deserialize<SettingsVblood>(json);
-            }
-            else
-            {
-                return new SettingsVblood(); // empty if none
-            }
-        }
-    }
+    
 }

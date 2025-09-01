@@ -8,11 +8,9 @@ using BloodCraftEZLife.UI.ModContent.Data;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.Utils;
-using MagicaCloth;
+
 using ProjectM;
-using Stunlock.Core;
-using TMPro;
-using Unity.Collections;
+
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
@@ -148,7 +146,29 @@ namespace BloodCraftEZLife.UI.ModContent
 
             };
 
+            var chatButton = UIFactory.CreateButton(_uiAnchor, "ChatButton", "Chat");
+            UIFactory.SetLayoutElement(chatButton.GameObject, ignoreLayout: false, minWidth: 80, minHeight: 25);
+            _objectsList.Add(chatButton.GameObject);
+            chatButton.OnClick = () =>
+            {
+                ChatPanel panel;
+                panel = Plugin.UIManager.GetPanel<ChatPanel>();
+                if (panel != null)
+                {
+                    panel.Toggle();
+                    return;
 
+                }
+                Plugin.UIManager.AddPanel(PanelType.ChatPanel);
+
+
+                panel = Plugin.UIManager.GetPanel<ChatPanel>();
+                if (panel != null)
+                {
+                    panel.RefreshData();
+                }
+
+            };
             var scaleButton = UIFactory.CreateButton(_uiAnchor, "ScaleButton", "*");
             UIFactory.SetLayoutElement(scaleButton.GameObject, ignoreLayout: false, minWidth: 25, minHeight: 25);
             _objectsList.Add(scaleButton.GameObject);

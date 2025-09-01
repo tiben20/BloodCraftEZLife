@@ -17,7 +17,6 @@ namespace BloodCraftEZLife.Utils
 
         private static Core _instance;
         internal static Core Instance => _instance ??= new Core();
-        public InputActionSystem InputActionSystem => Plugin._client.GetExistingSystemManaged<InputActionSystem>();
         public PrefabCollectionSystem PrefabCollectionSystem => Plugin._client.GetExistingSystemManaged<PrefabCollectionSystem>();
         public GameDataSystem GameDataSystem => Plugin._client.GetExistingSystemManaged<GameDataSystem>();
         public ManagedDataRegistry ManagedDataRegistry => GameDataSystem.ManagedDataRegistry;

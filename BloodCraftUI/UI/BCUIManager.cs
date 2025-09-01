@@ -78,6 +78,7 @@ public class BCUIManager : UIManagerBase
         ContentPanel cpan = (ContentPanel)_contentPanel;
         cpan.ToggleGameObject(active, "TeleportListButton");
         cpan.ToggleGameObject(active, "PullButton");
+        cpan.ToggleGameObject(active, "ChatButton");
     }
 
     public void AddPanel(PanelType type, string param = null)
@@ -94,6 +95,21 @@ public class BCUIManager : UIManagerBase
                     if (panel == null)
                     {
                         var item = new PopupPanel(UiBase);
+                        UIPanels.Add(item);
+                    }
+                    else
+                    {
+                        panel.SetActive(true);
+                    }
+
+                    break;
+                }
+            case PanelType.ChatPanel:
+                {
+                    var panel = GetPanel<ChatPanel>();
+                    if (panel == null)
+                    {
+                        var item = new ChatPanel(UiBase);
                         UIPanels.Add(item);
                     }
                     else

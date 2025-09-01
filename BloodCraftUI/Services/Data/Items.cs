@@ -95,8 +95,6 @@ namespace BloodCraftEZLife.Services.Data
 
                         if (value.ItemType == ItemType.Stackable)
                         {
-
-                            LogUtils.LogInfo(key.JsonPrefabName());
                             ItemModelNoEntity itemModelNoEnt = new ItemModelNoEntity();
                             itemModelNoEnt.ItemCategory = value.ItemCategory;
                             itemModelNoEnt.ItemType = value.ItemType;
@@ -132,7 +130,6 @@ namespace BloodCraftEZLife.Services.Data
                     result.Add(itemModel);
                 }
             }
-            
             return result;
         }
 
@@ -142,8 +139,21 @@ namespace BloodCraftEZLife.Services.Data
 
         private List<ItemModelNoEntity> _alchemys;
         public List<ItemModelNoEntity> Alchemys => _alchemys ??= ItemPrefabs.Where(itemModel => itemModel.ItemCategory == ItemCategory.Alchemy).ToList();
-        
-        public List<ItemModelNoEntity> Stackables(ItemCategory cat) => ItemPrefabs.Where(itemModel => itemModel.ItemCategory == cat || cat == ItemCategory.ALL).ToList();
+
+        public List<ItemModelNoEntity> Stackables(ItemCategory cat)
+        {
+            List<ItemModelNoEntity> res = new List<ItemModelNoEntity>();
+            foreach (var itm in ItemPrefabs)
+            {
+                if ((itm.ItemCategory & cat) != 0)
+                {
+                    res.Add(itm);
+                }
+            
+            }
+            return res;
+            //ItemPrefabs.Where(itemModel => itemModel.ItemCategory == cat || cat == ItemCategory.ALL).ToList();
+        }
         
 
 

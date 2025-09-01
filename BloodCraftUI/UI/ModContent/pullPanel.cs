@@ -204,7 +204,6 @@ namespace BloodCraftEZLife.UI.ModContent
             }
             
             MessageService.EnqueueMessage(".pull \"" + _items[index].Name + "\" "+ _valueLabel.Text);
-            //Plugin.Console.SendCommand($".pull {itemName}");
         }
 
         private void SetCell(ButtonCell cell, int index)
@@ -219,7 +218,6 @@ namespace BloodCraftEZLife.UI.ModContent
 
 
         }
-
         #endregion
 
         private void PopulateAllPullableItems(ItemCategory cat)
@@ -228,9 +226,8 @@ namespace BloodCraftEZLife.UI.ModContent
             
             foreach (var itm in Items.Instance.Stackables(cat))
             {
-                string newitm = itm.Name +" "+itm.ItemCategory.ToString();
+                string newitm = itm.Name;
                 _items.Add(new PullItemData(newitm, itm.PrefabGuid,itm.Icon));
-                
             }
             
         }

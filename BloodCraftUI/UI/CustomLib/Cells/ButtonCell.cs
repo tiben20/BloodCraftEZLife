@@ -1,12 +1,14 @@
-﻿using System;
-using BloodCraftEZLife.Config;
+﻿using BloodCraftEZLife.Config;
+using BloodCraftEZLife.UI.CustomLib.Util;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.Utils;
 using Il2CppSystem.Data;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 
 namespace BloodCraftEZLife.UI.CustomLib.Cells
 {
@@ -16,6 +18,16 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
         public Image IconImage;
         public int CurrentDataIndex { get; set; }
         public override float DefaultHeight => 25f;
+        public void DoSelect(bool selected)
+        {
+            ColorBlock colors = Button.Component.colors;
+            if (selected)
+
+                colors.normalColor = new Color(0.65f, 0.35f, 0.26f).GetTransparent(Settings.UITransparency);
+            else
+                colors.normalColor = new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency);
+            Button.Component.colors = colors;
+        }
 
         public override GameObject CreateContent(GameObject parent)
         {
@@ -39,7 +51,8 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
                 normalColor = new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency),
                 disabledColor = new Color(0.3f, 0.3f, 0.3f).GetTransparent(Settings.UITransparency),
                 highlightedColor = new Color(0.16f, 0.16f, 0.16f).GetTransparent(Settings.UITransparency),
-                pressedColor = new Color(0.05f, 0.05f, 0.05f).GetTransparent(Settings.UITransparency)
+                pressedColor = new Color(0.05f, 0.05f, 0.05f).GetTransparent(Settings.UITransparency),
+                selectedColor = new Color(0.65f, 0.35f, 0.26f).GetTransparent(Settings.UITransparency)
             });
             UIFactory.SetLayoutElement(Button.Component.gameObject, flexibleWidth: 9999, minHeight: 25, flexibleHeight: 0);
             var buttonText = Button.Component.GetComponentInChildren<TextMeshProUGUI>();

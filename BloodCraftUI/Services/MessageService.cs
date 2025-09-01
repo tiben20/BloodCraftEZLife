@@ -28,6 +28,7 @@ namespace BloodCraftEZLife.Services
         private static Entity _localUser = Entity.Null;
         private static bool _isInitialized;
 
+
         private static readonly NetworkEventType NetworkEventType = new()
         {
             IsAdminEvent = false,

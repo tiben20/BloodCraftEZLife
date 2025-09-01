@@ -47,6 +47,17 @@ public class DataHeightCache<T> where T : ICell
     /// <summary>Get the first range (division of DefaultHeight) which the position appears in.</summary>
     private int GetRangeFloorOfPosition(float position) => (int)Math.Floor((decimal)position / (decimal)DefaultHeight);
 
+    public bool TryGetIndexItem(int index, out DataViewInfo item)
+    {
+        if (index < 0 || index >= heightCache.Count)
+        {
+            item = default;
+            return false;
+        }
+        item = heightCache[index];
+        return true;
+    }
+
     public int GetFirstDataIndexAtPosition(float desiredHeight)
     {
         if (!heightCache.Any())

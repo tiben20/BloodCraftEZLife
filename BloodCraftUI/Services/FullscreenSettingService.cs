@@ -1,14 +1,21 @@
-﻿using UnityEngine.UI;
-using UnityEngine;
-using ProjectM.UI;
-using BloodCraftEZLife.Utils;
-using ProjectM;
-using BloodCraftEZLife.UI.ModContent.Data;
+﻿using BloodCraftEZLife.Config;
 using BloodCraftEZLife.UI.ModContent;
-using BloodCraftEZLife.Config;
+using BloodCraftEZLife.UI.ModContent.Data;
+using BloodCraftEZLife.Utils;
+using Il2CppSystem;
+using Newtonsoft.Json;
+using ProjectM;
+using ProjectM.Network;
+using ProjectM.UI;
+using System;
+//using System.Text.Json;
+//using System.Text.Json.Serialization;
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEngine;
+using UnityEngine.UI;
 using static Il2CppSystem.Data.Common.ObjectStorage;
+using Object = UnityEngine.Object;
 
 
 namespace BloodCraftEZLife.Services
@@ -38,8 +45,6 @@ namespace BloodCraftEZLife.Services
         public static Vector2 AnchorRect;
         public static Vector2 ResFactor;
         
-
-        public static SettingsVblood VbloodList;
         internal static EntityQuery VBloodCarriers;
 
         
@@ -50,9 +55,13 @@ namespace BloodCraftEZLife.Services
             
             // Load or create
             string thepath = System.IO.Path.Combine(Settings.CONFIG_PATH, uniqueid) + ".json";
-            VbloodList = ConfigSaveManager.Load(thepath);
+            ConfigSaveManager.LoadPerServerSettings(thepath);
+            //ConfigSaveManager.ChatMessages.AddMessage("Alice", "Hello!", System.DateTime.UtcNow);
+            //ConfigSaveManager.ChatMessages.AddMessage("Bob", "Hi Alice!", System.DateTime.UtcNow);
+            //ConfigSaveManager.ChatMessages.AddMessage("Alice", "How are you?", System.DateTime.UtcNow);
 
 
+            ConfigSaveManager.SavePerServer();
             UpdateVbloodQuery();
 
         }
@@ -65,12 +74,6 @@ namespace BloodCraftEZLife.Services
                 None = new[] { ComponentType.ReadOnly<PlayerCharacter>() }
             });
 
-        }
-        //Unitialise vbloods
-        public static void SaveVbloodData()
-        {
-            // Save
-            ConfigSaveManager.Save(VbloodList);
         }
 
         //Header clicked
@@ -95,6 +98,9 @@ namespace BloodCraftEZLife.Services
         /// <returns>A tuple with the cloned panel and its option templates.</returns>
         public static void ClonePanelAndGetTemplates(OptionsPanel_Controls originalPanel)
         {
+            if (_templates != null)
+                return;
+            LogUtils.LogInfo("Cloning buttons");
             //UnityHelper.PrintChilds(originalPanel.transform,1);
             
             _templates = new OptionTemplates();
@@ -107,6 +113,7 @@ namespace BloodCraftEZLife.Services
             _templates.Slider = originalPanel.SliderPrefab;
             _templates.Selector = originalPanel.SelectorPrefab;
             _templates.Button = originalPanel.ButtonPrefab;
+            
             //Transform toptslider = originalPanel.transform.FindChild("Options_Control_Slider").gameObject;
         }
 
@@ -158,8 +165,8 @@ namespace BloodCraftEZLife.Services
                                 if (teamid.Clan == 2)
                                 {
                                     var vbloodString = comp.Source.GetLocalizedName();
-                                    VbloodList.AddVbloodKill(vbloodString);
-                                    SaveVbloodData();
+                                    ConfigSaveManager.VBloodKills.AddVbloodKill(vbloodString);
+                                    ConfigSaveManager.SavePerServer();
                                 }
                                 
                             }

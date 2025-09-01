@@ -72,16 +72,9 @@ namespace BloodCraftEZLife.UI.ModContent
             // Set anchor and pivot to middle - upper - right
             
             rect.sizeDelta = new Vector2(400f, 70f);
-            //rect.anchoredPosition= new Vector2(Owner.Scaler.referenceResolution.x/2f*-1f, Owner.Scaler.referenceResolution.y/3f);
-            
             //1440
 
-            // Best scale found so far for different resolutions
-            //rect.localScale = new Vector3(0.7f, 0.7f, 1f);
-
             // --- Small message label (bottom-left) ---
-            
-
             _smallMessageLabel.TextMesh.m_fontWeight = FontWeight.Bold;
 
 

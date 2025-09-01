@@ -34,7 +34,7 @@ internal static class ClientChatPatch
 
         if (__instance == null)
             return;
-
+        
         var entities = __instance._ReceiveChatMessagesQuery.ToEntityArray(Allocator.Temp);
         
         try
@@ -42,8 +42,9 @@ internal static class ClientChatPatch
             foreach (var entity in entities)
             {
                 if (!entity.Has<ChatMessageServerEvent>()) continue;
+                //_WhisperUserName    "Ilise" string
 
-                MessageService.HandleMessage(entity);
+                MessageService.HandleMessage(entity, __instance._WhisperUserName);
             }
         }
         finally

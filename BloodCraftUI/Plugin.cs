@@ -133,6 +133,6 @@ namespace BloodCraftEZLife
     {
         public const string PLUGIN_GUID = "BloodCraftEZLife.PluginsUI";
         public const string PLUGIN_NAME = "BloodCraftEZLife";
-        public const string PLUGIN_VERSION = "0.6.0";
+        public const string PLUGIN_VERSION = "0.7.0";
     }
 }

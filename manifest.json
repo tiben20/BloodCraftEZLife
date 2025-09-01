@@ -2,7 +2,7 @@
   "namespace": "BloodCraftEZLife",
   "name": "BloodCraftEZLife",
   "description": "Make way easier to play pve bloodcraft server",
-  "version_number": "0.5.0",
+  "version_number": "0.7.1",
   "dependencies": [
     "BepInEx-BepInExPack_V_Rising-1.733.2"
   ],

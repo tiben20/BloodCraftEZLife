@@ -12,5 +12,6 @@ public enum PanelType
     PopupPanel,
     HotkeysPanel,
     InputBox,
+    ChatPanel,
     TestPanel
 }

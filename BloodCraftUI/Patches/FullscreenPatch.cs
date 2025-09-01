@@ -30,10 +30,10 @@ using UnityEngine.InputSystem;
 
 namespace BloodCraftEZLife.Patches;
 
+
 [HarmonyPatch]
 internal static class FullscreenPatch
 {
-
 
     [HarmonyPatch(typeof(ClanMenu), nameof(ClanMenu._StunShared_UI_IInitializeableUI_InitializeUI_b__137_0))]
     [HarmonyPostfix]
@@ -46,6 +46,7 @@ internal static class FullscreenPatch
         TeleportsService.AddClanMember(data.Name);
     }
 
+
     [HarmonyPatch(typeof(ClanMenu), nameof(ClanMenu._StunShared_UI_IInitializeableUI_InitializeUI_b__137_3))]
     [HarmonyPostfix]
     private static void ClanMenu3(ClanMenu __instance, ClanMenu_MemberEntry entry, ClanMenu_MemberEntry.Data data)
@@ -56,24 +57,6 @@ internal static class FullscreenPatch
 
         
     }
-
-    /*[HarmonyPatch(typeof(InputActionSystem), nameof(InputActionSystem.OnUpdate))]
-    [HarmonyPrefix]
-    static void OnUpdatePrefix(InputActionSystem __instance)
-    {
-        foreach (var key in __instance._ButtonInputActions)
-        {
-            if (key.Value == ButtonInputAction.ClanMenu)
-            {
-                key.Key.actionMap.actions[0].Enable();
-                foreach (var act in key.Key.controls)
-                {
-                    LogUtils.LogInfo(act.aliases.ToString());
-                }
-                LogUtils.LogInfo("InputActionSystem OnUpdatePrefix");
-            }
-        }
-    }*/
 
     [HarmonyPatch(typeof(FullscreenMenuMapper), nameof(FullscreenMenuMapper.OnStartRunning))]
     [HarmonyPostfix]
@@ -102,6 +85,7 @@ internal static class FullscreenPatch
     [HarmonyPostfix]
     private static void _FullscreenMenuOnUpdate(MainMenuNewView __instance)
     {
+        LogUtils.LogInfo("MainMenuNewView Awake");
         //hidding our config panels when pressed escape while in the settings pannel
         var panel = Plugin.UIManager.GetPanel<SettingsPanel>();
         if (panel != null)
@@ -140,6 +124,26 @@ internal static class FullscreenPatch
             group.blocksRaycasts = true;
         }
         HideSettingsPanel(null);
+    }
+
+    [HarmonyPatch(typeof(OptionsMenu), nameof(OptionsMenu.OnClick_BackButton))]
+    [HarmonyPostfix]
+    private static void OptionsMenuOnBackButton(OptionsMenu __instance)
+    {
+        var panel = Plugin.UIManager.GetPanel<SettingsPanel>();
+        if (panel != null)
+        {
+            panel.SetActive(false);
+            return;
+
+        }
+        var panel2 = Plugin.UIManager.GetPanel<HotkeysPanel>();
+        if (panel2 != null)
+        {
+            panel2.SetActive(false);
+            return;
+
+        }
     }
 
     [HarmonyPatch(typeof(OptionsMenu), nameof(OptionsMenu.SwitchView))]
@@ -189,26 +193,18 @@ internal static class FullscreenPatch
             });
 
             //get the button templates
-            //FullscreenSettingService.ClonePanelAndGetTemplates(__instance.GeneralPanel);
-            
             FullscreenSettingService.ClonePanelAndGetTemplates(__instance.ControlsPanel);
+            //SimpleStunButton simpleButton2 = __instance.BackButton;
+            //_templates.Button = UnityEngine.Object.Instantiate(simpleButton2.gameObject);
             
+            
+
+
         }
         
 
     }
 
-    /*[HarmonyPatch(typeof(ProjectM.UI.RebindingMenu), nameof(ProjectM.UI.RebindingMenu.Awake))]
-    [HarmonyPostfix]
-    private static void RebindingMenuAwake(RebindingMenu __instance)
-    {
-        LogUtils.LogError("Starting here");
-        UnityHelper.PrintChilds(__instance.ControlsInputEntryPrefab.transform, 1, true);
-        UnityHelper.DumpUI(__instance.ControlsInputEntryPrefab.gameObject);
-        FullscreenSettingService._templates.Binding = __instance.ControlsInputEntryPrefab;
-        
-
-    }*/
     private static void HideSettingsPanel(SimpleStunButton btn)
     {
         if (btn != null)

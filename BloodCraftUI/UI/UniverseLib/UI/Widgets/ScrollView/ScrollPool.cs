@@ -692,15 +692,15 @@ public class ScrollPool<T> : UIBehaviourModel, IEnumerable<CellInfo> where T : I
         float val = 0f;
         if (TotalDataHeight > 0f)
         {
-            float topPos = 0f;
-            if (HeightCache.Count > 0)
-                topPos = HeightCache[TopDataIndex].startPosition;
+            float topPos =
+                HeightCache.TryGetIndexItem(TopDataIndex, out var item) ?
+                item.startPosition : 0f;
 
             float scrollPos = topPos + Content.anchoredPosition.y;
 
             float viewHeight = TotalDataHeight - Viewport.rect.height;
             if (viewHeight != 0.0f)
-                val = (float)((decimal)scrollPos / (decimal)viewHeight);
+                val = (float)((decimal)scrollPos / (decimal)(viewHeight));
             else
                 val = 0f;
         }
