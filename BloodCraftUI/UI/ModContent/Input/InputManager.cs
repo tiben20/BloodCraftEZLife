@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BloodCraftEZLife.UI.CustomLib;
+namespace BloodCraftEZLife.UI.ModContent.Input;
 
 public static class InputManager
 {
@@ -8,8 +8,8 @@ public static class InputManager
 
     public static void Update()
     {
-        Mouse.Position = Input.mousePosition;
-        Mouse.ScrollDelta = Input.mouseScrollDelta;
+        Mouse.Position = UnityEngine.Input.mousePosition;
+        Mouse.ScrollDelta = UnityEngine.Input.mouseScrollDelta;
         Mouse.Button0 = GetButtonState(0);
         Mouse.Button1 = GetButtonState(1);
         Mouse.Button2 = GetButtonState(2);
@@ -17,15 +17,15 @@ public static class InputManager
 
     private static MouseState.ButtonState GetButtonState(int button)
     {
-        if (Input.GetMouseButtonUp(button))
+        if (UnityEngine.Input.GetMouseButtonUp(button))
         {
             return MouseState.ButtonState.Up | MouseState.ButtonState.Released;
         }
-        else if (Input.GetMouseButtonDown(button))
+        else if (UnityEngine.Input.GetMouseButtonDown(button))
         {
             return MouseState.ButtonState.Down | MouseState.ButtonState.Clicked;
         }
-        else if (Input.GetMouseButton(button))
+        else if (UnityEngine.Input.GetMouseButton(button))
         {
             return MouseState.ButtonState.Down;
         }

@@ -2,7 +2,7 @@ using System;
 using BloodCraftEZLife.Utils;
 using UnityEngine;
 
-namespace BloodCraftEZLife.UI.CustomLib.Util;
+namespace BloodCraftEZLife.UI.ModContent.Util;
 
 public static class Theme
 {

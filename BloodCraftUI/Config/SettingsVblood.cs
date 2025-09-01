@@ -1,17 +1,12 @@
-﻿using BloodCraftEZLife.Services;
-using BloodCraftEZLife.UI.CustomLib.Util;
-using BloodCraftEZLife.UI.ModContent;
-using Epic.OnlineServices;
-using ProjectM;
+﻿using BloodCraftEZLife.UI.ModContent;
 using System.Collections.Generic;
-using System.IO;
-
-using System.Text.Json;
-using System.Xml;
 using UnityEngine;
 namespace BloodCraftEZLife.Config
 {
-
+    public class SettingsVbloodParent
+    {
+        public SettingsVblood VBloods { get; set; } = new();
+    }
 
     public class SettingsVblood
     {

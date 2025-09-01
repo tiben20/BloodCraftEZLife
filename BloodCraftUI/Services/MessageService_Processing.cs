@@ -50,23 +50,27 @@ namespace BloodCraftEZLife.Services
         public static bool BoxContentFlag { get; set; }
 
 
-        internal static void HandleMessage(Entity entity,string whispername)
+        internal static void HandleMessage(Entity entity, string whispername)
         {
             var chatMessage = entity.Read<ChatMessageServerEvent>();
             var message = chatMessage.MessageText.Value;
-            if (chatMessage.MessageType.Equals(ServerChatMessageType.WhisperFrom))
-            {
-                ConfigSaveManager.ChatMessages.AddMessage(whispername, message, chatMessage.TimeUTC,true);
-                
-                ConfigSaveManager.SavePerServer();
+            
+            if (whispername != null)
+            { 
+                if (chatMessage.MessageType.Equals(ServerChatMessageType.WhisperFrom))
+                {
+                    ConfigSaveManager.ChatMessages.AddMessage(whispername, message, chatMessage.TimeUTC, true);
 
-            }
-            if (chatMessage.MessageType.Equals(ServerChatMessageType.WhisperTo))
-            {
-                ConfigSaveManager.ChatMessages.AddMessage(whispername, message, chatMessage.TimeUTC,false);
-                ConfigSaveManager.SavePerServer();
+                    ConfigSaveManager.SavePerServerChat();
 
-            }
+                }
+                if (chatMessage.MessageType.Equals(ServerChatMessageType.WhisperTo))
+                {
+                    ConfigSaveManager.ChatMessages.AddMessage(whispername, message, chatMessage.TimeUTC, false);
+                    ConfigSaveManager.SavePerServerChat();
+
+                }
+        }
             if (chatMessage.MessageType.Equals(ServerChatMessageType.System))
             {
                 if (message.Contains("has requested to teleport") && Settings.IsAutoTeleportEnabled)

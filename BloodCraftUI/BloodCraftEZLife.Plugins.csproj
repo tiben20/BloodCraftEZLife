@@ -28,9 +28,6 @@
 
   <ItemGroup>
     <PackageReference Include="BepInEx.Unity.IL2CPP" Version="$(BepInExVersion)" IncludeAssets="compile" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3">
-      <GeneratePathProperty>True</GeneratePathProperty>
-    </PackageReference>
     <PackageReference Include="VRising.Unhollowed.Client" Version="1.1.9.9219901" />
   </ItemGroup>
 

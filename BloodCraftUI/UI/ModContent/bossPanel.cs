@@ -2,9 +2,8 @@
 using System.Linq;
 using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Services;
-using BloodCraftEZLife.UI.CustomLib.Cells;
-using BloodCraftEZLife.UI.CustomLib.Cells.Handlers;
-using BloodCraftEZLife.UI.CustomLib.Panel;
+using BloodCraftEZLife.UI.ModContent.CustomElements;
+using BloodCraftEZLife.UI.ModContent.CustomElements.Handlers;
 using BloodCraftEZLife.UI.ModContent.Data;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;

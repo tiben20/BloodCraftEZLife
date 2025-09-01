@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Services;
-using BloodCraftEZLife.UI.CustomLib.Controls;
-using BloodCraftEZLife.UI.CustomLib.Panel;
-using BloodCraftEZLife.UI.CustomLib.Util;
+using BloodCraftEZLife.UI.ModContent.Controls;
+using BloodCraftEZLife.UI.ModContent.CustomElements;
 using BloodCraftEZLife.UI.ModContent.Data;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
@@ -111,14 +110,7 @@ namespace BloodCraftEZLife.UI.ModContent
                 _objectsList.Add(boxListButton.GameObject);
                 boxListButton.OnClick = () => 
                 {
-                    var panel = Plugin.UIManager.GetPanel<TeleportListPanel>();
-                    if (panel != null)
-                    {
-                        panel.Toggle();
-                        return;
-
-                    }
-                    Plugin.UIManager.AddPanel(PanelType.TeleportList); 
+                    Plugin.UIManager.GetPanel<TeleportListPanel>().Toggle();
                 };
             }
 
@@ -129,20 +121,8 @@ namespace BloodCraftEZLife.UI.ModContent
             {
                 PullItemsPanel panel;
                 panel = Plugin.UIManager.GetPanel<PullItemsPanel>();
-                if (panel != null)
-                {
-                    panel.Toggle();
-                    return;
-
-                }
-                Plugin.UIManager.AddPanel(PanelType.PullPanel);
-
-
-                panel = Plugin.UIManager.GetPanel<PullItemsPanel>();
-                if (panel != null)
-                {
-                    panel.RefreshData();
-                }
+                panel.Toggle();
+     
 
             };
 
@@ -151,23 +131,7 @@ namespace BloodCraftEZLife.UI.ModContent
             _objectsList.Add(chatButton.GameObject);
             chatButton.OnClick = () =>
             {
-                ChatPanel panel;
-                panel = Plugin.UIManager.GetPanel<ChatPanel>();
-                if (panel != null)
-                {
-                    panel.Toggle();
-                    return;
-
-                }
-                Plugin.UIManager.AddPanel(PanelType.ChatPanel);
-
-
-                panel = Plugin.UIManager.GetPanel<ChatPanel>();
-                if (panel != null)
-                {
-                    panel.RefreshData();
-                }
-
+                Plugin.UIManager.GetPanel<ChatPanel>().Toggle();
             };
             var scaleButton = UIFactory.CreateButton(_uiAnchor, "ScaleButton", "*");
             UIFactory.SetLayoutElement(scaleButton.GameObject, ignoreLayout: false, minWidth: 25, minHeight: 25);
@@ -177,12 +141,7 @@ namespace BloodCraftEZLife.UI.ModContent
             {
                 _scaleButtonData.PerformAction();
             };
-
-            Plugin.UIManager.AddPanel(PanelType.PopupPanel);
-            PopupPanel panel = Plugin.UIManager.GetPanel<PopupPanel>();
-            Plugin.UIManager.AddPanel(PanelType.InputBox);
-            CommandInput inputbox = Plugin.UIManager.GetPanel<CommandInput>();
-            inputbox.SetActive(false);
+            Plugin.UIManager.GetPanel<CommandInput>().SetActive(false);
 
         }
 

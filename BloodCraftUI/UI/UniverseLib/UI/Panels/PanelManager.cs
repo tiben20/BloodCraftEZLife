@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using BloodCraftEZLife.UI.CustomLib;
+using BloodCraftEZLife.UI.ModContent.Input;
 using BloodCraftEZLife.Utils;
 using TMPro;
 using UnityEngine;

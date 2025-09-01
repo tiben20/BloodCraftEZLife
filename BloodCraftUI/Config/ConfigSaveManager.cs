@@ -1,6 +1,4 @@
 ﻿using BloodCraftEZLife.UI.ModContent.Data;
-using Newtonsoft.Json;
-using Newtonsoft.Json;
 using ProjectM.Network;
 using ProjectM.UI;
 using System;
@@ -8,7 +6,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml;
 using TMPro;
 using UnityEngine;
 
@@ -16,33 +16,44 @@ namespace BloodCraftEZLife.Config
 {
     public static class ConfigSaveManager
     {
-        private static string SavePath;
-        
+        private static string SavePathVblood;
+        private static string SavePathChat;
+
         private static SettingsHotkeys _settingsHotkeys;
-        private static SettingsPerServer _settingsPerServer;
-
+        private static SettingsVbloodParent _vBloods { get; set; } = new();
+        private static SettingsChatMessage _chatMessages { get; set; } = new();
         public static Dictionary<KeyCode, string> Hotkeys => _settingsHotkeys.HotKeys;
-        public static SettingsVblood VBloodKills => _settingsPerServer.VBloods;
-        public static SettingsChatMessage ChatMessages => _settingsPerServer.ChatMessages;
-        public static List<string> GetUsers() => _settingsPerServer.ChatMessages.GetUsers;
-        public static List<ChatMessage> GetMessages(string user) => _settingsPerServer.ChatMessages.GetMessages(user);
 
-        public static void SavePerServer()
+        public static SettingsVblood VBloodKills => _vBloods.VBloods;
+        public static SettingsVbloodParent VBloodKillsRoot => _vBloods;
+        public static SettingsChatMessage ChatMessages => _chatMessages;
+        public static List<string> GetUsers() => _chatMessages.GetUsers;
+        public static List<ChatMessage> GetMessages(string user) => _chatMessages.GetMessages(user);
+
+        public static void SavePerServerChat()
         {
-            //var options = new JsonSerializerOptions { WriteIndented = true, ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve };
-            //string jsonoutput = JsonSerializer.Serialize(_settingsPerServer, options);
-            string jsonoutput = JsonConvert.SerializeObject(_settingsPerServer, Formatting.Indented);
-            File.WriteAllText(SavePath, jsonoutput);
+            var options = new JsonSerializerOptions { WriteIndented = true, ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles };
+            string jsonoutput = JsonSerializer.Serialize(ChatMessages, options);
+            //string jsonoutput = JsonConvert.SerializeObject(_settingsPerServer, Formatting.Indented);
+            File.WriteAllText(SavePathChat, jsonoutput);
 
         }
 
+        public static void SavePerServerVbloods()
+        {
+            var options = new JsonSerializerOptions { WriteIndented = true, ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles };
+            string jsonoutput = JsonSerializer.Serialize(VBloodKillsRoot, options);
+            //string jsonoutput = JsonConvert.SerializeObject(_settingsPerServer, Formatting.Indented);
+            File.WriteAllText(SavePathVblood, jsonoutput);
+
+        }
         public static void SaveGlobal(Dictionary<KeyCode, string> hk)
         {
             _settingsHotkeys.HotKeys = hk;
             string thepath = System.IO.Path.Combine(Settings.CONFIG_PATH, "hotkeys") + ".json";
-            //var options = new JsonSerializerOptions { WriteIndented = true };
-            //string jsonoutput = JsonSerializer.Serialize(_settingsHotkeys.HotKeys, options);
-            string jsonoutput = JsonConvert.SerializeObject(_settingsHotkeys, Formatting.Indented);
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string jsonoutput = JsonSerializer.Serialize(_settingsHotkeys.HotKeys, options);
+            //string jsonoutput = JsonConvert.SerializeObject(_settingsHotkeys, Formatting.Indented);
             File.WriteAllText(thepath, jsonoutput);
 
         }
@@ -53,7 +64,8 @@ namespace BloodCraftEZLife.Config
             if (File.Exists(thepath))
             {
                 string json = File.ReadAllText(thepath);
-                _settingsHotkeys = JsonConvert.DeserializeObject<SettingsHotkeys>(json);
+                _settingsHotkeys = new SettingsHotkeys();
+                _settingsHotkeys.HotKeys = JsonSerializer.Deserialize<Dictionary<KeyCode, string>>(json);
             }
             else
             {
@@ -64,15 +76,25 @@ namespace BloodCraftEZLife.Config
 
         public static void LoadPerServerSettings(string flepath)
         {
-            SavePath = flepath;
-            if (File.Exists(SavePath))
+            SavePathVblood = System.IO.Path.Combine(Settings.CONFIG_PATH, flepath) + ".json";
+            SavePathChat = System.IO.Path.Combine(Settings.CONFIG_PATH, flepath) + "chat.json";
+            if (File.Exists(SavePathVblood))
             {
-                string json = File.ReadAllText(SavePath);
-                _settingsPerServer = JsonConvert.DeserializeObject<SettingsPerServer>(json);
+                string json = File.ReadAllText(SavePathVblood);
+                _vBloods = JsonSerializer.Deserialize<SettingsVbloodParent>(json);
             }
             else
             {
-                _settingsPerServer = new SettingsPerServer(); // empty if none
+                _vBloods = new SettingsVbloodParent(); // empty if none
+            }
+            if (File.Exists(SavePathChat))
+            {
+                string json = File.ReadAllText(SavePathChat);
+                _chatMessages = JsonSerializer.Deserialize<SettingsChatMessage>(json);
+            }
+            else
+            {
+                _chatMessages = new SettingsChatMessage(); // empty if none
             }
         }
     }

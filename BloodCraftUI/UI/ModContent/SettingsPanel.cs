@@ -3,12 +3,10 @@ using System.Linq;
 using System.Reflection;
 using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Services;
-using BloodCraftEZLife.UI.CustomLib;
-using BloodCraftEZLife.UI.CustomLib.Cells;
-using BloodCraftEZLife.UI.CustomLib.Cells.Handlers;
-using BloodCraftEZLife.UI.CustomLib.Panel;
-using BloodCraftEZLife.UI.CustomLib.Util;
+using BloodCraftEZLife.UI.ModContent.CustomElements;
+using BloodCraftEZLife.UI.ModContent.CustomElements.Handlers;
 using BloodCraftEZLife.UI.ModContent.Data;
+using BloodCraftEZLife.UI.ModContent.Util;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
@@ -98,13 +96,7 @@ namespace BloodCraftEZLife.UI.ModContent
             btn.Button.onClick.AddListener(() =>
             {
                 var panel = Plugin.UIManager.GetPanel<HotkeysPanel>();
-                if (panel != null)
-                {
-                    panel.SetActive(true);
-                    return;
-
-                }
-                Plugin.UIManager.AddPanel(PanelType.HotkeysPanel);
+                panel.SetActive(true);
             });
 
             RefreshData();

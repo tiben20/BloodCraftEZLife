@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using BloodCraftEZLife.UI.ModContent.CustomElements;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 
-namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
+namespace BloodCraftEZLife.UI.ModContent.CustomElements.Handlers
 {
     /// <summary>
     /// A helper to create and handle a simple <see cref="ScrollPool{T}"/> of Buttons, which can be backed by any data.
     /// </summary>
-    public class ButtonListHandler<TData, TCell> : ICellPoolDataSource<TCell> where TCell : IFormedCell
+    public class ConfigCellHandler<TData, TCell> : ICellPoolDataSource<TCell> where TCell : CellBase, IConfigurableCell<TData>
     {
         public ScrollPool<TCell> ScrollPool { get; private set; }
 
@@ -17,7 +18,8 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
         protected readonly Func<List<TData>> GetEntries;
         protected readonly Action<TCell, int> SetICell;
         protected readonly Func<TData, string, bool> ShouldDisplay;
-        protected readonly Action<int> OnCellClicked;
+        protected readonly Action<TData> OnCellChanged;
+        protected readonly Action<TCell, int,float> OnSetOpacity;
 
         public string CurrentFilter
         {
@@ -34,16 +36,16 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
         /// <param name="setICellMethod">A method which should set the data at the int index to the cell.</param>
         /// <param name="shouldDisplayMethod">A method which should determine if the data at the index should be displayed, with an optional string filter from CurrentFilter.</param>
         /// <param name="onCellClickedMethod">A method invoked when a cell is clicked, containing the data index assigned to the cell.</param>
-        public ButtonListHandler(ScrollPool<TCell> scrollPool, Func<List<TData>> getEntriesMethod,
+        public ConfigCellHandler(ScrollPool<TCell> scrollPool, Func<List<TData>> getEntriesMethod,
             Action<TCell, int> setICellMethod, Func<TData, string, bool> shouldDisplayMethod,
-            Action<int> onCellClickedMethod)
+            Action<TData> onCellChangedMethod)
         {
             ScrollPool = scrollPool;
 
             GetEntries = getEntriesMethod;
             SetICell = setICellMethod;
             ShouldDisplay = shouldDisplayMethod;
-            OnCellClicked = onCellClickedMethod;
+            OnCellChanged = onCellChangedMethod;
         }
 
         public void RefreshData()
@@ -65,7 +67,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
 
         public virtual void OnCellBorrowed(TCell cell)
         {
-            cell.OnClick += OnCellClicked;
+            cell.OnValueChanged += OnCellChanged;
         }
 
         public virtual void SetCell(TCell cell, int index)
@@ -78,7 +80,6 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells.Handlers
             else
             {
                 cell.Enable();
-                cell.CurrentDataIndex = index;
                 SetICell(cell, index);
             }
         }

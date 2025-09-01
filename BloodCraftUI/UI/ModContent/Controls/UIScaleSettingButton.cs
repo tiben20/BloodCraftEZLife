@@ -1,20 +1,19 @@
 using BloodCraftEZLife.Config;
-using BloodCraftEZLife.UI.CustomLib.Controls;
 using BloodCraftEZLife.UI.ModContent;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace BloodCraftEZLife.UI.CustomLib.Controls;
+namespace BloodCraftEZLife.UI.ModContent.Controls;
 
 public class UIScaleSettingButton : SettingsButtonBase
 {
     private readonly List<(string, float)> _scales =
     [
         ("small", 1f),
-        ("normal", 1.5f),
-        ("medium", 2f)
+        ("normal", 1.25f),
+        ("medium", 1.5f)
     ];
 
     private int _scaleIndex;
@@ -29,7 +28,6 @@ public class UIScaleSettingButton : SettingsButtonBase
             _ => 1
         };
 
-        ApplyScale();
     }
 
     public override string PerformAction()
@@ -47,21 +45,23 @@ public class UIScaleSettingButton : SettingsButtonBase
 
     private void ApplyScale()
     {
-
-        var panel = Plugin.UIManager.GetPanel<PullItemsPanel>();
-        if (panel != null)
+        //dont apply before connect to a server
+        if (Plugin._client != null)
         {
-            panel.ContentRoot.GetComponent<RectTransform>().localScale = new Vector3(_scales[_scaleIndex].Item2, _scales[_scaleIndex].Item2, 1f);
-            panel.EnsureValidPosition();
-        }
+            var panel = Plugin.UIManager.GetPanel<PullItemsPanel>();
+            if (panel != null)
+            {
+                panel.ContentRoot.GetComponent<RectTransform>().localScale = new Vector3(_scales[_scaleIndex].Item2, _scales[_scaleIndex].Item2, 1f);
+                panel.EnsureValidPosition();
+            }
 
-        var panel2 = Plugin.UIManager.GetPanel<ChatPanel>();
-        if (panel2 != null)
-        {
-            panel2.ContentRoot.GetComponent<RectTransform>().localScale = new Vector3(_scales[_scaleIndex].Item2, _scales[_scaleIndex].Item2, 1f);
-            panel2.EnsureValidPosition();
+            var panel2 = Plugin.UIManager.GetPanel<ChatPanel>();
+            if (panel2 != null)
+            {
+                panel2.ContentRoot.GetComponent<RectTransform>().localScale = new Vector3(_scales[_scaleIndex].Item2, _scales[_scaleIndex].Item2, 1f);
+                panel2.EnsureValidPosition();
+            }
         }
-
         var panel3 = Plugin.UIManager.GetPanel<ContentPanel>();
         if (panel3 != null)
             panel3.ContentRoot.GetComponent<RectTransform>().localScale = new Vector3(_scales[_scaleIndex].Item2, _scales[_scaleIndex].Item2, 1f);

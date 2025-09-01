@@ -8,8 +8,8 @@ using ProjectM;
 using ProjectM.Network;
 using ProjectM.UI;
 using System;
-//using System.Text.Json;
-//using System.Text.Json.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -54,14 +54,15 @@ namespace BloodCraftEZLife.Services
         {
             
             // Load or create
-            string thepath = System.IO.Path.Combine(Settings.CONFIG_PATH, uniqueid) + ".json";
-            ConfigSaveManager.LoadPerServerSettings(thepath);
+            
+            ConfigSaveManager.LoadPerServerSettings(uniqueid);
             //ConfigSaveManager.ChatMessages.AddMessage("Alice", "Hello!", System.DateTime.UtcNow);
             //ConfigSaveManager.ChatMessages.AddMessage("Bob", "Hi Alice!", System.DateTime.UtcNow);
             //ConfigSaveManager.ChatMessages.AddMessage("Alice", "How are you?", System.DateTime.UtcNow);
 
 
-            ConfigSaveManager.SavePerServer();
+            ConfigSaveManager.SavePerServerVbloods();
+            ConfigSaveManager.SavePerServerChat();
             UpdateVbloodQuery();
 
         }
@@ -79,14 +80,7 @@ namespace BloodCraftEZLife.Services
         //Header clicked
         public static void RaiseHeaderButtonClicked(OptionsMenu __instance)
         {
-            var panel = Plugin.UIManager.GetPanel<SettingsPanel>();
-            if (panel != null)
-            {
-                panel.SetActive(true);
-                return;
-
-            }
-            Plugin.UIManager.AddPanel(PanelType.SettingsPanel);
+            Plugin.UIManager.GetPanel<SettingsPanel>().SetActive(true);
         }
 
         
@@ -166,7 +160,7 @@ namespace BloodCraftEZLife.Services
                                 {
                                     var vbloodString = comp.Source.GetLocalizedName();
                                     ConfigSaveManager.VBloodKills.AddVbloodKill(vbloodString);
-                                    ConfigSaveManager.SavePerServer();
+                                    ConfigSaveManager.SavePerServerVbloods();
                                 }
                                 
                             }

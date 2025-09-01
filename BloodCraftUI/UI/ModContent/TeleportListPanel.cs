@@ -1,25 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using BloodCraftEZLife.Config;
+﻿using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Services;
-using BloodCraftEZLife.UI.CustomLib;
-using BloodCraftEZLife.UI.CustomLib.Cells;
-using BloodCraftEZLife.UI.CustomLib.Cells.Handlers;
-using BloodCraftEZLife.UI.CustomLib.Panel;
+using BloodCraftEZLife.UI.ModContent.CustomElements;
+using BloodCraftEZLife.UI.ModContent.CustomElements.Handlers;
 using BloodCraftEZLife.UI.ModContent.Data;
 using BloodCraftEZLife.UI.UniverseLib.UI;
-using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
-using BloodCraftEZLife.Utils;
-using ProjectM;
-using ProjectM.UI;
-using Unity.Entities;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
-using static BloodCraftEZLife.Config.Settings;
 
 namespace BloodCraftEZLife.UI.ModContent
 {

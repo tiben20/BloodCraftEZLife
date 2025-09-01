@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using UnityEngine;
 
-namespace BloodCraftEZLife.UI.CustomLib;
+namespace BloodCraftEZLife.UI.ModContent.Externsion;
 
 public static class RectExtensions
 {

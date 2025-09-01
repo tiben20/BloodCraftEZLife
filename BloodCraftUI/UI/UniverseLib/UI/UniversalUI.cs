@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using BloodCraftEZLife.Behaviors;
-using BloodCraftEZLife.UI.CustomLib;
+using BloodCraftEZLife.UI.ModContent.Input;
 using BloodCraftEZLife.UI.UniverseLib.UI.ObjectPool;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using UnityEngine;

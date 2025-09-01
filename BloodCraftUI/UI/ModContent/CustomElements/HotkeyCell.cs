@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Services;
-using BloodCraftEZLife.UI.CustomLib.Util;
+using BloodCraftEZLife.UI.ModContent.Util;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.Utils;
@@ -13,7 +13,7 @@ using UnityEngine.UI;
 using static UnityEngine.Rendering.DebugUI;
 using static UnityEngine.UI.GridLayoutGroup;
 
-namespace BloodCraftEZLife.UI.CustomLib.Cells
+namespace BloodCraftEZLife.UI.ModContent.CustomElements
 {
     public class HotkeyCell : CellHotkeyBase, IConfigurableCell<Hotkey>
     {
@@ -83,9 +83,9 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             RectTransform actionRect = ActionButton.GetComponent<RectTransform>();
             RectTransform deleteRect = DeleteButton.GetComponent<RectTransform>();
             float xfact = FullscreenSettingService.ResFactor.x;
-            float offsetDelete = (FullscreenSettingService.DeltaRect.x * FullscreenSettingService.ResFactor.x * 0.2f) - 20f;
+            float offsetDelete = FullscreenSettingService.DeltaRect.x * FullscreenSettingService.ResFactor.x * 0.2f - 20f;
 
-            float offset = (FullscreenSettingService.DeltaRect.x * FullscreenSettingService.ResFactor.x * 0.8f) - 20f;
+            float offset = FullscreenSettingService.DeltaRect.x * FullscreenSettingService.ResFactor.x * 0.8f - 20f;
             
             keyRect.localPosition = keyRect.localPosition - new Vector3(offset, 0, 0);
             

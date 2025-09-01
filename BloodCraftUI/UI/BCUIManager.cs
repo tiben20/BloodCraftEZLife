@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BloodCraftEZLife.UI.CustomLib.Panel;
 using BloodCraftEZLife.UI.ModContent;
 using BloodCraftEZLife.UI.ModContent.Data;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.Utils;
 using BloodCraftEZLife.Config;
 using UIManagerBase = BloodCraftEZLife.UI.ModernLib.UIManagerBase;
+using BloodCraftEZLife.UI.ModContent.CustomElements;
 
 namespace BloodCraftEZLife.UI;
 
@@ -32,7 +32,8 @@ public class BCUIManager : UIManagerBase
 
     protected override void AddMainContentPanel()
     {
-        AddPanel(PanelType.Base);
+        _contentPanel = new ContentPanel(UiBase);
+        ClientActivate(false);
     }
 
     public override void SetActive(bool active)
@@ -81,143 +82,46 @@ public class BCUIManager : UIManagerBase
         cpan.ToggleGameObject(active, "ChatButton");
     }
 
-    public void AddPanel(PanelType type, string param = null)
+    internal T GetPanel<T>()
+    where T : class, IPanelBase
     {
-        switch (type)
-        {
-            case PanelType.Base:
-                _contentPanel = new ContentPanel(UiBase);
-                ClientActivate(false);
-                break;
-            case PanelType.PopupPanel:
-                {
-                    var panel = GetPanel<PopupPanel>();
-                    if (panel == null)
-                    {
-                        var item = new PopupPanel(UiBase);
-                        UIPanels.Add(item);
-                    }
-                    else
-                    {
-                        panel.SetActive(true);
-                    }
+        // Try to find existing panel
+        if (UiBase == null)
+            return null;
+        var panel = UIPanels.OfType<T>().FirstOrDefault();
+        if (panel != null)
+            return panel;
+        
 
-                    break;
-                }
-            case PanelType.ChatPanel:
-                {
-                    var panel = GetPanel<ChatPanel>();
-                    if (panel == null)
-                    {
-                        var item = new ChatPanel(UiBase);
-                        UIPanels.Add(item);
-                    }
-                    else
-                    {
-                        panel.SetActive(true);
-                    }
-
-                    break;
-                }
-            case PanelType.TeleportList:
-            {
-                var panel = GetPanel<TeleportListPanel>();
-                if (panel == null)
-                {
-                    var item = new TeleportListPanel(UiBase);
-                    UIPanels.Add(item);
-                }
-                else
-                {
-                    panel.SetActive(true);
-                }
-
-                break;
-            }
-            case PanelType.SettingsPanel:
-                {
-                    var panel = GetPanel<SettingsPanel>();
-                    if (panel == null)
-                    {
-                        var item = new SettingsPanel(UiBase);
-                        UIPanels.Add(item);
-                    }
-                    else
-                    {
-                        panel.SetActive(true);
-                    }
-
-                    break;
-                }
-            case PanelType.HotkeysPanel:
-                {
-                    var panel = GetPanel<HotkeysPanel>();
-                    if (panel == null)
-                    {
-                        var item = new HotkeysPanel(UiBase);
-                        UIPanels.Add(item);
-                    }
-                    else
-                    {
-                        panel.SetActive(true);
-                    }
-
-                    break;
-                }
-            case PanelType.InputBox:
-                {
-                    var panel = GetPanel<CommandInput>();
-                    if (panel == null)
-                    {
-                        var item = new CommandInput(UiBase);
-                        UIPanels.Add(item);
-                    }
-                    else
-                    {
-                        panel.SetActive(true);
-                    }
-
-                    break;
-                }
-            case PanelType.PullPanel:
-                {
-                    var panel = GetPanel<PullItemsPanel>();
-                    if (panel == null)
-                    {
-                        var item = new PullItemsPanel(UiBase);
-                        UIPanels.Add(item);
-                    }
-                    else
-                    {
-                        panel.SetActive(!panel.Enabled);
-                    }
-                }
-                break;
-            case PanelType.TestPanel:
-            {
-                var panel = GetPanel<TestPanel>();
-                if (panel == null)
-                {
-                    var item = new TestPanel(UiBase);
-                    UIPanels.Add(item);
-                }
-                else
-                {
-                    panel.SetActive(!panel.Enabled);
-                }
-            }
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(type), type, null);
-        }
+        panel = PanelFactory<T>();
+        // Create new instance with a factory map
+        if (typeof(T) != typeof(ContentPanel))
+            panel.SetActive(false);
+        UIPanels.Add(panel);
+        return panel;
     }
 
-
-    internal T GetPanel<T>()
-        where T : class
+    // Factory resolver for known panel types
+    private T PanelFactory<T>() where T : class, IPanelBase
     {
-        var t = typeof(T);
-        return UIPanels.FirstOrDefault(a => a.GetType() == t) as T;
+        if (typeof(T) == typeof(ContentPanel))
+            return _contentPanel as T;
+        if (typeof(T) == typeof(PopupPanel))
+            return new PopupPanel(UiBase) as T;
+        if (typeof(T) == typeof(PullItemsPanel))
+            return new PullItemsPanel(UiBase) as T;
+        if (typeof(T) == typeof(CommandInput))
+            return new CommandInput(UiBase) as T;
+        if (typeof(T) == typeof(HotkeysPanel))
+            return new HotkeysPanel(UiBase) as T;
+        if (typeof(T) == typeof(ChatPanel))
+            return new ChatPanel(UiBase) as T;
+        if (typeof(T) == typeof(SettingsPanel))
+            return new SettingsPanel(UiBase) as T;
+        if (typeof(T) == typeof(TeleportListPanel))
+            return new TeleportListPanel(UiBase) as T;
+        
+        throw new InvalidOperationException($"No factory defined for {typeof(T).Name}");
     }
 
 }

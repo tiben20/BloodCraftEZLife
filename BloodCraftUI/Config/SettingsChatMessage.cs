@@ -1,12 +1,10 @@
 ﻿using BloodCraftEZLife.UI;
 using BloodCraftEZLife.UI.ModContent;
 using BloodCraftEZLife.UI.ModContent.Data;
-using Il2CppSystem;
-using Newtonsoft.Json;
-using ProjectM.Scripting;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Unity.Collections;
 using static BloodCraftEZLife.Services.TeleportsService;
@@ -56,24 +54,32 @@ namespace BloodCraftEZLife.Config
 
         public void AddMessage(string username, string message,long timestamp,bool from)
         {
-            if (!Users.ContainsKey(username))
+            try
             {
-                Users[username] = new ChatUser { Username = username };
+                if (!GetUsers.Contains(username))
+                {
+                    Users[username] = new ChatUser { Username = username };
+                    _users.Add(username);
+                }
+                ChatMessage newmsg = new ChatMessage
+                {
+                    Timestamp = timestamp,
+                    TextMessage = message,
+                    From = from
+                };
+                Users[username].Messages.Add(newmsg);
+                if (username == CurrentUser)
+                {
+                    _messages.Add(newmsg);
+                    var panel = Plugin.UIManager.GetPanel<ChatPanel>();
+                    panel.RefreshMessage(username);
+                }
+                }
+            catch (System.Exception)
+            {
+
+                
             }
-            ChatMessage newmsg = new ChatMessage
-            {
-                Timestamp = timestamp,
-                TextMessage = message,
-                From = from
-            };
-            Users[username].Messages.Add(newmsg);
-            if (username == CurrentUser)
-            {
-                _messages.Add(newmsg);
-                var panel = Plugin.UIManager.GetPanel<ChatPanel>();
-                panel.RefreshMessage(username);
-            }
-            
         }
       
     }

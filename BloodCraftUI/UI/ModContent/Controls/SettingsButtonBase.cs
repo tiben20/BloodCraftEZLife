@@ -1,6 +1,6 @@
 using BepInEx.Configuration;
 
-namespace BloodCraftEZLife.UI.CustomLib.Controls;
+namespace BloodCraftEZLife.UI.ModContent.Controls;
 
 public abstract class SettingsButtonBase
 {

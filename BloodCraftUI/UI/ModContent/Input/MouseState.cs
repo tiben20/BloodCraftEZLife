@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace BloodCraftEZLife.UI.CustomLib;
+namespace BloodCraftEZLife.UI.ModContent.Input;
 
 public struct MouseState
 {

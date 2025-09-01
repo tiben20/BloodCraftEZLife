@@ -1,16 +1,14 @@
 ﻿using BloodCraftEZLife.Config;
-using BloodCraftEZLife.UI.CustomLib.Util;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.Utils;
-using Il2CppSystem.Data;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 
-namespace BloodCraftEZLife.UI.CustomLib.Cells
+namespace BloodCraftEZLife.UI.ModContent.CustomElements
 {
     public class ButtonCell : CellBase, IFormedCell
     {

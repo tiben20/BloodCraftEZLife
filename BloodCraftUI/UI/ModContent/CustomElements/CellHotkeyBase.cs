@@ -1,7 +1,7 @@
 ﻿using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 using UnityEngine;
 
-namespace BloodCraftEZLife.UI.CustomLib.Cells
+namespace BloodCraftEZLife.UI.ModContent.CustomElements
 {
     public abstract class CellHotkeyBase : ICell
     {

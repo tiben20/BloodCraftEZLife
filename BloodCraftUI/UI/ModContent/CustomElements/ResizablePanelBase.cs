@@ -3,8 +3,9 @@ using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.Utils;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.ModContent.Data;
+using BloodCraftEZLife.UI.ModContent.Externsion;
 
-namespace BloodCraftEZLife.UI.CustomLib.Panel;
+namespace BloodCraftEZLife.UI.ModContent.CustomElements;
 
 public abstract class ResizeablePanelBase : PanelBase
 {

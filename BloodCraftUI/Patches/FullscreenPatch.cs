@@ -123,7 +123,8 @@ internal static class FullscreenPatch
             group.interactable = true;
             group.blocksRaycasts = true;
         }
-        HideSettingsPanel(null);
+        if (FullscreenSettingService._templates != null)
+            HideSettingsPanel(null);
     }
 
     [HarmonyPatch(typeof(OptionsMenu), nameof(OptionsMenu.OnClick_BackButton))]

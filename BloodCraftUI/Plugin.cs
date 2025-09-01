@@ -8,7 +8,7 @@ using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Patches;
 using BloodCraftEZLife.Services;
 using BloodCraftEZLife.UI;
-using BloodCraftEZLife.UI.CustomLib.Util;
+using BloodCraftEZLife.UI.ModContent.Util;
 using BloodCraftEZLife.UI.ModernLib;
 using BloodCraftEZLife.Utils;
 using HarmonyLib;
@@ -133,6 +133,6 @@ namespace BloodCraftEZLife
     {
         public const string PLUGIN_GUID = "BloodCraftEZLife.PluginsUI";
         public const string PLUGIN_NAME = "BloodCraftEZLife";
-        public const string PLUGIN_VERSION = "0.7.0";
+        public const string PLUGIN_VERSION = "0.7.2";
     }
 }

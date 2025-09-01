@@ -43,7 +43,7 @@ internal static class ClientChatPatch
             {
                 if (!entity.Has<ChatMessageServerEvent>()) continue;
                 //_WhisperUserName    "Ilise" string
-
+                
                 MessageService.HandleMessage(entity, __instance._WhisperUserName);
             }
         }

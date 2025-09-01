@@ -1,5 +1,5 @@
 ﻿using System;
-using BloodCraftEZLife.UI.CustomLib.Util;
+using BloodCraftEZLife.UI.ModContent.Util;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.Utils;

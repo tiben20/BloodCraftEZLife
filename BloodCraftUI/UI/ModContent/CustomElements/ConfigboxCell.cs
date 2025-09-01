@@ -1,7 +1,7 @@
 ﻿using System;
 using BloodCraftEZLife.Config;
 using BloodCraftEZLife.Services;
-using BloodCraftEZLife.UI.CustomLib.Util;
+using BloodCraftEZLife.UI.ModContent.Util;
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
@@ -21,7 +21,7 @@ using static Il2CppSystem.Linq.Expressions.Interpreter.NullableMethodCallInstruc
 using static UnityEngine.Rendering.ProbeReferenceVolume;
 
 
-namespace BloodCraftEZLife.UI.CustomLib.Cells
+namespace BloodCraftEZLife.UI.ModContent.CustomElements
 {
     public interface IFormedCheckbox : ICell
     {
@@ -85,9 +85,9 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
         }
         private void SetLabelName(GameObject obj, string lbltext)
         {
-            var label = obj.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+            var label = obj.GetComponentInChildren<TextMeshProUGUI>();
             if (label != null)
-                label.text = (string)_setting.Name;
+                label.text = _setting.Name;
         }
 
         public Il2CppSystem.Action<bool> OnChangeToggle;
@@ -104,7 +104,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
                 toggleObject.Value = (bool)setting.Value;
                 //UnityHelper.PrintChilds(toggleObject.transform, 1);
 
-                toggleObject.Toggle.onValueChanged.AddListener((bool val) =>
+                toggleObject.Toggle.onValueChanged.AddListener((val) =>
                 {
                     setting.Value = val;
                     OnValueChanged?.Invoke(setting);
@@ -128,9 +128,9 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
                 SetLabelName(dropdownObject.gameObject, _setting.Name);
                 foreach (var opt in setting.Options)
                 {
-                    dropdownObject.Dropdown.options.Add(new TMPro.TMP_Dropdown.OptionData(opt));
+                    dropdownObject.Dropdown.options.Add(new TMP_Dropdown.OptionData(opt));
                 }
-                dropdownObject.Dropdown.onValueChanged.AddListener((int val) =>
+                dropdownObject.Dropdown.onValueChanged.AddListener((val) =>
                 {
                     setting.Value = val;
                     OnValueChanged?.Invoke(setting);
@@ -223,7 +223,7 @@ namespace BloodCraftEZLife.UI.CustomLib.Cells
             
         }
 
-        event System.Action<Setting> IConfigurableCell<Setting>.OnValueChanged
+        event Action<Setting> IConfigurableCell<Setting>.OnValueChanged
         {
             add => OnValueChanged += value;
             remove => OnValueChanged -= value;

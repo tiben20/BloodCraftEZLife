@@ -1,7 +1,7 @@
 ﻿using System;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
 
-namespace BloodCraftEZLife.UI.CustomLib.Cells;
+namespace BloodCraftEZLife.UI.ModContent.CustomElements;
 
 public interface IFormedCell : ICell
 {
