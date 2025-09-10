@@ -16,14 +16,12 @@ namespace BloodCraftEZLife.UI.ModContent.CustomElements
         public Image IconImage;
         public int CurrentDataIndex { get; set; }
         public override float DefaultHeight => 25f;
-        public void DoSelect(bool selected)
+        public void DoSelect(Color col)
         {
             ColorBlock colors = Button.Component.colors;
-            if (selected)
 
-                colors.normalColor = new Color(0.65f, 0.35f, 0.26f).GetTransparent(Settings.UITransparency);
-            else
-                colors.normalColor = new Color(0.11f, 0.11f, 0.11f).GetTransparent(Settings.UITransparency);
+            colors.normalColor = col;
+
             Button.Component.colors = colors;
         }
 

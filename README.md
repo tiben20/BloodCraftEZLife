@@ -28,6 +28,8 @@ Added chat panel for logging message through sessions
 Fixed pull panel with the missing items
 Readded scaling
 
+0.8.0
+Fixed bugs mostly
 
 
 Sourcecode: https://github.com/tiben20/BloodCraftEZLife

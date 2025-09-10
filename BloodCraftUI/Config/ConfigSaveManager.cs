@@ -57,15 +57,45 @@ namespace BloodCraftEZLife.Config
             File.WriteAllText(thepath, jsonoutput);
 
         }
+        private static string FixJson(string json)
+        {
+            string result="";
+            using (StringReader reader = new StringReader(json))
+            {
+                string line = string.Empty;
+                do
+                {
+                    line = reader.ReadLine();
+                    if (line != null)
+                    {
+                        if (!line.Contains("""$id"""))
+                        {
+                            result += line + "\n";
+                            // do something with the line
+                        }
+                    }
 
+                } while (line != null);
+            }
+            return result;
+        
+        }
         public static void LoadGlobal()
         {
             string thepath = System.IO.Path.Combine(Settings.CONFIG_PATH, "hotkeys") + ".json";
             if (File.Exists(thepath))
             {
-                string json = File.ReadAllText(thepath);
-                _settingsHotkeys = new SettingsHotkeys();
-                _settingsHotkeys.HotKeys = JsonSerializer.Deserialize<Dictionary<KeyCode, string>>(json);
+                try
+                {
+                    string json = File.ReadAllText(thepath);
+                    _settingsHotkeys = new SettingsHotkeys();
+                    json = FixJson(json);
+                    _settingsHotkeys.HotKeys = JsonSerializer.Deserialize<Dictionary<KeyCode, string>>(json);
+                }
+                catch (Exception ex)
+                {
+                    _settingsHotkeys = new SettingsHotkeys(); // empty if bugged
+                }
             }
             else
             {
@@ -80,8 +110,17 @@ namespace BloodCraftEZLife.Config
             SavePathChat = System.IO.Path.Combine(Settings.CONFIG_PATH, flepath) + "chat.json";
             if (File.Exists(SavePathVblood))
             {
-                string json = File.ReadAllText(SavePathVblood);
-                _vBloods = JsonSerializer.Deserialize<SettingsVbloodParent>(json);
+                try
+                {
+                    string json = File.ReadAllText(SavePathVblood);
+                    json = FixJson(json);
+                    _vBloods = JsonSerializer.Deserialize<SettingsVbloodParent>(json);
+                }
+                catch (Exception)
+                {
+                    _vBloods = new SettingsVbloodParent(); // empty if bugged
+                }
+                
             }
             else
             {
@@ -89,9 +128,17 @@ namespace BloodCraftEZLife.Config
             }
             if (File.Exists(SavePathChat))
             {
-                string json = File.ReadAllText(SavePathChat);
-                _chatMessages = JsonSerializer.Deserialize<SettingsChatMessage>(json);
+                try
+                {
+                    string json = File.ReadAllText(SavePathChat);
+                    json = FixJson(json);
+                    _chatMessages = JsonSerializer.Deserialize<SettingsChatMessage>(json);
+                }
+                catch (Exception)
+                {
+                _chatMessages = new SettingsChatMessage(); // empty if bugged
             }
+        }
             else
             {
                 _chatMessages = new SettingsChatMessage(); // empty if none

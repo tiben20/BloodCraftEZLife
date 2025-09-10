@@ -2,27 +2,14 @@
 using BloodCraftEZLife.UI.ModContent.CustomElements;
 using BloodCraftEZLife.UI.ModContent.CustomElements.Handlers;
 using BloodCraftEZLife.UI.ModContent.Data;
-using BloodCraftEZLife.UI.ModContent.Util;
+
 using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.UI.UniverseLib.UI.Models;
 using BloodCraftEZLife.UI.UniverseLib.UI.Panels;
 using BloodCraftEZLife.UI.UniverseLib.UI.Widgets.ScrollView;
-using BloodCraftEZLife.Utils;
-using ProjectM;
-using ProjectM.Gameplay.Scripting;
-using ProjectM.UI;
-using System.Collections.Generic;
-using System.Linq;
-using TMPro;
-using Unity.DebugDisplay;
-using Unity.Entities;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.UI;
-using static BloodCraftEZLife.Config.Settings;
+
 
 namespace BloodCraftEZLife.UI.ModContent
 {
@@ -48,6 +35,12 @@ namespace BloodCraftEZLife.UI.ModContent
 
         private InputFieldRef InputBox;
 
+        private Color32 Color1;
+        private Color32 Color2;
+        private Color32 Color3;
+        private Color32 Color4;
+        private Color32 Color5;
+
         public ChatPanel(UIBase owner) : base(owner)
         {
             SetTitle("Chat messages");
@@ -65,17 +58,21 @@ namespace BloodCraftEZLife.UI.ModContent
         {
             SetActive(false);
         }
-
+        
         protected override void ConstructPanelContent()
         {
-
+            Color1 = new Color32(96, 79, 118, 255);
+            Color2 = new Color32(36, 30, 44, 255);
+            Color3 = new Color32(38, 56, 46, 255);
+            Color4 = new Color32(43, 49, 73, 255);
+            Color5 = new Color32(33, 38, 57, 255);
             // Title bar
             GameObject userPanel = UIFactory.CreateHorizontalGroup(ContentRoot, "TitleBar", false, true, true, true, 2,
-                new Vector4(2, 2, 2, 2), Theme.PanelBackground);
+                new Vector4(2, 2, 2, 2), Color2);
             UIFactory.SetLayoutElement(userPanel, minHeight: 150, flexibleHeight: 0);
 
             __scrollDataUsersHandler = new ButtonListHandler<string, ButtonCell>(_scrollPoolUsers, ConfigSaveManager.GetUsers, SetCell, ShouldDisplay, OnUserClicked);
-            _scrollPoolUsers = UIFactory.CreateScrollPool<ButtonCell>(userPanel, "UserList", out GameObject scrollObj,out _);
+            _scrollPoolUsers = UIFactory.CreateScrollPool<ButtonCell>(userPanel, "UserList", out GameObject scrollObj,out _, Color2);
             _scrollPoolUsers.Initialize(__scrollDataUsersHandler);
             
 
@@ -85,11 +82,9 @@ namespace BloodCraftEZLife.UI.ModContent
             UIFactory.SetLayoutElement(scrollMessageObj, flexibleHeight: 9999);
 
 
-            InputBox = UIFactory.CreateInputField(ContentRoot, "inputHolder", "");
+            InputBox = UIFactory.CreateInputField(ContentRoot, "inputHolder", "",Color5);
 
             UIFactory.SetLayoutElement(InputBox.GameObject, minHeight: 40, flexibleHeight: 0);
-            
-            InputBox.PlaceholderText.text = "Whisper here";
 
             VerticalLayoutGroup contentGroup = ContentRoot.GetComponent<VerticalLayoutGroup>();
             contentGroup.spacing = 2f;
@@ -108,6 +103,7 @@ namespace BloodCraftEZLife.UI.ModContent
 
         void OnSubmit(string text)
         {
+
 
         }
 
@@ -171,14 +167,11 @@ namespace BloodCraftEZLife.UI.ModContent
             cell.Button.ButtonText.text = ConfigSaveManager.ChatMessages.GetUsers[index];
             if (ConfigSaveManager.ChatMessages.GetUsers[index] == ConfigSaveManager.ChatMessages.CurrentUser)
             {
-                
-                cell.DoSelect(true);
+                cell.DoSelect(Color1);
                 InputBox.PlaceholderText.text = "Whisper to " + cell.Button.ButtonText.text;
-
-
             }
             else
-                cell.DoSelect(false);
+                cell.DoSelect(Color2);
                 cell.IconImage.gameObject.SetActive(false);
         }
 
@@ -194,6 +187,13 @@ namespace BloodCraftEZLife.UI.ModContent
             string msg = chtmsg.From ? "From: " : "To: ";
             msg = msg + chtmsg.TextMessage;
             cell.Button.ButtonText.text = msg;
+            ColorBlock colors = cell.Button.Component.colors;
+            if (msg.Substring(0,5) == "From:")
+                colors.normalColor = Color3;
+            else
+                colors.normalColor = Color4;
+            cell.Button.Component.colors = colors;
+            
             cell.IconImage.gameObject.SetActive(false);
         }
 

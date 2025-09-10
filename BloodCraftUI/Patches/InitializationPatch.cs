@@ -77,6 +77,7 @@ namespace BloodCraftEZLife.Patches
         [HarmonyPrefix]
         static void OnUpdatePrefix(ClientBootstrapSystem __instance)
         {
+            LogUtils.LogInfo("ClientBootstrapSystem.OnDestroy");
             Plugin.UIManager.Reset();
             MessageService.Destroy();
             Plugin.Reset();

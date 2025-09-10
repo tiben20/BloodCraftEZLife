@@ -1,37 +1,19 @@
-﻿using BloodCraftEZLife.Services;
+﻿using BloodCraftEZLife.Config;
+using BloodCraftEZLife.Services;
+using BloodCraftEZLife.UI.ModContent;
+using BloodCraftEZLife.UI.ModContent.CustomElements;
+using BloodCraftEZLife.UI.UniverseLib.UI;
 using BloodCraftEZLife.Utils;
 using HarmonyLib;
-using ProjectM;
-using ProjectM.Network;
 using ProjectM.UI;
-using Stunlock.Network;
-using Unity.Collections;
-using Unity.Entities;
-using static ProjectM.UI.SocialMenu;
-using System;
-using System.Collections.Generic;
-using Unity.Entities.CodeGeneratedJobForEach;
-using BloodCraftEZLife.UI.ModContent;
-using UnityEngine;
 using TMPro;
-using static BloodCraftEZLife.Services.FullscreenSettingService;
-using BloodCraftEZLife.UI.UniverseLib.UI;
-using UnityEngine.UIElements;
-using UnityEngine.UI;
-using ProjectM.Presentation;
-using BloodCraftEZLife.Config;
-using static ProjectM.VBloodSystem;
-using ProjectM.Gameplay.Systems;
-using BloodCraftEZLife.UI;
-using Stunlock.Core;
+using UnityEngine;
 using UnityEngine.Events;
-using Epic.OnlineServices;
-using UnityEngine.InputSystem;
-
+using static ProjectM.Sequencer.FullscreenEffectSystem;
 namespace BloodCraftEZLife.Patches;
 
 
-[HarmonyPatch]
+
 internal static class FullscreenPatch
 {
 
@@ -86,6 +68,8 @@ internal static class FullscreenPatch
     private static void _FullscreenMenuOnUpdate(MainMenuNewView __instance)
     {
         LogUtils.LogInfo("MainMenuNewView Awake");
+        if (FullscreenSettingService._templates == null)
+            return;
         //hidding our config panels when pressed escape while in the settings pannel
         var panel = Plugin.UIManager.GetPanel<SettingsPanel>();
         if (panel != null)
@@ -147,10 +131,12 @@ internal static class FullscreenPatch
         }
     }
 
+
     [HarmonyPatch(typeof(OptionsMenu), nameof(OptionsMenu.SwitchView))]
     [HarmonyPostfix]
     private static void OptionsMenuSwitchView(OptionsMenu __instance, ProjectM.UI.OptionsMenu.ViewState state, bool initialSwitch)
     {
+
         Transform t = __instance.GeneralPanel.gameObject.transform.parent;
         RectTransform tt = t.GetComponent<RectTransform>();
         FullscreenSettingService.DeltaRect = new Vector2(tt.rect.width, tt.rect.height);
@@ -219,5 +205,11 @@ internal static class FullscreenPatch
         }
     }
 
+    private static void OnTeleportPanelToggle(bool value)
+    {
+        Settings.IsTeleportPanelEnabled = value;
+        
+
+    }
 
 }

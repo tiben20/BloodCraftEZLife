@@ -70,7 +70,8 @@ namespace BloodCraftEZLife.Services
                     ConfigSaveManager.SavePerServerChat();
 
                 }
-        }
+
+            }
             if (chatMessage.MessageType.Equals(ServerChatMessageType.System))
             {
                 if (message.Contains("has requested to teleport") && Settings.IsAutoTeleportEnabled)

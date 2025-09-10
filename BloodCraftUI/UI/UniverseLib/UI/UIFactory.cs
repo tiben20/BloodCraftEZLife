@@ -548,14 +548,14 @@ public static class UIFactory
     /// <param name="name">The GameObject name of your InputField</param>
     /// <param name="placeHolderText">The placeholder text for your InputField component</param>
     /// <returns>An InputFieldRef wrapper for your InputField</returns>
-    public static InputFieldRef CreateInputField(GameObject parent, string name, string placeHolderText)
+    public static InputFieldRef CreateInputField(GameObject parent, string name, string placeHolderText, Color? bgColor = null)
     {
         GameObject mainObj = CreateUIObject(name, parent);
 
         Image mainImage = mainObj.AddComponent<Image>();
         mainImage.type = Image.Type.Sliced;
-        mainImage.color = Theme.DarkBackground;
-
+        mainImage.color = bgColor ?? Theme.DarkBackground;
+        
         TMP_InputField inputField = mainObj.AddComponent<TMP_InputField>();
         Navigation nav = inputField.navigation;
         nav.mode = Navigation.Mode.None;

@@ -149,7 +149,8 @@ namespace BloodCraftEZLife.UI.ModContent
 
         public void ShowMessage(string message,float fadetime, MessageType type = MessageType.Normal)
         {
-            
+            if (!Enabled)
+                Enabled = true;
             if (type == MessageType.Normal)
             {
                 _normalMessages.Add(new Message { message = message,fadetime = fadetime,vector = new Vector2(Owner.Scaler.referenceResolution.x/2f,300f) });

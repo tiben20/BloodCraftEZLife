@@ -42,8 +42,8 @@ namespace BloodCraftEZLife
         public static CoreUpdateBehavior CoreUpdateBehavior { get; set; }
         public static bool IsClient { get; private set; }
         public static Entity LocalCharacter { get; set; }
-
         
+
 
         public static bool IsClientNull() => _client == null;
 
@@ -133,6 +133,6 @@ namespace BloodCraftEZLife
     {
         public const string PLUGIN_GUID = "BloodCraftEZLife.PluginsUI";
         public const string PLUGIN_NAME = "BloodCraftEZLife";
-        public const string PLUGIN_VERSION = "0.7.2";
+        public const string PLUGIN_VERSION = "0.8.0";
     }
 }

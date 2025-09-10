@@ -41,9 +41,8 @@ internal static class ClientChatPatch
         {
             foreach (var entity in entities)
             {
-                if (!entity.Has<ChatMessageServerEvent>()) continue;
-                //_WhisperUserName    "Ilise" string
-                
+                if (!entity.Has<ChatMessageServerEvent>())
+                    continue;
                 MessageService.HandleMessage(entity, __instance._WhisperUserName);
             }
         }
